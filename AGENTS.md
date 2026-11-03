@@ -1,15 +1,31 @@
-## Noesis app architecture
-- The UI is one workspace in `src/workspace/` (ask → run timeline → report); keep it one page, not a tour, so the question stays visible throughout.
-- Display rules (verdict downgrade when a CI crosses zero, LIVE vs RECORDED labels) live in `src/workspace/model.ts` with tests; change them there only.
-- Lab data comes only through the `/lab-proxy` relay to the discolab feed; the app never computes or invents metrics.
+# EigenBrains Hackathon Agent Rules
 
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+## Security
+
+- Never read, display, copy, summarize, or transmit `.env`, `.env.*`, API keys, tokens, credentials, private keys, browser profiles, or OS credential stores.
+- Never commit secrets.
+- Use `.env.example` with placeholders only.
+- Do not access files outside this repository unless explicitly asked.
+- Do not upload repository files to external services unless explicitly required.
+
+## Changes
+
+- Prefer small, reversible edits.
+- Ask before deleting files, changing authentication, modifying deployment credentials, or making destructive changes.
+- Ask before installing large or unnecessary dependencies.
+- Preserve existing architecture unless there is a clear reason to change it.
+
+## Quality
+
+- Run relevant tests after meaningful changes.
+- Do not claim a feature works unless it is actually implemented.
+- Avoid mock/random outputs in production paths.
+- Keep frontend contracts synchronized with backend routes.
+- Document non-obvious technical decisions.
+
+## Hackathon priorities
+
+- Optimize for a working end-to-end product.
+- Keep the challenge-specific technical core separate from boilerplate.
+- Prefer measurable behavior over architectural complexity.
+- Preserve traceability, uncertainty, and failure handling where relevant.
