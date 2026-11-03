@@ -1,29 +1,11 @@
-# Welcome to your Lovable project
+# Noesis
 
-This project was built with [Lovable](https://lovable.dev).
+**Autonomous, information-driven scientific discovery.**
 
-## Build with Lovable
+This repository is being prepared for the **Meta Global AI Developer Hackathon — Indie Developer Track**. Noesis is an experimental research platform for asking falsifiable questions, running computational experiments, and tracing how evidence changes the next decision.
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+The first executable research domain concerns evolutionary search: whether population dynamics can warn of stagnation and whether evidence-guided interventions improve recovery after changing conditions.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+The project code, reproducibility instructions, and verified results will be added in subsequent commits. This initial README does not claim that an experiment has run in this new repository.
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+Built by Team EigenBrains. Contributor attribution and the distinction between the existing research foundation and hackathon work will be documented alongside the code.
