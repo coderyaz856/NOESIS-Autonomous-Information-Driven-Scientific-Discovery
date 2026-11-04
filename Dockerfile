@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PATH=/home/user/.local/bin:/home/user/venv/bin:/usr/local/bin:/usr/bin:/bin
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl git tini \
+    && apt-get install -y --no-install-recommends ca-certificates curl git passwd tini \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 1000 --shell /bin/sh user
 
