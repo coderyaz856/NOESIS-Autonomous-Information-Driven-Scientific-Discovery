@@ -23,7 +23,7 @@ USER user
 RUN python -m venv /home/user/venv \
     && /home/user/venv/bin/pip install --no-cache-dir --upgrade pip \
     && /home/user/venv/bin/pip install --no-cache-dir -e ./discolab \
-    && curl -fsSL https://dev.meta.ai/install.sh | sh \
+    && curl -fsSL https://dev.meta.ai/install.sh | MUSE_NO_MODIFY_PATH=1 bash \
     && command -v muse >/dev/null \
     && muse --version \
     && chmod 700 ./entrypoint.sh
