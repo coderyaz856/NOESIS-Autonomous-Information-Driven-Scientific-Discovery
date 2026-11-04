@@ -5,13 +5,10 @@
 # Noesis
 
 [![Tests](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/actions/workflows/tests.yml?query=branch%3Amain)
+[![crates.io](https://img.shields.io/crates/v/noesis-discovery.svg?label=Rust%20crate)](https://crates.io/crates/noesis-discovery)
+[![SDK release](https://img.shields.io/badge/SDK%20release-v0.1.0-5865F2)](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/releases/tag/sdk-v0.1.0)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE.md)
 [![Lab backend: Hugging Face Docker Space](https://img.shields.io/badge/lab%20backend-Hugging%20Face%20Docker%20Space-FFD21E?logo=huggingface&logoColor=black)](deploy/huggingface/README.md)
-
-> **Lab backend image for judges:** `docker pull ghcr.io/saadqacif/noesis-lab:0.1.1`
-> (immutable: `@sha256:47014a2516caec0522da525bf25981be3062397121fcdc84b01ce3275a5759ca`, linux/amd64).
-> It runs the authenticated lab backend only: no web frontend, and no Meta credits (bring your own key,
-> or use the read-only recorded run). Run commands: [`deploy/docker/README.md`](deploy/docker/README.md).
 
 > **Predicting the unpredictable. Accelerating breakthroughs through autonomous, agent-driven discovery loops.**
 
