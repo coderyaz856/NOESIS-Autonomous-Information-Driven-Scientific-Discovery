@@ -113,6 +113,18 @@ def build_provider(spec: PilotModelSpec) -> AIProvider:
         )
     if spec.provider == "openai":
         return OpenAIProvider(model=spec.model)
+    if spec.provider == "meta":
+        from ..providers.meta import MetaModelAPIProvider
+
+        # The frozen protocol caps answers at 256 tokens; Model API reasoning tokens count
+        # against that cap, so the lowest accepted effort ("minimal"; "none" is rejected)
+        # is used. Measured: "low" truncates Spark answers at 256 tokens.
+        return MetaModelAPIProvider(model=spec.model, default_reasoning_effort="minimal")
+    if spec.provider == "muse_agent":
+        from ..providers.muse_agent import MuseCodeAgentProvider
+
+        # One headless Muse Code agent (Meta's agent harness) per call, no tools.
+        return MuseCodeAgentProvider(model=spec.model, reasoning_effort="minimal")
     raise ValueError(f"unsupported pilot provider '{spec.provider}'")
 
 
