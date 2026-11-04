@@ -45,9 +45,17 @@ def used_seed_blocks(exclude: Path) -> dict[int, str]:
     return used
 
 
-def init_lab(root: Path | None = None, actor: str = "operator", seed_block: int = 0) -> dict:
-    """seed_block >= 1 gives the lab its own development/test seeds (prereg v5); 0 is the
+def init_lab(root: Path | None = None, actor: str = "operator", seed_block: int = 0, *, mode: str = "lab",
+             question: str | None = None) -> dict:
+    """Create the ledger. mode 'lab' loads the pre-registered GA/entropy study (executable
+    experiments). mode 'open' records the operator's own question with no pre-registered
+    hypotheses: agents research it, register hypotheses and propose study protocols, but
+    nothing is executed because the lab has no engine for that domain.
+
+    seed_block >= 1 gives the lab its own development/test seeds (prereg v5); 0 is the
     legacy shared block, kept for derived-protocol studies that set their own seed ranges."""
+    if mode not in ("lab", "open"):
+        raise ValueError("mode must be 'lab' or 'open'")
     led = _ledger(root)
     if led.events():
         raise LedgerError("this lab directory already has a ledger; use a fresh DISCOLAB_HOME")
@@ -59,13 +67,17 @@ def init_lab(root: Path | None = None, actor: str = "operator", seed_block: int 
             raise LedgerError(f"seed block {seed_block} is already used by {clash}; choose another")
     pr = load_prereg()
     hyps = []
-    for h in pr["hypotheses"]:
-        entry = {k: v for k, v in h.items()}
-        entry.setdefault("prior", 0.5)
-        entry.setdefault("origin", "prereg")
-        hyps.append(entry)
+    if mode == "lab":
+        for h in pr["hypotheses"]:
+            entry = {k: v for k, v in h.items()}
+            entry.setdefault("prior", 0.5)
+            entry.setdefault("origin", "prereg")
+            hyps.append(entry)
+    elif not (question and question.strip()):
+        raise ValueError("open mode needs the operator's question")
     led.append("lab_initialized", {
-        "question": " ".join(pr["question"].split()),
+        "mode": mode,
+        "question": " ".join((question if mode == "open" else pr["question"]).split()),
         "prereg_sha256": pr["_sha256"],
         "hypotheses": hyps,
         "compute_budget_sec": pr["planner_policy"]["compute_budget_seconds"],
@@ -165,6 +177,29 @@ def record_analysis(exp_id: str, interpretation: str, threats_to_validity: list[
     return {"updates": updates}
 
 
+PROTOCOL_FIELDS = ("title", "design", "measurements", "comparator", "falsifier", "sample_size", "cost_estimate",
+                   "risks")
+
+
+def propose_protocol(spec: dict, actor: str, root: Path | None = None) -> dict:
+    """Record a study protocol for an open-mode question (never executed by this lab)."""
+    led = _ledger(root)
+    state = led.state()
+    if state.get("mode") != "open":
+        raise ValueError("this lab executes its own experiments; use propose_experiment")
+    missing = [k for k in PROTOCOL_FIELDS if not str(spec.get(k) or "").strip()]
+    if missing:
+        raise ValueError(f"protocol is missing: {', '.join(missing)}")
+    hyps = list(spec.get("hypotheses") or [])
+    if not hyps:
+        raise ValueError("a protocol must test at least one registered hypothesis")
+    pid = f"P{len(state['protocols']) + 1}"
+    payload = {"id": pid, "hypotheses": hyps, **{k: str(spec[k]).strip() for k in PROTOCOL_FIELDS}}
+    led.append("protocol_proposed", payload, actor)
+    return {"id": pid, "executed": False,
+            "note": "recorded as a proposed protocol; this lab cannot execute studies in this domain"}
+
+
 def record_decision(decision: str, rationale: str, next_experiment: str | None, actor: str,
                     root: Path | None = None) -> dict:
     led = _ledger(root)
@@ -176,7 +211,15 @@ def record_decision(decision: str, rationale: str, next_experiment: str | None, 
 def register_hypothesis(hid: str, statement: str, h0: str, family: str, feature_set: str | None,
                         controller: str | None, actor: str, root: Path | None = None,
                         baseline_feature_set: str | None = None, comparator: str | None = None) -> dict:
-    """Register an agent-generated hypothesis; it must be testable by the lab as written."""
+    """Register an agent-generated hypothesis; it must be testable by the lab as written.
+    family 'open' is for questions outside the lab's executable domain: a falsifiable
+    statement with its null, recorded as untested (no posterior update can ever reach it)."""
+    if family == "open":
+        if not statement.strip() or not h0.strip():
+            raise ValueError("an open hypothesis needs a statement and its null (h0)")
+        payload = {"id": hid, "statement": statement, "h0": h0, "family": "open", "prior": 0.5}
+        _ledger(root).append("hypothesis_registered", payload, actor)
+        return payload
     if family == "prediction":
         base = baseline_feature_set or load_prereg()["prediction_study"]["baseline_features"]
         for fs in (feature_set, base):
@@ -193,7 +236,7 @@ def register_hypothesis(hid: str, statement: str, h0: str, family: str, feature_
             raise ValueError(f"unknown comparator {comp!r}")
         payload = {"controller": controller, "comparator": comp}
     else:
-        raise ValueError("family must be 'prediction' or 'control'")
+        raise ValueError("family must be 'prediction', 'control' or 'open'")
     payload = {"id": hid, "statement": statement, "h0": h0, "family": family, "prior": 0.5, **payload}
     _ledger(root).append("hypothesis_registered", payload, actor)
     return payload

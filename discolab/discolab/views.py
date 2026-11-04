@@ -39,12 +39,19 @@ def state_summary(s: dict) -> dict:
         })
     return {
         "question": s["question"],
+        "mode": s.get("mode", "lab"),
+        "protocols": list((s.get("protocols") or {}).values()),
         "compute_seconds": {"used": _r(s["compute_used_sec"], 1), "budget": s["compute_budget_sec"]},
         "hypotheses": hyps,
         "evidence": [{"source_id": e.get("openalex_id") or e.get("arxiv_id"), "source": "arXiv" if e.get("arxiv_id") else "OpenAlex", "title": e.get("title"), "year": e.get("year"),
                       "relation": e.get("relation"), "hypothesis_id": e.get("hypothesis_id"),
                       "credibility": (e.get("credibility") or {}).get("label"), "limitation": e.get("limitation"),
-                      "claim": e.get("claim")} for e in s["evidence"]],
+                      "claim": e.get("claim"),
+                      # record_evidence verifies the SOURCE (re-fetched by id, title matched, not
+                      # retracted). The claim is the agent's own summary: never checked for entailment.
+                      "source_check": "identity and metadata verified against the source",
+                      "claim_origin": e.get("claim_origin", "agent summary"), "claim_verified": False}
+                     for e in s["evidence"]],
         "candidates": cands,
         "selected": s["selected"],
         "latest_scoring_round": ({"round": s["scoring_rounds"][-1]["round"],
@@ -98,5 +105,6 @@ def result_summary(cand: dict) -> dict:
     if cand.get("analysis"):
         a = cand["analysis"]
         out["analysis"] = {"by": a["by"], "interpretation": a["interpretation"],
-                           "threats_to_validity": a["threats_to_validity"]}
+                           "threats_to_validity": a["threats_to_validity"],
+                           "verification": a.get("verification") or {"status": "unverified"}}
     return out

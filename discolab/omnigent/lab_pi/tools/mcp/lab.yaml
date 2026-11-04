@@ -8,4 +8,5 @@ args: ["-m", "discolab.mcp_server"]
 env:
   DISCOLAB_HOME: "${DISCOLAB_HOME}"
   DISCOLAB_ACTOR: "pi"
+  DISCOLAB_TOOLS: "get_research_state,get_experiment_result,select_experiment,run_experiment,record_decision"  # explicit allow-list; the server refuses to start without one
 tools: [get_research_state, get_experiment_result, select_experiment, run_experiment, record_decision]

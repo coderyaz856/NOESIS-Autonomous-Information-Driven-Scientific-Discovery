@@ -6,4 +6,5 @@ args: ["-m", "discolab.mcp_server"]
 env:
   DISCOLAB_HOME: "${DISCOLAB_HOME}"
   DISCOLAB_ACTOR: "critic"
+  DISCOLAB_TOOLS: "get_research_state,get_experiment_result,analyze_failure_dependence,record_analysis,register_hypothesis"  # explicit allow-list; the server refuses to start without one
 tools: [get_research_state, get_experiment_result, analyze_failure_dependence, record_analysis, register_hypothesis]
