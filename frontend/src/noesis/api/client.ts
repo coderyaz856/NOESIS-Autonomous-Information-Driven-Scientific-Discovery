@@ -74,4 +74,7 @@ export const api = {
     if (data !== undefined) requestInit.body = JSON.stringify(data);
     return request<T>(path, requestInit);
   },
+  delete<T>(path: string, init?: RequestInit): Promise<T> {
+    return request<T>(path, { ...init, method: 'DELETE' });
+  },
 };

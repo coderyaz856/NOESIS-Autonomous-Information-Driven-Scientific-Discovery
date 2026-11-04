@@ -38,7 +38,14 @@ EVENT_TYPES = (
     "analysis_recorded",
     "hypothesis_updated",
     "decision_recorded",
+    "protocol_proposed",
+    "analysis_verification",
 )
+
+# Verification state of a critic's analysis. The analysis (and the deterministic
+# posterior update it triggers from the experiment's numbers) is recorded first;
+# the Noesis gate / Wonder verifier judges the critic's TEXT afterwards.
+ANALYSIS_VERIFICATION = ("unverified", "not_escalated", "confirmed", "corrected", "rejected", "unparsed")
 
 
 class LedgerError(RuntimeError):
@@ -111,6 +118,8 @@ class Ledger:
 def _empty_state() -> dict[str, Any]:
     return {
         "initialized": False,
+        "mode": "lab",
+        "protocols": {},
         "question": None,
         "prereg_sha256": None,
         "hypotheses": {},
@@ -150,6 +159,7 @@ def _apply(s: dict, ev: dict) -> None:
         _need(not s["initialized"], "lab already initialised")
         s["initialized"] = True
         s["question"] = p["question"]
+        s["mode"] = p.get("mode", "lab")
         s["prereg_sha256"] = p["prereg_sha256"]
         s["compute_budget_sec"] = float(p["compute_budget_sec"])
         s["sec_per_generation"] = float(p["sec_per_generation"])
@@ -161,8 +171,16 @@ def _apply(s: dict, ev: dict) -> None:
         s["evidence"].append({**p, "seq": ev["seq"], "recorded_by": ev["actor"]})
     elif t == "hypothesis_registered":
         _need(p["id"] not in s["hypotheses"], f"hypothesis {p['id']} already exists")
-        s["hypotheses"][p["id"]] = {**p, "status": "open", "posterior": p["prior"], "history": [], "origin": "agent"}
+        status = "untested" if p.get("family") == "open" else "open"
+        s["hypotheses"][p["id"]] = {**p, "status": status, "posterior": p["prior"], "history": [], "origin": "agent"}
+    elif t == "protocol_proposed":
+        # Open mode: a study design for a question this lab cannot execute. Never run, never scored.
+        _need(p["id"] not in s["protocols"], f"protocol {p['id']} already proposed")
+        for h in p["hypotheses"]:
+            _need(h in s["hypotheses"], f"protocol targets unknown hypothesis {h}")
+        s["protocols"][p["id"]] = {**p, "proposed_by": ev["actor"], "seq": ev["seq"], "executed": False}
     elif t == "experiment_proposed":
+        _need(s["mode"] != "open", "open-mode labs have no executable experiments; propose a protocol instead")
         eid = p["id"]
         _need(eid not in s["candidates"], f"experiment {eid} already proposed")
         for h in p["spec"]["hypotheses"]:
@@ -217,7 +235,12 @@ def _apply(s: dict, ev: dict) -> None:
         _need(eid in s["completed"], f"{eid} has not completed")
         _need(s["candidates"][eid]["status"] == "completed", f"{eid} already analysed")
         s["candidates"][eid]["status"] = "analyzed"
-        s["candidates"][eid]["analysis"] = {**p, "by": ev["actor"]}
+        s["candidates"][eid]["analysis"] = {**p, "by": ev["actor"], "verification": {"status": "unverified"}}
+    elif t == "analysis_verification":
+        eid = p["id"]
+        _need(bool(s["candidates"].get(eid, {}).get("analysis")), f"{eid} has no recorded analysis to verify")
+        _need(p["status"] in ANALYSIS_VERIFICATION[1:], f"unknown verification status {p['status']!r}")
+        s["candidates"][eid]["analysis"]["verification"] = {**p, "seq": ev["seq"], "by": ev["actor"]}
     elif t == "hypothesis_updated":
         hid = p["id"]
         _need(hid in s["hypotheses"], f"unknown hypothesis {hid}")

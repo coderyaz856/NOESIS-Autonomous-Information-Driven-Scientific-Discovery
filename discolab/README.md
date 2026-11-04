@@ -1,4 +1,14 @@
-# discolab — an Omnigent-orchestrated lab for evolutionary-search stagnation
+# discolab — an agent-run lab for evolutionary-search stagnation
+
+> **Meta indie-track build: start here.** Agents run on Meta's Muse Code
+> (`discolab/muse.py`, `muse_agents/`), started by
+> `python -m discolab.bridge --enable-runs` or `python -m discolab.run start`.
+> See [`docs/hackathon/DEMO.md`](../docs/hackathon/DEMO.md).
+> - Any question is accepted. Out-of-domain questions run in **open-research
+>   mode**, which proposes studies but executes none.
+> - The held-out benchmark did not show an escalation quality gain.
+> - The Omnigent sections below describe the earlier orchestration, kept for
+>   its recorded runs. They are not the Meta run path.
 
 **Question (pre-registered in [`prereg.yaml`](prereg.yaml)).** Do the dynamics of
 population entropy give early warning of evolutionary-search stagnation beyond

@@ -1,0 +1,50 @@
+{
+  "escalate_high_risk": true,
+  "escalate_task_families": [],
+  "fitted_splits": [
+    "dev",
+    "tuning"
+  ],
+  "frozen_at": "2026-11-03T19:41:44.471644+00:00",
+  "held_out_observations_used": 0,
+  "historical_error_ucb_threshold": 0.5,
+  "historical_task_family_error_ucb": {
+    "classification": 0.43448246478317465,
+    "code_understanding_debugging": 0.43448246478317465,
+    "critique": 0.8823792257673521,
+    "evidence_verification": 0.43448246478317465,
+    "logical_reasoning": 0.43448246478317465,
+    "mathematical_reasoning": 0.43448246478317465,
+    "numerical_reasoning": 0.43448246478317465,
+    "planning": 0.43448246478317465,
+    "structured_extraction": 0.43448246478317465,
+    "synthesis": 0.43448246478317465,
+    "tool_use_reasoning": 0.9637758913675698,
+    "uncertainty_abstention": 0.43448246478317465
+  },
+  "sha256": "955c4a65b5835e50691344ee0e2675e308f6ac01d57d8025a5cac45fc7f08c08",
+  "signals": [
+    "schema_or_constraint_failure",
+    "explicit_abstention",
+    "task_risk_level",
+    "historical_task_family_error_ucb",
+    "task_family"
+  ],
+  "source_case_count": 60,
+  "source_observation_count": 180,
+  "task_family_owner": {
+    "classification": "meta/muse-spark-1.3",
+    "code_understanding_debugging": "meta/muse-spark-1.3",
+    "critique": "meta/muse-spark-1.3",
+    "evidence_verification": "meta/muse-spark-1.3",
+    "logical_reasoning": "meta/muse-spark-1.3",
+    "mathematical_reasoning": "meta/muse-spark-1.3",
+    "numerical_reasoning": "meta/muse-spark-1.3",
+    "planning": "meta/muse-spark-1.3",
+    "structured_extraction": "meta/muse-spark-1.3",
+    "synthesis": "meta/muse-spark-1.3",
+    "tool_use_reasoning": "meta/muse-wonder-1.0",
+    "uncertainty_abstention": "meta/muse-spark-1.3"
+  },
+  "uses_ground_truth": false
+}

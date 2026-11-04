@@ -17,7 +17,7 @@ import { useQuietMotion } from './hooks/useQuietMotion';
 import { Home } from './views/Home';
 import { LabBar } from './lab/LabBar';
 import { DiscoveryStory, SAMPLE_STORY } from './lab/DiscoveryStory';
-import { LabProvider, useLab } from './lab/LabContext';
+import { LabProvider, useLab, type LabStatus } from './lab/LabContext';
 import { LiveApproval, LiveDiscovery, LiveHypotheses, LiveRecord } from './lab/LiveViews';
 import noesisLogo from '../assets/logo_neosis.png';
 
@@ -121,7 +121,8 @@ function AppShell() {
     setTheme,
   }), [go, inspectorOpen, theme, view]);
 
-  const showCommandSurface = view === 'home' && (quietMotion || storyChapter >= 5);
+  // The question box is the primary action, so it is available on home from the start.
+  const showCommandSurface = view === 'home';
 
   return (
     <ShellProvider value={shell}>
@@ -159,6 +160,7 @@ function AppShell() {
               <Tooltip><TooltipTrigger><button type="button" className="btn btn-icon" aria-label="Toggle inspector" aria-pressed={inspectorOpen} onClick={() => setInspectorOpen((open) => !open)}><IconInspect /></button></TooltipTrigger><TooltipContent shortcut="Ctrl I">Inspect</TooltipContent></Tooltip>
               <Popover><PopoverTrigger label="Compare"><IconCompare /></PopoverTrigger><PopoverContent title="Compare"><p className="quiet">Pick two candidate hypotheses to compare evidence, confidence, and risk.</p></PopoverContent></Popover>
               <Tooltip><TooltipTrigger><button type="button" className="btn btn-icon" aria-label="Toggle theme" onClick={cycleTheme}><IconTheme /></button></TooltipTrigger><TooltipContent>Theme</TooltipContent></Tooltip>
+              <LabCapsule status={lab.status} baseUrl={lab.baseUrl} />
               <HealthCapsule health={health} />
             </div>
           </header>
@@ -194,9 +196,17 @@ function AppShell() {
   );
 }
 
-function HealthCapsule({ health }: { health: GetState<HealthStatus> }) {
-  if (health.loading) return <StatusCapsule tone="idle">Checking</StatusCapsule>;
-  if (health.error || !health.data) return <StatusCapsule tone="bad">Core API offline</StatusCapsule>;
-  if (health.data.status === 'ok') return <StatusCapsule tone="ok">Ready</StatusCapsule>;
-  return <StatusCapsule tone="warn">{health.data.status}</StatusCapsule>;
+/** The discovery-lab bridge: this is what Muse Code runs, the ledger and live views depend on. */
+export function LabCapsule({ status, baseUrl }: { status: LabStatus; baseUrl: string }) {
+  if (status === 'checking') return <StatusCapsule tone="idle">Lab bridge: checking</StatusCapsule>;
+  if (status === 'connected') return <StatusCapsule tone="ok">Lab bridge: connected</StatusCapsule>;
+  return <StatusCapsule tone="bad">{baseUrl ? 'Lab bridge: offline' : 'Lab bridge: not configured'}</StatusCapsule>;
+}
+
+/** The older core API (`/health`): optional; Muse lab runs do not use it. */
+export function HealthCapsule({ health }: { health: GetState<HealthStatus> }) {
+  if (health.loading) return <StatusCapsule tone="idle">Core API: checking</StatusCapsule>;
+  if (health.error || !health.data) return <StatusCapsule tone="idle">Core API (optional): offline</StatusCapsule>;
+  if (health.data.status === 'ok') return <StatusCapsule tone="ok">Core API: ready</StatusCapsule>;
+  return <StatusCapsule tone="warn">Core API: {health.data.status}</StatusCapsule>;
 }

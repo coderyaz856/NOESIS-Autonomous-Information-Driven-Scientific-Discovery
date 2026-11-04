@@ -1,23 +1,31 @@
-"""Read-only HTTP/SSE bridge from the lab's files to the EigenBrains UI.
+"""HTTP/SSE bridge from the lab's files to the EigenBrains UI.
 
-    python -m discolab.bridge --port 8765
+    python -m discolab.bridge --port 8765                 # read-only (default)
+    python -m discolab.bridge --port 8765 --enable-runs   # also start Muse Code runs + answer approvals
 
 Serves live labs (lab_home/<name>) and committed records (results/<name>).
-Everything returned is read from the ledger, the Omnigent event log or the raw
-trace artifacts; the bridge computes summaries (means over runs) but never
-invents values. It writes nothing.
+Everything returned is read from the ledger, the agent activity log, the
+Omnigent event log or the raw trace artifacts; the bridge computes summaries
+(means over runs) but never invents values. Without --enable-runs it writes
+nothing.
 
-  GET /lab/sources                      available labs and records
-  GET /lab/state?source=...             state, hypothesis trajectories, scoring rounds, decisions
-  GET /lab/activity?source=...          agent handoffs, tool calls and messages (Omnigent stream)
-  GET /lab/experiment?source=...&id=E#  compact result + per-generation curves from traces.npz
-  GET /lab/stream?source=...            SSE: new ledger events ("ledger") and agent activity ("agent")
+  GET  /lab/sources                      available labs and records
+  GET  /lab/state?source=...             state, hypothesis trajectories, scoring rounds, decisions
+  GET  /lab/activity?source=...          agent handoffs, tool calls, messages, approvals
+  GET  /lab/experiment?source=...&id=E#  compact result + per-generation curves from traces.npz
+  GET  /lab/stream?source=...            SSE: new ledger events ("ledger") and agent activity ("agent")
+  GET  /lab/run?source=...               Muse Code run record: question, scope, config, status, spend, approvals
+  GET  /lab/capabilities                 whether runs can be started here, and the supported domain
+  POST /lab/runs        {question, rounds?, ceiling_usd?}     scope-check, then start a run   (--enable-runs)
+  POST /lab/approvals   {source, id, decision: approve|decline} answer a pending approval   (--enable-runs)
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import sys
 import time
 from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -32,6 +40,11 @@ from .views import result_summary, state_summary
 ROOT = Path(__file__).resolve().parent.parent
 ALLOWED = ("lab_home", "results")
 POLL_SEC = 0.5
+UI_KINDS = ("handoff", "tool", "say", "approval", "gate")  # activity kinds the frontend renders
+# Server-side limits for runs started from the UI (protects the credit pool).
+UI_MAX_ROUNDS = 2
+UI_MAX_CEILING_USD = 5.0
+ENABLE_RUNS = False
 
 
 def resolve_source(source: str) -> Path:
@@ -60,10 +73,172 @@ def list_sources() -> list[dict]:
         for p in sorted(d.iterdir()):
             if (p / "ledger.jsonl").exists():
                 events = read_jsonl(p / "ledger.jsonl")
+                run = _read_json(p / "run.json")
                 out.append({"id": f"{base}/{p.name}", "kind": kind, "events": len(events),
                             "experiments": sum(e["type"] == "experiment_completed" for e in events),
-                            "prereg_sha256": events[0]["prereg_sha256"] if events else None})
+                            "prereg_sha256": events[0]["prereg_sha256"] if events else None,
+                            "runtime": "muse" if run else ("omnigent" if (p / "omnigent_events.jsonl").exists()
+                                                           else None),
+                            "run_status": run.get("status") if run else None,
+                            "created_at": run.get("created_at") if run else None})
     return out
+
+
+def _read_json(path: Path) -> dict | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def source_activity(src: Path) -> list[dict]:
+    """Muse Code runs write normalized activity; Omnigent runs are converted from their event log."""
+    if (src / "activity.jsonl").exists():
+        return [a for a in read_jsonl(src / "activity.jsonl") if a.get("kind") in UI_KINDS]
+    acts, _ = activity(read_jsonl(src / "omnigent_events.jsonl"))
+    return acts
+
+
+def _pid_alive(pid: int | None) -> bool:
+    if not pid:
+        return False
+    try:
+        import psutil  # optional
+        return psutil.pid_exists(int(pid))
+    except ImportError:
+        pass
+    if sys.platform == "win32":
+        import ctypes
+
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, int(pid))  # QUERY_LIMITED_INFORMATION
+        if not handle:
+            return False
+        code = ctypes.c_ulong()
+        ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(handle)
+        return code.value == 259  # STILL_ACTIVE
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except OSError:
+        return False
+
+
+def run_view(src: Path) -> dict:
+    """Run record + live spend/tokens per agent + approvals (Muse Code runs only)."""
+    from .muse import run_usage
+
+    rec = _read_json(src / "run.json")
+    if rec is None:
+        return {"runtime": None}
+    status = rec.get("status")
+    if status == "running" and not _pid_alive(rec.get("pid")):
+        status = "interrupted"  # driver process is gone without finalising
+    acts = read_jsonl(src / "activity.jsonl")
+    per_agent: dict[str, dict] = {}
+    for a in acts:
+        if a.get("kind") != "usage":
+            continue
+        row = per_agent.setdefault(a["agent"], {"agent": a["agent"], "model": a.get("model"), "runs": 0, "calls": 0,
+                                                "input_tokens": 0, "cached_tokens": 0, "output_tokens": 0,
+                                                "cost_usd": 0.0, "seconds": 0.0})
+        row["runs"] += 1
+        for k in ("calls", "input_tokens", "cached_tokens", "output_tokens"):
+            row[k] += int(a.get(k) or 0)
+        row["cost_usd"] = round(row["cost_usd"] + float(a.get("cost_usd") or 0), 6)
+        row["seconds"] = round(row["seconds"] + float(a.get("seconds") or 0), 2)
+    open_count: dict[tuple, int] = {}
+    for a in acts:
+        if a.get("kind") in ("agent_start", "agent_end"):
+            k = (a["agent"], a.get("title"))
+            open_count[k] = open_count.get(k, 0) + (1 if a["kind"] == "agent_start" else -1)
+    active = [{"agent": k[0], "title": k[1]} for k, n in open_count.items() if n > 0] \
+        if status in ("running", "prepared") else []
+    approvals = []
+    adir = src / "approvals"
+    if adir.is_dir():
+        for p in sorted(adir.glob("*.json")):
+            a = _read_json(p)
+            if a:
+                approvals.append(a)
+    model_calls = sum(1 for a in acts if a.get("kind") == "model_call")
+    return {"runtime": "muse", **{k: rec.get(k) for k in (
+        "run_id", "mode", "source", "question", "scope", "rounds", "ceiling_usd", "config", "prereg",
+        "created_at", "started_at", "finished_at", "wall_seconds", "final_report", "error", "pricing_source")},
+            "harness": rec.get("runtime"), "status": status, "usage": run_usage(src), "per_agent": list(per_agent.values()),
+            "active_agents": active, "model_calls_started": model_calls, "approvals": approvals}
+
+
+def capabilities() -> dict:
+    from .scope import design_space
+
+    return {"runs_enabled": ENABLE_RUNS, "harness": "Muse Code (Meta Model API)", "max_rounds": UI_MAX_ROUNDS,
+            "max_ceiling_usd": UI_MAX_CEILING_USD, "supported_domain": design_space(),
+            "modes": {"lab": "questions in the pre-registered GA/entropy domain: experiments are executed",
+                      "open": "any other research question: verified literature, falsifiable hypotheses, "
+                              "proposed study protocols and critique; nothing is executed"}}
+
+
+def _active_run() -> str | None:
+    base = ROOT / "lab_home"
+    if not base.is_dir():
+        return None
+    for p in base.iterdir():
+        rec = _read_json(p / "run.json")
+        if not rec:
+            continue
+        if rec.get("status") == "running" and _pid_alive(rec.get("pid")):
+            return f"lab_home/{p.name}"
+        if rec.get("status") == "prepared" and time.time() - (p / "run.json").stat().st_mtime < 60:
+            return f"lab_home/{p.name}"  # just launched; the driver has not reported yet
+    return None
+
+
+def start_run(body: dict) -> tuple[int, dict]:
+    from . import run as runmod
+    from . import scope
+
+    question = " ".join(str(body.get("question") or "").split())
+    if not 8 <= len(question) <= 600:
+        return 400, {"error": {"code": "bad_question", "message": "ask a question of 8-600 characters"}}
+    busy = _active_run()
+    if busy:
+        return 409, {"error": {"code": "run_in_progress", "message": f"a run is already in progress ({busy})",
+                               "source": busy}}
+    rounds = max(1, min(UI_MAX_ROUNDS, int(body.get("rounds") or 1)))
+    ceiling = max(0.25, min(UI_MAX_CEILING_USD, float(body.get("ceiling_usd") or 2.0)))
+    try:
+        sc = scope.check(question)
+    except Exception as exc:
+        return 502, {"error": {"code": "scope_check_failed", "message": f"{type(exc).__name__}: {exc}"}}
+    # Every question is accepted. The scope check only decides the mode: 'lab' runs the
+    # pre-registered experiments, 'open' researches the question without executing anything.
+    mode = "lab" if sc.get("in_scope") else "open"
+    home = runmod.prepare(question, rounds, ceiling, scope_result=sc, mode=mode)
+    runmod.start_detached(home)  # the driver records its own pid in run.json
+    rec = runmod.read_run(home)
+    return 201, {"source": rec["source"], "run_id": rec["run_id"], "scope": sc, "mode": mode, "rounds": rounds,
+                 "ceiling_usd": ceiling}
+
+
+def answer_approval(body: dict) -> tuple[int, dict]:
+    src = resolve_source(str(body.get("source") or ""))
+    eid = str(body.get("id") or "")
+    decision = body.get("decision")
+    if decision not in ("approve", "decline") or not eid.startswith("E") or not eid[1:].isdigit():
+        return 400, {"error": {"code": "bad_request", "message": "need id=E# and decision approve|decline"}}
+    path = src / "approvals" / f"{eid}.json"
+    rec = _read_json(path)
+    if rec is None:
+        return 404, {"error": {"code": "not_found", "message": f"no approval request for {eid}"}}
+    if rec.get("status") != "pending":
+        return 409, {"error": {"code": "already_decided", "message": f"{eid} is already {rec.get('status')}"}}
+    rec.update(status="approved" if decision == "approve" else "declined", decided_by="human (UI)",
+               decided_at=time.time())
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(rec), encoding="utf-8")
+    os.replace(tmp, path)
+    return 200, {"id": eid, "status": rec["status"]}
 
 
 def lab_state(path: Path) -> dict:
@@ -93,7 +268,8 @@ def lab_state(path: Path) -> dict:
     decisions = [{"seq": d["seq"], "by": d["by"], "decision": d.get("decision"), "rationale": d.get("rationale"),
                   "next_experiment": d.get("next_experiment")} for d in s["decisions"] if d["kind"] == "next_step"]
     analyses = {eid: {"by": c["analysis"]["by"], "interpretation": c["analysis"]["interpretation"],
-                      "threats_to_validity": c["analysis"]["threats_to_validity"]}
+                      "threats_to_validity": c["analysis"]["threats_to_validity"],
+                      "verification": c["analysis"].get("verification") or {"status": "unverified"}}
                 for eid, c in s["candidates"].items() if c.get("analysis")}
     return {**summary, "events": len(events), "prereg_sha256": s["prereg_sha256"],
             "trajectories": trajectories, "rounds": rounds, "decisions": decisions, "analyses": analyses,
@@ -214,12 +390,15 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if url.path == "/lab/sources":
                 return self._json({"sources": list_sources()})
+            if url.path == "/lab/capabilities":
+                return self._json(capabilities())
             src = resolve_source(q.get("source", ""))
             if url.path == "/lab/state":
                 return self._json(lab_state(src))
             if url.path == "/lab/activity":
-                acts, _ = activity(read_jsonl(src / "omnigent_events.jsonl"))
-                return self._json({"activity": acts})
+                return self._json({"activity": source_activity(src)})
+            if url.path == "/lab/run":
+                return self._json(run_view(src))
             if url.path == "/lab/experiment":
                 return self._json(experiment(src, q.get("id", "")))
             if url.path == "/lab/stream":
@@ -228,14 +407,33 @@ class Handler(BaseHTTPRequestHandler):
         except ValueError as exc:
             return self._json({"error": {"code": "bad_request", "message": str(exc)}}, 400)
 
+    def do_POST(self):
+        url = urlparse(self.path)
+        if not ENABLE_RUNS:
+            return self._json({"error": {"code": "runs_disabled",
+                                         "message": "start the bridge with --enable-runs to launch runs"}}, 403)
+        try:
+            length = min(int(self.headers.get("Content-Length") or 0), 16_384)
+            body = json.loads(self.rfile.read(length) or b"{}")
+            if url.path == "/lab/runs":
+                status, out = start_run(body)
+            elif url.path == "/lab/approvals":
+                status, out = answer_approval(body)
+            else:
+                status, out = 404, {"error": {"code": "not_found", "message": url.path}}
+            return self._json(out, status)
+        except (ValueError, json.JSONDecodeError) as exc:
+            return self._json({"error": {"code": "bad_request", "message": str(exc)}}, 400)
+
     def _stream(self, src: Path):
         self.send_response(200)
         self.send_header("Content-Type", "text/event-stream")
         self.send_header("Cache-Control", "no-cache")
         self.end_headers()
-        ledger, events = src / "ledger.jsonl", src / "omnigent_events.jsonl"
+        ledger, events, muse_acts = src / "ledger.jsonl", src / "omnigent_events.jsonl", src / "activity.jsonl"
         n_ledger = len(read_jsonl(ledger))
         n_events = len(read_jsonl(events))
+        n_muse = len(read_jsonl(muse_acts))
         _, names = activity(read_jsonl(events))
         last_beat = 0.0
         try:
@@ -245,6 +443,13 @@ class Handler(BaseHTTPRequestHandler):
                     self._sse("ledger", {"seq": e["seq"], "ts": e["ts"], "type": e["type"], "actor": e["actor"],
                                          "id": e["payload"].get("id")})
                 n_ledger = len(rows)
+                m_rows = read_jsonl(muse_acts)
+                for a in m_rows[n_muse:]:
+                    if a.get("kind") in UI_KINDS:
+                        self._sse("agent", a)
+                    else:
+                        self._sse("run", a)  # usage, model calls, agent start/end, run state
+                n_muse = len(m_rows)
                 ev_rows = read_jsonl(events)
                 acts, names = activity(ev_rows[n_events:], names)
                 for a in acts:
@@ -265,9 +470,14 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--enable-runs", action="store_true",
+                    help="allow POST /lab/runs and /lab/approvals (starts paid Muse Code runs)")
     args = ap.parse_args()
+    global ENABLE_RUNS
+    ENABLE_RUNS = args.enable_runs
     httpd = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    print(f"discolab bridge on http://127.0.0.1:{args.port}/lab/sources", flush=True)
+    print(f"discolab bridge on http://127.0.0.1:{args.port}/lab/sources "
+          f"({'runs ENABLED' if ENABLE_RUNS else 'read-only'})", flush=True)
     httpd.serve_forever()
 
 
