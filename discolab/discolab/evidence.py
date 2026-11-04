@@ -222,6 +222,8 @@ class ExperimentSpecV2:
         # Absolute input paths inside the working directory are stored relative to it,
         # so specs (and the bundles that seal them) never publish local machine paths.
         object.__setattr__(self, "inputs", {k: _portable_input(v) for k, v in dict(self.inputs).items()})
+        # The protocol is usually a file path (often __file__); same rule as inputs.
+        object.__setattr__(self, "protocol", _portable_input(self.protocol))
         _canonical_json(dict(self.parameters))
 
     def to_dict(self) -> dict[str, Any]:

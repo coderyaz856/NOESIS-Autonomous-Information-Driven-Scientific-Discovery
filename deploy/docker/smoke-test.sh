@@ -11,7 +11,7 @@ FAKE_KEY="smoke-test-not-a-real-key-$(openssl rand -hex 16)"
 if [ -n "${GITHUB_ACTIONS:-}" ]; then echo "::add-mask::$TOKEN"; echo "::add-mask::$FAKE_KEY"; fi
 fails=0
 pass() { echo "PASS  $*"; }
-fail() { echo "FAIL  $*"; fails=$((fails + 1)); }
+fail() { echo "FAIL  $*"; [ -n "${GITHUB_ACTIONS:-}" ] && echo "::error title=smoke test::$*"; fails=$((fails + 1)); }
 cleanup() { docker rm -f noesis-smoke >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 
@@ -78,10 +78,16 @@ if start -e "META_API_KEY=$FAKE_KEY" -e "NOESIS_BRIDGE_TOKEN=$TOKEN"; then
   grep -q '"runs_enabled": true' <<<"$caps" && pass "live mode enables runs behind the token" || fail "live mode enables runs behind the token"
   [ "$(status GET /lab/capabilities)" = "401" ] && pass "live mode: no token -> 401" || fail "live mode: no token -> 401"
   if docker logs noesis-smoke 2>&1 | grep -qF -e "$TOKEN" -e "$FAKE_KEY"; then fail "secrets absent from logs"; else pass "secrets absent from logs"; fi
-  # tini (pid 1) received the secrets from `docker run`; the bridge it started must not hold them.
-  if docker exec noesis-smoke sh -c 'for p in /proc/[0-9]*; do [ "${p#/proc/}" = 1 ] && continue; cat "$p/environ" 2>/dev/null; done' \
-      | tr '\0' '\n' | grep -qF -e "$TOKEN" -e "$FAKE_KEY"; then
-    fail "secrets removed from the bridge environment"
+  # tini (pid 1) and any `docker exec` shell receive the container environment, secrets
+  # included; the bridge process the entrypoint started must not hold them.
+  # Match the start of the command line so this checking shell (whose own command line
+  # mentions discolab.bridge) is never mistaken for the bridge.
+  bridge_env="$(docker exec noesis-smoke sh -c 'for p in /proc/[0-9]*; do
+      cmd="$(tr "\0" " " < "$p/cmdline" 2>/dev/null)"
+      case "$cmd" in "/home/user/venv/bin/python -m discolab.bridge "*) ;; *) continue ;; esac
+      echo "BRIDGE ${p#/proc/}"; tr "\0" "\n" < "$p/environ"; done' 2>/dev/null || true)"
+  if ! grep -q "^BRIDGE " <<<"$bridge_env"; then fail "bridge process found"
+  elif grep -qF -e "$TOKEN" -e "$FAKE_KEY" <<<"$bridge_env"; then fail "secrets removed from the bridge environment"
   else pass "secrets removed from the bridge environment"; fi
 else
   fail "live-mode container did not start"
@@ -95,7 +101,8 @@ env_json="$(docker image inspect -f '{{json .Config.Env}}' "$IMAGE")"
 if grep -qiE "API_KEY|TOKEN" <<<"$env_json"; then fail "no secret in image environment"; else pass "no secret in image environment"; fi
 found="$(docker run --rm --entrypoint sh "$IMAGE" -c \
   'find / -xdev \( -name ".env" -o -name ".env.*" -o -name "*api_key*" -o -name "*bridge_token*" -o -name "*.pem" \) \
-     -not -path "/proc/*" -not -path "/usr/lib/*" -not -path "/usr/share/*" -not -path "/etc/ssl/*" 2>/dev/null' || true)"
+     -not -path "/proc/*" -not -path "/usr/lib/*" -not -path "/usr/share/*" -not -path "/etc/ssl/*" -not -path "/usr/local/lib/*" \
+     -not -path "/home/user/venv/lib/*" 2>/dev/null' || true)"
 if [ -n "$found" ]; then fail "no key, token or .env files in the image: $found"; else pass "no key, token or .env files in the image"; fi
 
 echo "== $fails failure(s)"

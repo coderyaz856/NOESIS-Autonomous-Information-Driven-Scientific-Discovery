@@ -1,0 +1,156 @@
+# Offline verification of every Noesis component. No provider is ever called:
+# no Meta key, no secrets, no paid requests. The Docker job builds the lab image
+# locally and smoke-tests it; it never pushes (publishing is release-image.yml).
+name: tests
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  OPENBLAS_NUM_THREADS: "1"
+  OMP_NUM_THREADS: "1"
+  MKL_NUM_THREADS: "1"
+  PYTHONUTF8: "1"
+
+jobs:
+  discolab:
+    name: Python lab and SDK (discolab)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: discolab/pyproject.toml
+      - run: pip install -e "discolab[dev]" pytest-github-actions-annotate-failures
+      - name: pytest
+        working-directory: discolab
+        run: python -m pytest -q --basetemp "$RUNNER_TEMP/pytest-discolab"
+
+  backend:
+    name: Python backend
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+      - run: pip install -r backend/requirements-dev.txt
+      - name: pytest
+        working-directory: backend
+        env:
+          PYTHONPATH: "."
+        run: python -m pytest tests -q --basetemp "$RUNNER_TEMP/pytest-backend"
+
+  frontend:
+    name: Frontend typecheck, tests and build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: vitest
+        run: npm test
+      - name: production build
+        run: npm run build
+
+  rust-sdk:
+    name: Rust SDK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: discolab/pyproject.toml
+      - name: Python sidecar (the Rust client starts python -m discolab.rpc)
+        run: pip install -e discolab
+      - name: Rust toolchain
+        run: rustup toolchain install stable --profile minimal --component rustfmt,clippy && rustup default stable
+      - uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            sdk/rust/eigenbrains-sdk/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('sdk/rust/eigenbrains-sdk/Cargo.toml', 'sdk/rust/eigenbrains-sdk/Cargo.lock') }}
+      - name: fmt
+        run: cargo fmt --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml -- --check
+      - name: clippy
+        run: cargo clippy --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml --all-targets -- -D warnings
+      - name: test
+        env:
+          PYTHON: python
+        run: cargo test --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml
+
+  julia-sdk:
+    name: Julia SDK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: discolab/pyproject.toml
+      - name: Python sidecar (the Julia client starts python -m discolab.rpc)
+        run: pip install -e discolab
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.10"
+      - uses: julia-actions/cache@v2
+      - name: Pkg.test
+        env:
+          PYTHON: python
+        run: julia --project=sdk/julia -e 'using Pkg; Pkg.instantiate(); Pkg.test()'
+
+  docker:
+    name: Lab image build and smoke test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Build (no secrets, not pushed)
+        run: docker build -t noesis-lab:ci .
+      - name: Smoke test
+        run: bash deploy/docker/smoke-test.sh noesis-lab:ci
