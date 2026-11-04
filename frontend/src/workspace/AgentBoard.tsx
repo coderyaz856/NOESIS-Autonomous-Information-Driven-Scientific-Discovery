@@ -2,7 +2,7 @@ import { Bot, FlaskConical, Hand, Lightbulb, MessageSquare, Microscope, Route, W
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { LabExperiment, LabState } from '@/noesis/api/lab-types';
-import { AGENT_ROLE_LABEL, collapseRepeats, groupStepsByRole, hypothesisTrails, plainStep, verdictStatus, type AgentRole, type Step } from './model';
+import { AGENT_ROLE_LABEL, NO_ARGS_LABEL, collapseRepeats, groupStepsByRole, hypothesisTrails, isNoArgPayload, plainStep, verdictStatus, type AgentRole, type Step } from './model';
 import { MetricInfo, StatusChip } from './parts';
 
 const ROLE_ICON: Record<AgentRole, typeof Bot> = { insight: Lightbulb, planner: Route, runner: FlaskConical, analysis: Microscope };
@@ -62,7 +62,7 @@ export function AgentBoard({ steps, running }: { steps: Step[]; running: boolean
                       <span className="min-w-0 flex-1 break-words">{plainStep(s)}{count > 1 && <span className="ml-1 font-mono text-xs text-muted-foreground">×{count}</span>}</span>
                       {shown !== 'succeeded' || now ? <StatusChip status={now ? 'running' : shown} /> : null}
                     </summary>
-                    <pre className="mt-1.5 max-h-56 overflow-auto whitespace-pre-wrap break-words rounded bg-surface-sunken p-2 font-mono text-[11px] text-muted-foreground">{all.map((x) => x.detail || '(no details reported)').join('\n\n')}</pre>
+                    <pre className="mt-1.5 max-h-56 overflow-auto whitespace-pre-wrap break-words rounded bg-surface-sunken p-2 font-mono text-[11px] text-muted-foreground">{all.map((x) => isNoArgPayload(x.detail) ? NO_ARGS_LABEL : x.detail).join('\n\n')}</pre>
                   </details>
                 </li>
               );

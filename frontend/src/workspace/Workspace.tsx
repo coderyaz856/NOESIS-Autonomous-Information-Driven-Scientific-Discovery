@@ -12,15 +12,18 @@ import logo from '@/assets/logo_neosis.png';
 import teamPicture from '@/assets/team-picture.jpeg';
 import { EXAMPLE_QUESTIONS } from './explainers';
 import { labApi } from '@/noesis/api/lab';
-import { activityToSteps, formatBudgetPercent, researchModeNote, spendText, type Step } from './model';
+import { activityToSteps, formatBudgetPercent, honestyBadge, perVisitorLimitText, researchModeNote, spendText, type Step } from './model';
 import { MetricInfo, SourceBadge, StatusChip } from './parts';
 import { HypothesisStrip, Report } from './Report';
 import { useRun, type RunView } from './useRun';
-import { OrchestrationMap } from './OrchestrationMap';
 import { TraceConsole } from './TraceConsole';
 import { AgentBoard, HypothesisTrails } from './AgentBoard';
 import { Insights } from './Insights';
-import { PanelRightClose, PanelRightOpen, Printer } from 'lucide-react';
+import { PanelRightOpen, Printer } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { NodeMap } from './NodeMap';
+import { DecisionConsole } from './DecisionConsole';
 
 export function Workspace() {
   return <LabProvider><Shell /></LabProvider>;
@@ -136,12 +139,11 @@ function Ask({ run }: { run: RunView }) {
   const nothingToShow = lab.status !== 'connected' && run.recordingAvailable === false;
 
   return (
-    <section className="mx-auto max-w-3xl pt-14 sm:pt-24" aria-labelledby="ask-title">
-      <p className="text-xs uppercase tracking-[0.25em] text-primary">Autonomous scientific discovery</p>
-      <h1 id="ask-title" className="mt-3 font-display text-4xl leading-tight sm:text-5xl">
-        Ask a testable question. Watch agents run the experiments. Get the evidence.
-      </h1>
-      <form onSubmit={onSubmit} className="mt-8 rounded-2xl border bg-card p-3 shadow-panel focus-within:ring-2 focus-within:ring-ring">
+    <section className="mx-auto max-w-2xl pt-20 text-center sm:pt-32" aria-labelledby="ask-title">
+      <span aria-hidden className="mx-auto mb-6 block size-2.5 rounded-full bg-primary shadow-[0_0_24px_6px_color-mix(in_oklab,var(--primary)_55%,transparent)] animate-pulse-dot" />
+      <h1 id="ask-title" className="font-display text-3xl font-light leading-tight sm:text-4xl">Enter a research question.</h1>
+      <p className="mt-3 text-sm text-muted-foreground">Agents plan and run the experiments, then hand you the evidence.</p>
+      <form onSubmit={onSubmit} className="mt-8 text-left rounded-2xl border bg-card p-3 shadow-panel focus-within:ring-2 focus-within:ring-ring">
         <label htmlFor="question" className="sr-only">Your research question</label>
         <Textarea
           id="question" value={q} onChange={(e) => setQ(e.target.value)} rows={3}
@@ -225,7 +227,7 @@ function Capabilities({ run }: { run: RunView }) {
       )}
       {t?.enabled && (
         <p className="mt-1 text-xs text-muted-foreground">
-          Public trial: {t.accepting ? `$${(t.remaining_usd ?? 0).toFixed(2)} of $${t.total_usd.toFixed(2)} left, ${t.client_runs_per_hour} run(s) per hour per visitor.` : 'not accepting new runs right now.'}
+          Public trial: {t.accepting ? `$${(t.remaining_usd ?? 0).toFixed(2)} of $${t.total_usd.toFixed(2)} left, ${perVisitorLimitText(t.client_runs_per_hour)}.` : 'not accepting new runs right now.'}
         </p>
       )}
       {c.runs_enabled && mode === 'operator' && !lab.session?.signed_in && (
@@ -252,7 +254,10 @@ function RunWorkspace({ run }: { run: RunView }) {
   const sinceEvent = useElapsed(run.lastEventAt);
   const quiet = run.phase === 'running' && sinceEvent > 20;
   const [tab, setTab] = useState('run');
-  const [consoleOpen, setConsoleOpen] = useState(true);
+  const [traceOpen, setTraceOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
+  const showMap = run.phase === 'running' || mapOpen;
+  const badge = honestyBadge(run.researchMode ?? run.state?.mode ?? null);
   useEffect(() => { if (run.phase === 'complete') setTab('report'); }, [run.phase]);
 
   return (
@@ -263,6 +268,7 @@ function RunWorkspace({ run }: { run: RunView }) {
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex flex-wrap items-center gap-2">
               <SourceBadge label={run.label} />
+              {badge && <span className={`rounded-full border px-2 py-0.5 text-[11px] font-medium ${badge.executed ? 'border-success/50 bg-success-soft' : 'border-uncertain/50 bg-uncertain-soft'}`}>{badge.label}</span>}
               {run.phase === 'running' && <StatusChip status="running" label={`Working · ${elapsed}s`} />}
               {run.phase === 'complete' && <StatusChip status="succeeded" label="Run complete" />}
               {run.phase === 'failed' && <StatusChip status="failed" label="Stopped" />}
@@ -275,8 +281,8 @@ function RunWorkspace({ run }: { run: RunView }) {
           <div role="toolbar" aria-label="Run actions" className="flex items-center gap-0.5 rounded-md border bg-surface-sunken/60 p-0.5">
             <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2 text-xs" onClick={run.reset}><RotateCcw aria-hidden className="size-3.5" />New</Button>
             {run.phase === 'complete' && <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2 text-xs" onClick={() => window.print()}><Printer aria-hidden className="size-3.5" />PDF</Button>}
-            <Button variant="ghost" size="sm" className="hidden h-8 gap-1.5 px-2 text-xs lg:inline-flex" aria-pressed={consoleOpen} onClick={() => setConsoleOpen((o) => !o)}>
-              {consoleOpen ? <PanelRightClose aria-hidden className="size-3.5" /> : <PanelRightOpen aria-hidden className="size-3.5" />}Console
+            <Button variant="ghost" size="sm" className="hidden h-8 gap-1.5 px-2 text-xs lg:inline-flex" aria-expanded={traceOpen} onClick={() => setTraceOpen(true)}>
+              <PanelRightOpen aria-hidden className="size-3.5" />Trace
             </Button>
           </div>
         </div>
@@ -303,35 +309,37 @@ function RunWorkspace({ run }: { run: RunView }) {
 
       {(run.phase === 'running' || run.phase === 'complete') && run.state && (
         <>
-          {/* Desktop: overview + traceability console */}
-          <div className={`mt-3 hidden gap-4 lg:grid ${consoleOpen ? 'lg:grid-cols-[minmax(0,1fr)_400px]' : 'lg:grid-cols-[minmax(0,1fr)_2.5rem]'}`}>
-            <div className="min-w-0 space-y-3">
-              <OrchestrationMap activity={run.activity} running={run.phase === 'running'} />
-              <div className="grid gap-4 xl:grid-cols-[18rem_minmax(0,1fr)]">
-                <aside aria-label="Run timeline" className="xl:sticky xl:top-36 xl:max-h-[calc(100dvh-10rem)] xl:overflow-y-auto">
-                  <Timeline steps={steps} run={run} quiet={quiet} />
-                </aside>
-                <div className="min-w-0 space-y-3">
-                  {run.phase === 'complete' && <Insights state={run.state} experiments={run.experiments} />}
-                  <MainPanel run={run} />
-                </div>
-              </div>
-            </div>
-            <aside aria-label="Traceability console" className="print:hidden lg:sticky lg:top-32 lg:h-[calc(100dvh-9rem)]">
-              {consoleOpen ? <TraceConsole activity={run.activity} state={run.state} /> : (
-                <button type="button" onClick={() => setConsoleOpen(true)} className="flex h-full w-full items-start justify-center rounded-lg border bg-console pt-3 font-mono text-[10px] text-muted-foreground [writing-mode:vertical-rl]">Traceability console</button>
-              )}
+          {/* Desktop: decision console + main stage */}
+          <div className="mt-3 hidden gap-5 lg:grid lg:grid-cols-[300px_minmax(0,1fr)]">
+            <aside aria-label="Decision console" className="print:hidden lg:sticky lg:top-32 lg:max-h-[calc(100dvh-9rem)] lg:overflow-y-auto lg:pr-1">
+              <DecisionConsole state={run.state} run={run.runRecord} />
             </aside>
+            <div className="min-w-0 space-y-4">
+              {showMap && (
+                <div className="animate-step-in space-y-2">
+                  <NodeMap activity={run.activity} running={run.phase === 'running'} onSelect={() => setTraceOpen(true)} />
+                  {run.phase === 'complete' && <Button variant="ghost" size="sm" className="text-xs" onClick={() => setMapOpen(false)}>Hide agent map</Button>}
+                </div>
+              )}
+              {!showMap && <Button variant="outline" size="sm" className="text-xs" onClick={() => setMapOpen(true)}>Show agent map</Button>}
+              {run.phase === 'complete' && <div className="animate-step-in space-y-3"><Insights state={run.state} experiments={run.experiments} /><MainPanel run={run} /></div>}
+              {run.phase === 'running' && <MainPanel run={run} />}
+              <Collapsible defaultOpen={run.phase === 'running'}>
+                <CollapsibleTrigger className="w-full rounded-md border px-3 py-2 text-left text-sm font-medium hover:bg-accent">What each agent did, step by step</CollapsibleTrigger>
+                <CollapsibleContent className="mt-3"><Timeline steps={steps} run={run} quiet={quiet} /></CollapsibleContent>
+              </Collapsible>
+            </div>
           </div>
           {/* Mobile: tabs */}
           <Tabs value={tab} onValueChange={setTab} className="mt-3 lg:hidden">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="run" className="min-h-10">Live run</TabsTrigger>
-              <TabsTrigger value="report" className="min-h-10">Report</TabsTrigger>
-              <TabsTrigger value="trace" className="min-h-10">Trace</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="run" className="min-h-10 text-xs">Live</TabsTrigger>
+              <TabsTrigger value="report" className="min-h-10 text-xs">Report</TabsTrigger>
+              <TabsTrigger value="decide" className="min-h-10 text-xs">Decisions</TabsTrigger>
+              <TabsTrigger value="trace" className="min-h-10 text-xs">Trace</TabsTrigger>
             </TabsList>
             <TabsContent value="run" className="mt-3 space-y-4">
-              <OrchestrationMap activity={run.activity} running={run.phase === 'running'} />
+              <NodeMap activity={run.activity} running={run.phase === 'running'} onSelect={() => setTab('trace')} />
               <HypothesisStrip state={run.state} />
               <Timeline steps={steps} run={run} quiet={quiet} />
             </TabsContent>
@@ -339,8 +347,15 @@ function RunWorkspace({ run }: { run: RunView }) {
               {run.phase === 'complete' && <Insights state={run.state} experiments={run.experiments} />}
               <MainPanel run={run} />
             </TabsContent>
+            <TabsContent value="decide" className="mt-3"><DecisionConsole state={run.state} run={run.runRecord} /></TabsContent>
             <TabsContent value="trace" className="mt-3 h-[75dvh]"><TraceConsole activity={run.activity} state={run.state} /></TabsContent>
           </Tabs>
+          <Sheet open={traceOpen} onOpenChange={setTraceOpen}>
+            <SheetContent side="right" className="w-full p-0 sm:max-w-xl">
+              <SheetHeader className="sr-only"><SheetTitle>Traceability console</SheetTitle></SheetHeader>
+              <div className="h-full p-2"><TraceConsole activity={run.activity} state={run.state} /></div>
+            </SheetContent>
+          </Sheet>
         </>
       )}
     </div>
