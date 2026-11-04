@@ -66,6 +66,20 @@ PASSTHROUGH_ENV = ("USERPROFILE", "HOME", "APPDATA", "LOCALAPPDATA", "TEMP", "TM
                    "COMSPEC", "PATHEXT", "PROGRAMDATA", "XDG_CONFIG_HOME", "SSL_CERT_FILE", "REQUESTS_CA_BUNDLE")
 
 
+# Server credentials that agent processes must never inherit (the bridge's own token).
+def agent_base_env(environ=None) -> dict:
+    """Environment for Muse Code, excluding every Noesis server setting.
+
+    Model credentials remain available because Muse and its MCP specialists need
+    them. The ``NOESIS_*`` namespace is reserved for the hosting boundary (bridge
+    authentication, operator authentication, trial limits, allowed origins), so no
+    variable in that namespace reaches an agent process. Filtering by prefix keeps
+    server settings added later fail-closed without updating a list.
+    """
+    environ = os.environ if environ is None else environ
+    return {k: v for k, v in environ.items() if not k.upper().startswith("NOESIS_")}
+
+
 # ---------------------------------------------------------------- secrets / binary
 def load_api_key() -> str:
     """Model API key from the environment or a key file. Accepts a bare key or
@@ -261,7 +275,7 @@ def run_agent(role: str, task: str, home: Path, *, title: str | None = None, con
     prompt_file.write_text(f"{role_instructions(role, mode).strip()}\n\n## Your task now\n{task.strip()}\n",
                            encoding="utf-8")
 
-    env = {**os.environ, "DISCOLAB_HOME": str(home), "DISCOLAB_ACTOR": role,
+    env = {**agent_base_env(), "DISCOLAB_HOME": str(home), "DISCOLAB_ACTOR": role,
            "DISCOLAB_TOOLS": ",".join(role_tools(role, mode)), "PYTHONUTF8": "1",
            "DISCOLAB_ACTIVITY_LOG": "1", "DISCOLAB_APPROVAL_MODE": "file", "MUSE_BIN": binary,
            "SYSTEMROOT": os.environ.get("SYSTEMROOT", r"C:\Windows")}

@@ -368,6 +368,36 @@ study, SDK) alongside the new Meta entries.
     (stateless sessions).
   - Not yet tested on a real Cloudflare deployment.
 
+## 4g. Authenticated bridge and Linux lab kit (2026-11-04, no paid calls)
+
+- **Bridge authentication.** The bridge previously trusted anyone who could
+  reach it. With a token (`NOESIS_BRIDGE_TOKEN_FILE` or `NOESIS_BRIDGE_TOKEN`,
+  at least 32 characters) it answers every request without the exact
+  `X-Noesis-Bridge-Token` header with 401, before any work. `--require-auth`
+  refuses to start without a token, and a tokenless bridge refuses to bind
+  anywhere but loopback.
+- **Agents never see the bridge token**: it is removed from the environment of
+  Muse processes.
+- **Proxy.** The web app's server route adds the token from the server-side
+  secret `NOESIS_BRIDGE_TOKEN`; a production build without it refuses to relay
+  (503 `bridge_token_missing`).
+- **Linux lab kit** in `deploy/lab/`: setup script, hardened systemd unit
+  (loopback, persistent `/var/lib/noesis`, key file readable only by the
+  service user), Caddyfile serving only `/lab/*` over HTTPS, and a guide.
+- Not yet deployed: no Linux host, Lovable import or published-URL run yet.
+- **Hugging Face Docker Space package** (`Dockerfile`, `deploy/huggingface/`): the
+  container refuses to start without both secrets and binds publicly only with
+  `--require-auth`. Agent processes now inherit no `NOESIS_*` variable at all.
+- **Bounded public trial** (`discolab/discolab/trial.py`), enforced by the bridge:
+  one run at a time, 1 round, global and per-visitor rate limits, a total spend
+  limit kept in `NOESIS_DATA_DIR`, and a watchdog that stops long or costly runs.
+  The trial refuses runs when that directory is not a mounted volume. The web
+  server's `NOESIS_PUBLIC_TRIAL=1` lets visitors start runs from the app's own
+  pages and sends an opaque visitor hash. Responses never contain the Meta key or
+  bridge token (redacted even if an agent echoed one).
+- **Recorded fallback**: `discolab/results/recorded-open-question` is the
+  completed 2026-11-03 open-mode run ($0.41 recorded), labelled RECORDED.
+
 ## 5. Open items / needs the user's decision
 
 1. **`actual_api_keys.txt`** is tracked in the separate Agentic repository

@@ -19,7 +19,11 @@
  */
 
 export type ProxyEnv = Record<string, string | undefined>;
-export type WriteMode = 'open' | 'operator' | 'disabled';
+/** `trial` (production with `NOESIS_PUBLIC_TRIAL=1`): any visitor may start a run
+ * from this app's own pages. The lab bridge enforces the trial's limits (one active
+ * run, rate limits, a durable total spend limit) because it is the only process with
+ * the Meta key; this server adds an opaque visitor id for the per-visitor limits. */
+export type WriteMode = 'open' | 'operator' | 'trial' | 'disabled';
 
 const DEV_DEFAULT_ORIGINS = ['http://127.0.0.1:8765', 'http://localhost:8765'];
 export const WRITE_TOKEN_HEADER = 'x-noesis-lab-token';
@@ -33,6 +37,7 @@ export function isProduction(env: ProxyEnv): boolean {
 
 export function writeMode(env: ProxyEnv): WriteMode {
   if (!isProduction(env)) return 'open';
+  if (env['NOESIS_PUBLIC_TRIAL'] === '1') return 'trial';
   return env['NOESIS_LAB_WRITE_TOKEN'] ? 'operator' : 'disabled';
 }
 
@@ -89,6 +94,9 @@ export async function checkWriteAllowed(request: Request, env: ProxyEnv, nowMs =
   const mode = writeMode(env);
   if (mode === 'open') return null;
   if (mode === 'disabled') return deny(403, 'writes_disabled', READ_ONLY_MESSAGE);
+  if (mode === 'trial') {
+    return isSameOrigin(request, env) ? null : deny(403, 'cross_site_write', 'Lab writes must come from this app');
+  }
   const given = request.headers.get(WRITE_TOKEN_HEADER);
   if (given !== null) {
     return timingSafeEqual(given, env['NOESIS_LAB_WRITE_TOKEN']!) ? null : deny(401, 'unauthorized', 'Invalid lab write token');
@@ -183,7 +191,7 @@ export async function sessionStatus(request: Request, env: ProxyEnv, nowMs = Dat
 /** POST /lab-proxy/session {token}: exchange the operator token for a session cookie. */
 export async function signIn(request: Request, env: ProxyEnv, nowMs = Date.now()): Promise<Response> {
   const mode = writeMode(env);
-  if (mode === 'open') return sessionJson({ write_mode: mode, signed_in: true });
+  if (mode === 'open' || mode === 'trial') return sessionJson({ write_mode: mode, signed_in: mode === 'open' });
   if (mode === 'disabled') return deny(403, 'writes_disabled', READ_ONLY_MESSAGE);
   if (!isSameOrigin(request, env)) return deny(403, 'cross_site_write', 'Sign in from this app');
   let token: unknown;
@@ -210,6 +218,44 @@ function timingSafeEqual(a: string, b: string): boolean {
   let diff = a.length ^ b.length;
   for (let i = 0; i < Math.max(a.length, b.length); i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   return diff === 0;
+}
+
+/* ------------------------------------------------------ bridge authentication */
+
+export const BRIDGE_TOKEN_HEADER = 'x-noesis-bridge-token';
+
+/** Headers that authenticate this server to the lab bridge, or a refusal.
+ * The token comes only from server settings (`NOESIS_BRIDGE_TOKEN`), never from the
+ * browser. A production build refuses to relay without one, so it can only ever talk
+ * to an authenticated bridge; development may relay to a local, unauthenticated one. */
+export function bridgeAuthHeaders(env: ProxyEnv): Record<string, string> | Response {
+  const token = env['NOESIS_BRIDGE_TOKEN'];
+  if (token) return { [BRIDGE_TOKEN_HEADER]: token };
+  if (isProduction(env)) {
+    return deny(503, 'bridge_token_missing', 'This server has no lab bridge token configured, so it relays nothing');
+  }
+  return {};
+}
+
+export const CLIENT_HEADER = 'x-noesis-client';
+
+/** The visitor's address as this server sees it: the platform's connecting-IP
+ * header if present, else the first X-Forwarded-For hop. Best effort: per-visitor
+ * limits depend on it, the bridge's global limits do not. */
+export function clientAddress(headers: Headers): string {
+  const direct = headers.get('cf-connecting-ip') ?? headers.get('x-real-ip');
+  if (direct) return direct.trim();
+  const forwarded = headers.get('x-forwarded-for');
+  return forwarded ? (forwarded.split(',')[0] ?? '').trim() || 'unknown' : 'unknown';
+}
+
+/** An opaque visitor id for the bridge's per-visitor trial limits: HMAC of the
+ * address under the bridge token, so the bridge (and its files) never see an IP. */
+export async function clientHeaders(request: Request, env: ProxyEnv): Promise<Record<string, string>> {
+  const key = env['NOESIS_BRIDGE_TOKEN'];
+  if (!key) return {};
+  const id = (await hmac(key, `noesis-client:v1:${clientAddress(request.headers)}`)).slice(0, 32);
+  return { [CLIENT_HEADER]: id };
 }
 
 /** fetch() that never follows redirects: a 3xx from the bridge is refused, not chased. */

@@ -18,14 +18,24 @@ nothing.
   GET  /lab/capabilities                 whether runs can be started here, and the supported domain
   POST /lab/runs        {question, rounds?, ceiling_usd?}     scope-check, then start a run   (--enable-runs)
   POST /lab/approvals   {source, id, decision: approve|decline} answer a pending approval   (--enable-runs)
+
+Authentication. With a bridge token configured (NOESIS_BRIDGE_TOKEN_FILE, or
+NOESIS_BRIDGE_TOKEN; at least 32 characters), every request, read or write,
+must carry it in the X-Noesis-Bridge-Token header, or it gets 401 before any
+work is done. The web app's /lab-proxy adds the header on the server. Without a
+token the bridge is unauthenticated: it then listens on loopback only and is
+for local development; never publish it. Hosted labs start with --require-auth,
+which refuses to start without a token.
 """
 
 from __future__ import annotations
 
 import argparse
+import hmac
 import json
 import os
 import sys
+import threading
 import time
 from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -45,6 +55,63 @@ UI_KINDS = ("handoff", "tool", "say", "approval", "gate")  # activity kinds the 
 UI_MAX_ROUNDS = 2
 UI_MAX_CEILING_USD = 5.0
 ENABLE_RUNS = False
+TRIAL = None  # trial.Trial when NOESIS_TRIAL_TOTAL_USD is set: limits every run (see trial.py)
+START_LOCK = threading.Lock()  # one admission decision at a time (ThreadingHTTPServer)
+
+# ------------------------------------------------------------------- auth
+TOKEN_HEADER = "X-Noesis-Bridge-Token"
+CLIENT_HEADER = "X-Noesis-Client"  # opaque visitor id from the web server (trial rate limits)
+MIN_TOKEN_LENGTH = 32
+LOOPBACK_HOSTS = ("127.0.0.1", "::1", "localhost")
+BRIDGE_TOKEN: str | None = None  # set by main(); None = unauthenticated local development
+
+
+class BridgeAuthError(RuntimeError):
+    """The bridge's authentication settings are unsafe or invalid; it must not start."""
+
+
+def load_bridge_token(env=None) -> str | None:
+    """The bridge token from NOESIS_BRIDGE_TOKEN_FILE (preferred) or NOESIS_BRIDGE_TOKEN, or None."""
+    env = os.environ if env is None else env
+    path = (env.get("NOESIS_BRIDGE_TOKEN_FILE") or "").strip()
+    if path:
+        try:
+            token = Path(path).read_text(encoding="utf-8").strip()
+        except OSError as exc:
+            raise BridgeAuthError(f"cannot read NOESIS_BRIDGE_TOKEN_FILE: {exc.strerror}") from None
+    else:
+        token = (env.get("NOESIS_BRIDGE_TOKEN") or "").strip()
+    if not token:
+        return None
+    if len(token) < MIN_TOKEN_LENGTH:
+        raise BridgeAuthError(f"the bridge token must be at least {MIN_TOKEN_LENGTH} characters")
+    return token
+
+
+def check_startup(host: str, token: str | None, require_auth: bool) -> None:
+    """Refuse to start an unauthenticated bridge anywhere but loopback, or at all with --require-auth."""
+    if token is None and require_auth:
+        raise BridgeAuthError("--require-auth is set but no bridge token is configured "
+                              "(NOESIS_BRIDGE_TOKEN_FILE or NOESIS_BRIDGE_TOKEN)")
+    if token is None and host not in LOOPBACK_HOSTS:
+        raise BridgeAuthError(f"refusing to listen on {host} without a bridge token")
+
+
+def authorized(headers, token: str | None) -> bool:
+    if token is None:
+        return True
+    given = headers.get(TOKEN_HEADER) or ""
+    return hmac.compare_digest(given.encode("utf-8"), token.encode("utf-8"))
+
+
+SECRET_VALUES: tuple[str, ...] = ()  # set by main(): never sent in any response, even if an agent echoes one
+
+
+def redact(text: str) -> str:
+    for s in SECRET_VALUES:
+        if s and s in text:
+            text = text.replace(s, "[redacted]")
+    return text
 
 
 def resolve_source(source: str) -> Path:
@@ -172,8 +239,11 @@ def run_view(src: Path) -> dict:
 def capabilities() -> dict:
     from .scope import design_space
 
-    return {"runs_enabled": ENABLE_RUNS, "harness": "Muse Code (Meta Model API)", "max_rounds": UI_MAX_ROUNDS,
-            "max_ceiling_usd": UI_MAX_CEILING_USD, "supported_domain": design_space(),
+    trial = TRIAL.status() if TRIAL else None
+    return {"runs_enabled": ENABLE_RUNS, "harness": "Muse Code (Meta Model API)",
+            "max_rounds": 1 if TRIAL else UI_MAX_ROUNDS,
+            "max_ceiling_usd": TRIAL.cfg.run_ceiling_usd if TRIAL else UI_MAX_CEILING_USD,
+            "trial": trial, "active_run": _active_run(), "supported_domain": design_space(),
             "modes": {"lab": "questions in the pre-registered GA/entropy domain: experiments are executed",
                       "open": "any other research question: verified literature, falsifiable hypotheses, "
                               "proposed study protocols and critique; nothing is executed"}}
@@ -194,19 +264,36 @@ def _active_run() -> str | None:
     return None
 
 
-def start_run(body: dict) -> tuple[int, dict]:
-    from . import run as runmod
-    from . import scope
-
+def start_run(body: dict, client: str | None = None) -> tuple[int, dict]:
     question = " ".join(str(body.get("question") or "").split())
     if not 8 <= len(question) <= 600:
         return 400, {"error": {"code": "bad_question", "message": "ask a question of 8-600 characters"}}
-    busy = _active_run()
-    if busy:
-        return 409, {"error": {"code": "run_in_progress", "message": f"a run is already in progress ({busy})",
-                               "source": busy}}
-    rounds = max(1, min(UI_MAX_ROUNDS, int(body.get("rounds") or 1)))
-    ceiling = max(0.25, min(UI_MAX_CEILING_USD, float(body.get("ceiling_usd") or 2.0)))
+    with START_LOCK:  # busy check, trial admission and launch are one decision
+        busy = _active_run()
+        if busy:
+            return 409, {"error": {"code": "run_in_progress", "message": f"a run is already in progress ({busy})",
+                                   "source": busy}}
+        if TRIAL is None:
+            rounds = max(1, min(UI_MAX_ROUNDS, int(body.get("rounds") or 1)))
+            ceiling = max(0.25, min(UI_MAX_CEILING_USD, float(body.get("ceiling_usd") or 2.0)))
+            return _launch(question, rounds, ceiling)
+        from .trial import client_id
+
+        who = client_id(client)
+        with TRIAL.lock:
+            refused = TRIAL.admit(who)
+            if refused:
+                return refused
+            status, out = _launch(question, 1, TRIAL.cfg.run_ceiling_usd)
+            if status == 201:
+                TRIAL.record_start(out["source"], who)
+            return status, out
+
+
+def _launch(question: str, rounds: int, ceiling: float) -> tuple[int, dict]:
+    from . import run as runmod
+    from . import scope
+
     try:
         sc = scope.check(question)
     except Exception as exc:
@@ -376,7 +463,7 @@ class Handler(BaseHTTPRequestHandler):
         return
 
     def _json(self, obj, status=200):
-        body = json.dumps(obj, default=str).encode("utf-8")
+        body = redact(json.dumps(obj, default=str)).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
@@ -384,7 +471,17 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _refuse_unauthorized(self) -> bool:
+        """Answer 401 and return True unless the request carries the bridge token."""
+        if authorized(self.headers, BRIDGE_TOKEN):
+            return False
+        self.close_connection = True
+        self._json({"error": {"code": "unauthorized", "message": "a valid bridge token is required"}}, 401)
+        return True
+
     def do_GET(self):
+        if self._refuse_unauthorized():
+            return
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         try:
@@ -408,6 +505,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"error": {"code": "bad_request", "message": str(exc)}}, 400)
 
     def do_POST(self):
+        if self._refuse_unauthorized():
+            return
         url = urlparse(self.path)
         if not ENABLE_RUNS:
             return self._json({"error": {"code": "runs_disabled",
@@ -416,7 +515,7 @@ class Handler(BaseHTTPRequestHandler):
             length = min(int(self.headers.get("Content-Length") or 0), 16_384)
             body = json.loads(self.rfile.read(length) or b"{}")
             if url.path == "/lab/runs":
-                status, out = start_run(body)
+                status, out = start_run(body, self.headers.get(CLIENT_HEADER))
             elif url.path == "/lab/approvals":
                 status, out = answer_approval(body)
             else:
@@ -463,7 +562,7 @@ class Handler(BaseHTTPRequestHandler):
             return
 
     def _sse(self, name: str, data: dict):
-        self.wfile.write(f"event: {name}\ndata: {json.dumps(data, default=str)}\n\n".encode("utf-8"))
+        self.wfile.write(f"event: {name}\ndata: {redact(json.dumps(data, default=str))}\n\n".encode("utf-8"))
         self.wfile.flush()
 
 
@@ -472,12 +571,42 @@ def main():
     ap.add_argument("--port", type=int, default=8765)
     ap.add_argument("--enable-runs", action="store_true",
                     help="allow POST /lab/runs and /lab/approvals (starts paid Muse Code runs)")
+    ap.add_argument("--host", default="127.0.0.1",
+                    help="address to listen on (default loopback); anything else needs a bridge token")
+    ap.add_argument("--require-auth", action="store_true",
+                    help="refuse to start without a bridge token (use for every hosted lab)")
     args = ap.parse_args()
-    global ENABLE_RUNS
-    ENABLE_RUNS = args.enable_runs
-    httpd = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    print(f"discolab bridge on http://127.0.0.1:{args.port}/lab/sources "
-          f"({'runs ENABLED' if ENABLE_RUNS else 'read-only'})", flush=True)
+    global ENABLE_RUNS, BRIDGE_TOKEN, TRIAL, SECRET_VALUES
+    from . import trial as trialmod
+
+    try:
+        token = load_bridge_token()
+        check_startup(args.host, token, args.require_auth)
+        cfg = trialmod.load_config(ROOT / "lab_home")
+    except (BridgeAuthError, trialmod.TrialConfigError) as exc:
+        print(f"discolab bridge: {exc}", file=sys.stderr, flush=True)
+        raise SystemExit(2) from None
+    ENABLE_RUNS, BRIDGE_TOKEN = args.enable_runs, token
+    secrets =[token] if token else []
+    try:
+        from .muse import load_api_key
+
+        secrets.append(load_api_key())
+    except Exception:  # no key configured: read-only bridge; nothing to redact
+        pass
+    SECRET_VALUES = tuple(s for s in secrets if s and len(s) >= 16)
+    if cfg is not None:
+        TRIAL = trialmod.Trial(cfg, ROOT)
+        TRIAL.start_watchdog()
+        s = TRIAL.status()
+        print(f"public trial: total ${cfg.total_usd:.2f}, committed ${s.get('committed_usd', 0):.2f}, "
+              f"per run ${cfg.run_ceiling_usd:.2f} guard / ${cfg.run_reserve_usd:.2f} reserve, "
+              f"{cfg.max_run_seconds}s max; durable storage: {s['durable']}", flush=True)
+    httpd = ThreadingHTTPServer((args.host, args.port), Handler)
+    auth = ("every request needs the bridge token" if token
+            else "UNAUTHENTICATED: loopback-only local development; never publish this bridge")
+    print(f"discolab bridge on http://{args.host}:{args.port}/lab/sources "
+          f"({'runs ENABLED' if ENABLE_RUNS else 'read-only'}; {auth})", flush=True)
     httpd.serve_forever()
 
 

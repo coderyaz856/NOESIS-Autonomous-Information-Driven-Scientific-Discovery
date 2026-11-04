@@ -1,0 +1,101 @@
+{
+  "run_id": "muse-20261103-220857-492b",
+  "source": "results/recorded-open-question",
+  "status": "completed",
+  "created_at": "2026-11-03T22:08:57+00:00",
+  "mode": "open",
+  "question": "Does intermittent fasting improve insulin sensitivity in adults with prediabetes?",
+  "scope": {
+    "focus": "Determine whether intermittent fasting improves insulin sensitivity in adults with prediabetes.",
+    "hypotheses": [],
+    "in_scope": false,
+    "reason": "The question concerns human metabolism and clinical outcomes, requiring biology/medicine experiments with real-world data, whereas the lab can only run genetic-algorithm simulations testing H1-H8 on specified landscapes for stagnation prediction and mutation control.",
+    "model": "muse-spark-1.3",
+    "latency_sec": 6.391,
+    "usage": {
+      "input_tokens": 721,
+      "cached_tokens": 0,
+      "output_tokens": 592
+    },
+    "cost_usd": 0.00341725
+  },
+  "rounds": 1,
+  "ceiling_usd": 2.0,
+  "config": {
+    "preset": "empty",
+    "roles": {
+      "pi": {
+        "model": "muse-spark-1.3",
+        "effort": "medium",
+        "max_model_steps": 40
+      },
+      "literature": {
+        "model": "muse-spark-1.3",
+        "effort": "low",
+        "max_model_steps": 30
+      },
+      "designer": {
+        "model": "muse-spark-1.3",
+        "effort": "medium",
+        "max_model_steps": 20
+      },
+      "critic": {
+        "model": "muse-spark-1.3",
+        "effort": "medium",
+        "max_model_steps": 15
+      },
+      "verifier": {
+        "model": "muse-wonder-1.0",
+        "effort": "medium",
+        "max_model_steps": 12
+      }
+    },
+    "escalation": {
+      "enabled": true,
+      "gate_file": "escalation_gate.json",
+      "role_task_family": {
+        "literature": "evidence_verification",
+        "designer": "planning",
+        "critic": "critique"
+      }
+    },
+    "default_ceiling_usd": 3.0,
+    "approval_wait_sec": 600
+  },
+  "runtime": {
+    "harness": "Muse Code",
+    "muse_version": "Muse Code 1.4.14 (1.4.14-R7309.1)",
+    "python": "3.12.6",
+    "platform": "win32"
+  },
+  "prereg": {
+    "version": 4,
+    "sha256": "ec8d50f8f7f022fb546b776673fbf703ff86f8750a79af575cbf37253d637cd9"
+  },
+  "escalation_gate": {
+    "file_sha256": "0cda815ed3c0916bee8070afa38570bd7b7193b2783802ed97265b9c056cc15e",
+    "source_file": "../benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/frozen_gate_configuration.json",
+    "source_sha256": "fd396c22d8fd4235e748fb5e41c622b89d6ffd2c8a7b893d5d9e0f11eaa6768d",
+    "source_note": "Frozen gate from the Muse Code agent-harness rerun of Baseline v0 (benchmark/reports/MUSE_AGENTS_BASELINE_V1.md); fitted on dev+tuning only; first agent Spark 1.3, verifier Wonder 1.0"
+  },
+  "pricing_source": "https://dev.meta.ai/docs/pricing-rate-limits (checked 2026-11-03)",
+  "seeds": "experiment seeds are allocated deterministically by discolab.experiments from the experiment ordinal and the pre-registration; model sampling is not seeded",
+  "started_at": "2026-11-03T22:09:00+00:00",
+  "pid": 25712,
+  "final_report": "## Question\n\nDoes intermittent fasting improve insulin sensitivity in adults with prediabetes?\n\nMode: OPEN. Outside lab executable domain. Desk research only. Nothing was executed.\n\n## What is already known\n\n5 verified peer-reviewed sources. All numbers from records.\n\n- [W4400305946](https://doi.org/10.1111/dom.15730): meta-analysis, 14 RCTs, n=1101 prediabetes/T2D. IF vs control/calorie-restriction reduced weight (WMD -4.56 kg), HbA1c (WMD -0.81%), fasting glucose (WMD -0.36 mmol/L), plus cholesterol/triglycerides.\n  Limitation: pools prediabetes with T2D; mixes IF protocols and control/CR comparators; no HOMA-IR timing-at-equal-intake contrast.\n\n- [W3098144176](https://doi.org/10.3390/nu12113530) (PROFAST): 12-week 5:2 fasting (600-650 kcal/day x2/week) in prediabetes, HbA1c 43 to 41 mmol/mol, p<0.001.\n  Limitation: n=26 completers of 33 enrolled; no non-fasting control; concurrent probiotic randomization confounds attribution.\n\n- [W4387263072](https://doi.org/10.3390/nu15194233): RCT n=72 in impaired fasting glucose, TRE +/- behavioral-economics vs usual care. No significant ITT differences in weight, fasting glucose, HbA1c, fasting insulin, lipids. Benefit only in per-protocol compliers.\n  Limitation: small 3-arm trial, adherence-sensitive, short-term surrogates.\n\n- [W4387491927](https://doi.org/10.1016/j.advnut.2023.10.003): meta-analysis 28 RCTs, intermittent vs continuous restriction. Comparable weight (WMD -0.42 kg, p=0.132) and fat mass; slightly greater waist/FFM reduction with intermittent.\n  Limitation: healthy adults, not prediabetes; only 17/28 trials energy-matched.\n\n- [W3194089427](https://doi.org/10.3389/fendo.2021.683140): TRE narrative review. Lower fasting/postprandial/24-h glucose, lower fasting insulin and improved insulin sensitivity in a range of trials, but a number of studies found adverse or no effects.\n  Limitation: narrative, heterogeneous windows and populations.\n\nNet: fasting-associated glycemic improvement is plausible, with an ITT-null caution. Whether IF improves insulin sensitivity per se beyond weight loss or beyond continuous restriction is not established. No clamp- or Matsuda-specific prediabetes effect, durability, or diabetes-incidence prevention established.\n\n## Hypotheses (agent-generated, untested)\n\nAll family `open`, posterior 0.5, zero direct tests.\n\n- Q1: 12-week 16:8 TRE improves HOMA-IR change vs usual timing at equal intake (intake-independent effect).\n  Null: TRE-minus-control HOMA-IR difference is zero or CI excludes smallest important effect (15% relative / 0.5-unit absolute, assumption without citation).\n\n- Q2: Any IF benefit is fully explained by greater deficit/weight loss (no independent mechanism).\n  Null/reverse: IF exceeds continuous restriction after weight adjustment by >=0.4-unit / >=10% residual (assumption without citation).\n\n- Q3: Apparent gains are confounded/mediated by sleep, late-night intake elimination, activity \u2014 not fasting physiology.\n  Null/reverse: direct (unmediated) fasting effect persists >=0.4-unit / >=10% with CI excluding zero (assumption).\n\n## Proposed studies (none executed)\n\nAll PROPOSED, `executed: false`. Sample sizes and costs are planning assumptions, not observed.\n\n- P1 for Q1: isocaloric 16:8 TRE (e.g. 08:00-16:00) vs usual-timing (>=12-h window) RCT. Same prescribed weight-maintenance diet, equal counselling/contact. 2-week run-in, 12-week intervention. Primary: HOMA-IR change, central blinded assay after standardized fast; clamp substudy corroboration. Comparator isolates timing from deficit. Falsifier: refute Q1 if difference ~zero or CI excludes smallest important effect. Sample ~140 (70/arm). Cost ~$350k-600k, ~12 months.\n\n- P2 for Q2: deficit-matched IF-with-deficit (5:2 or TRE-plus-deficit) vs continuous ~25% deficit, matched prescribed weekly deficit, macros, contact. 12-week loss + 12-week maintenance (24 weeks total). Primary: HOMA-IR change unadjusted plus weight-adjusted and per-kg-lost. Falsifier: refute weight-loss-only if residual survives adjustment >=threshold; support Q2 if differences vanish after adjustment. Sample ~180 (90/arm). Cost ~$400k-700k, ~14 months.\n\n- P3 for Q3: nested objective-behaviour mediation study (actigraphy/CGM/time-stamped diet/accelerometry; late-night cut-off after 21:00 as assumption). Inherits parent randomization, decomposes total effect into direct vs sleep/late-night/activity paths. Falsifier: refute Q3 if direct effect persists >=threshold; support Q3 if adjustment attenuates to near-zero. No new enrolment if nested (parent ~140-180). Incremental ~$150k-300k if nested; ~$400k-600k standalone.\n\n## Critique and escalations\n\nCritic found: Q1 inconclusive with ITT-null warning (W4387263072 tempers Q1); Q2 entirely untested as stated (W4400305946 compatible but unadjusted; W4387491927 off-population); Q3 untested and unmeasured. P1 would falsify Q1 only if isocaloric match and adherence achieved and ITT prespecified; otherwise null is ambiguous. P2 informative but not cleanly falsifying (adjusting for post-randomization weight needs strong no-unmeasured-confounding assumptions). P3 partially adjudicates Q3 (persistent direct effect refutes full confounding under strong assumptions; attenuation cannot distinguish confounding from behavioural mediation). Gaps: no prediabetes-only HOMA-IR meta-estimate; no isocaloric contrast; no per-kg analysis; no mediation data; ITT vs per-protocol multiplicity; clamp-substudy and wearable-wear selection risks; possible trial overlap between meta-analyses unexamined. Cheaper precursor suggested: IPD re-analysis of trials behind W4400305946/W4387491927 plus small provided-meals isocaloric crossover pilot.\n\nEscalations: literature (`lit-review`) \u2014 no escalation. Designer (`design-round-1`) \u2014 no escalation. Critic (`critique-round-1`) \u2014 gate escalated for verification, verdict CONFIRMED: report accurately cites all five sources, three hypotheses, three unexecuted protocols, with numbers from record or labelled assumptions.\n\nSpend: ~$0.35 of $2.00 ceiling.\n\n## Recommended next step\n\nRecorded decision: run P1 first, with P3 nested in it. Reason: information per cost, feasibility, risk. P1 gives cleanest causal test of timing; nested P3 adds mechanism discrimination at low incremental cost. If budget-constrained, do IPD re-analysis + isocaloric pilot before funding full RCTs, and re-justify thresholds and sample sizes from observed variances.\n\nWhat would change conclusion: P1 HOMA-IR improvement at equal intake with clamp corroboration confirms intake-independent effect; P2 residual vanishing after weight adjustment supports Q2; P3 full attenuation via behaviours supports Q3.\n\n## Limitations\n\nThin and indirect evidence base. Surrogate outcomes only (no diabetes incidence). Heterogeneous fasting windows. Adherence dependence unresolved. All smallest-important-effect thresholds, variances, and costs are uncited assumptions. No causal identification of timing vs deficit vs behaviour from current record.\n",
+  "pi_exit_code": 0,
+  "pi_terminal": "completed",
+  "finished_at": "2026-11-03T22:12:13+00:00",
+  "wall_seconds": 193.2,
+  "usage": {
+    "input_tokens": 559443,
+    "cached_tokens": 411268,
+    "output_tokens": 17572,
+    "reasoning_tokens": 5614,
+    "calls": 23,
+    "failed_calls": 0,
+    "cost_usd": 0.410842,
+    "unpriced_models": []
+  },
+  "recorded_note": "Recorded live run (Muse Code on the Meta Model API, 2026-11-03), copied from the lab where it ran. Shown as a fallback when the live lab is busy; it is not live."
+}

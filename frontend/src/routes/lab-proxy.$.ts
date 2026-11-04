@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import {
-  checkWriteAllowed, relayFetch, resolveTarget, serverEnv, sessionStatus, signIn, signOut,
+  bridgeAuthHeaders, checkWriteAllowed, clientHeaders, relayFetch, resolveTarget, serverEnv, sessionStatus, signIn, signOut,
 } from "@/noesis/api/lab-proxy-policy";
 
 /** Operator session for hosted writes (see lab-proxy-policy.ts). Not relayed to a bridge. */
@@ -34,11 +34,14 @@ export const Route = createFileRoute("/lab-proxy/$")({
         const path = params._splat ?? "";
         if (path === SESSION_PATH) return sessionStatus(request, serverEnv());
         if (!READ_PATHS.has(path)) return new Response("Unknown lab path", { status: 404 });
-        const upstream = resolveTarget(request.url, path, serverEnv());
+        const env = serverEnv();
+        const upstream = resolveTarget(request.url, path, env);
         if (upstream instanceof Response) return upstream;
+        const auth = bridgeAuthHeaders(env);
+        if (auth instanceof Response) return auth;
         try {
           const res = await relayFetch(upstream, {
-            headers: { accept: request.headers.get("accept") ?? "*/*" },
+            headers: { accept: request.headers.get("accept") ?? "*/*", ...auth },
             signal: request.signal,
           });
           return new Response(res.body, {
@@ -61,6 +64,8 @@ export const Route = createFileRoute("/lab-proxy/$")({
         if (refused) return refused;
         const upstream = resolveTarget(request.url, path, env);
         if (upstream instanceof Response) return upstream;
+        const auth = bridgeAuthHeaders(env);
+        if (auth instanceof Response) return auth;
         const body = await request.text();
         if (body.length > MAX_BODY_BYTES) return new Response("Request too large", { status: 413 });
         try {
@@ -71,7 +76,8 @@ export const Route = createFileRoute("/lab-proxy/$")({
         try {
           const res = await relayFetch(upstream, {
             method: "POST",
-            headers: { "content-type": "application/json", accept: "application/json" },
+            headers: { "content-type": "application/json", accept: "application/json", ...auth,
+              ...(await clientHeaders(request, env)) },
             body,
             signal: request.signal,
           });

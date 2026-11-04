@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
-  allowedOrigins, buildServerEnv, checkWriteAllowed, readCookie, relayFetch, resolveTarget, SESSION_TTL_SECONDS, sessionStatus, signIn,
+  allowedOrigins, BRIDGE_TOKEN_HEADER, bridgeAuthHeaders, CLIENT_HEADER, clientAddress, clientHeaders, buildServerEnv, checkWriteAllowed, readCookie, relayFetch, resolveTarget, SESSION_TTL_SECONDS, sessionStatus, signIn,
   signOut, verifySession, WRITE_TOKEN_HEADER, writeMode,
 } from "@/noesis/api/lab-proxy-policy";
 
@@ -147,6 +147,23 @@ describe("operator session", () => {
   });
 });
 
+describe("bridge authentication", () => {
+  it("sends the server's bridge token and nothing from the browser", () => {
+    expect(bridgeAuthHeaders({ ...PROD, NOESIS_BRIDGE_TOKEN: "b".repeat(40) })).toEqual({ [BRIDGE_TOKEN_HEADER]: "b".repeat(40) });
+  });
+
+  it("refuses to relay from a production build without a bridge token", async () => {
+    const r = bridgeAuthHeaders(PROD);
+    expect(r).toBeInstanceOf(Response);
+    expect((r as Response).status).toBe(503);
+    expect((await (r as Response).json()).error.code).toBe("bridge_token_missing");
+  });
+
+  it("lets development relay to a local unauthenticated bridge", () => {
+    expect(bridgeAuthHeaders(DEV)).toEqual({});
+  });
+});
+
 describe("server settings", () => {
   it("treat a production build as production even when NODE_ENV is missing or says development", () => {
     expect(buildServerEnv({}, {}, false)["NODE_ENV"]).toBe("production");
@@ -183,5 +200,42 @@ describe("lab proxy redirects", () => {
     const fake = vi.fn(async () => Response.json({ ok: true }));
     const res = await relayFetch(new URL("http://127.0.0.1:8765/lab/run"), {}, fake as unknown as typeof fetch);
     expect(res.status).toBe(200);
+  });
+});
+
+describe("public trial mode", () => {
+  const TRIAL = { ...PROD, NOESIS_PUBLIC_TRIAL: "1", NOESIS_BRIDGE_TOKEN: "b".repeat(40) };
+  const post = (headers: Record<string, string>) =>
+    new Request("https://app.test/lab-proxy/runs", { method: "POST", headers, body: "{}" });
+
+  it("is only possible in a production build that asks for it", () => {
+    expect(writeMode(TRIAL)).toBe("trial");
+    expect(writeMode({ ...DEV, NOESIS_PUBLIC_TRIAL: "1" })).toBe("open");
+    expect(writeMode({ ...PROD, NOESIS_PUBLIC_TRIAL: "true" })).toBe("disabled");
+  });
+
+  it("lets visitors write from this app without a session, never cross-site", async () => {
+    expect(await checkWriteAllowed(post({ origin: "https://app.test" }), TRIAL)).toBeNull();
+    expect(await checkWriteAllowed(post({ "sec-fetch-site": "same-origin" }), TRIAL)).toBeNull();
+    expect((await checkWriteAllowed(post({ origin: "https://evil.test" }), TRIAL))?.status).toBe(403);
+    expect((await checkWriteAllowed(post({}), TRIAL))?.status).toBe(403);
+  });
+
+  it("reports trial mode and offers no operator sign-in", async () => {
+    const status = await (await sessionStatus(new Request("https://app.test/lab-proxy/session"), TRIAL)).json();
+    expect(status).toEqual({ write_mode: "trial", signed_in: false });
+    const res = await signIn(post({ origin: "https://app.test" }), TRIAL);
+    expect(res.headers.get("set-cookie")).toBeNull();
+  });
+
+  it("sends the bridge an opaque, stable visitor id, never the address", async () => {
+    const a = await clientHeaders(post({ "cf-connecting-ip": "203.0.113.7" }), TRIAL);
+    const again = await clientHeaders(post({ "x-forwarded-for": "203.0.113.7, 10.0.0.1" }), TRIAL);
+    const b = await clientHeaders(post({ "cf-connecting-ip": "203.0.113.8" }), TRIAL);
+    expect(a[CLIENT_HEADER]).toMatch(/^[A-Za-z0-9_-]{32}$/);
+    expect(a[CLIENT_HEADER]).toBe(again[CLIENT_HEADER]);
+    expect(a[CLIENT_HEADER]).not.toBe(b[CLIENT_HEADER]);
+    expect(JSON.stringify(a)).not.toContain("203.0.113");
+    expect(clientAddress(new Headers())).toBe("unknown");
   });
 });

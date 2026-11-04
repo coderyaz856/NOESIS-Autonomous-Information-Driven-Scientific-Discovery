@@ -63,6 +63,11 @@ Open `http://localhost:5173`, type a research question and press Enter.
   cookie (8 h); the token is never in the frontend bundle or page storage.
   Without the token, hosted visitors explore recorded runs, and new runs start
   from a local lab.
+- **Hosted bridge.** A bridge reachable from the internet must run with
+  `--require-auth` and a token, behind HTTPS; it then rejects every request
+  without the `X-Noesis-Bridge-Token` header, which the app's server adds from
+  the secret `NOESIS_BRIDGE_TOKEN`. A tokenless bridge stays on loopback.
+  Linux setup: [`deploy/lab/README.md`](deploy/lab/README.md).
 
 ---
 
