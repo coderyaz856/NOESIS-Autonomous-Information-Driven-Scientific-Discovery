@@ -1,0 +1,20 @@
+{
+  "version": "muse-baseline-v1-budget",
+  "pricing_source": "benchmark/configs/pricing_meta_v1.json",
+  "phases": {
+    "provider_diagnosis": {
+      "inference_calls": 4,
+      "dollar_ceiling": 0.00408
+    },
+    "core_72_case_single_model_baseline": {
+      "inference_calls": 216,
+      "dollar_ceiling": 1.004544
+    },
+    "compact_provider_backed_verifier_confirmation": {
+      "inference_calls": 24,
+      "dollar_ceiling": 0.139008
+    }
+  },
+  "worst_case_total_usd": 1.1476320000000002,
+  "hard_ceiling_usd": 12.0
+}

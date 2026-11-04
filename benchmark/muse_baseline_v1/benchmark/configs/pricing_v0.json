@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-11-03",
+  "currency": "USD",
+  "units": "per_1000_tokens",
+  "note": "Meta Model API Standard-mode list prices. Fresh-input rate shown; cached input is billed at a lower rate (Spark $0.15/1M, Wonder $0.20/1M), so these are conservative upper estimates. The billing page is authoritative.",
+  "models": [
+    {"model": "muse-spark-1.3", "input_cost_per_1k": 0.00125, "output_cost_per_1k": 0.00425, "source": "https://dev.meta.ai/docs/pricing-rate-limits", "checked_at": "2026-11-03"},
+    {"model": "muse-spark-1.2", "input_cost_per_1k": 0.00125, "output_cost_per_1k": 0.00425, "source": "https://dev.meta.ai/docs/pricing-rate-limits", "checked_at": "2026-11-03"},
+    {"model": "muse-spark-1.1", "input_cost_per_1k": 0.00125, "output_cost_per_1k": 0.00425, "source": "https://dev.meta.ai/docs/pricing-rate-limits", "checked_at": "2026-11-03"},
+    {"model": "muse-wonder-1.0", "input_cost_per_1k": 0.004, "output_cost_per_1k": 0.02, "source": "https://dev.meta.ai/docs/pricing-rate-limits", "checked_at": "2026-11-03"}
+  ]
+}

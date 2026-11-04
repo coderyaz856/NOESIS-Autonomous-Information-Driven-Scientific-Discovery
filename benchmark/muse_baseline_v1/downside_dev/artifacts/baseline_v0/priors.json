@@ -1,0 +1,3472 @@
+[
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 48,
+      "sum_log_x": -315.144025053916,
+      "sum_log_x_squared": 2074.761512220889
+    },
+    "latency_log": {
+      "n": 48,
+      "sum_log_x": 357.2208657937193,
+      "sum_log_x_squared": 2661.293915604798
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 48,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.8958333333333334,
+      "n": 48,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.09331597222222222
+    },
+    "risk_level": "*",
+    "scope": "global",
+    "severe_failure": {
+      "alpha": 1.4166666666666667,
+      "beta": 4.583333333333334,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 43,
+      "observed_successes": 5
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 4.583333333333334,
+      "beta": 1.4166666666666665,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 5,
+      "observed_successes": 43
+    },
+    "task_type": "*"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -27.057886043257568,
+      "sum_log_x_squared": 183.04589967243749
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 28.833444318666686,
+      "sum_log_x_squared": 207.8514826693678
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "classification"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -27.011614479076734,
+      "sum_log_x_squared": 182.46332936304952
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.05941863032631,
+      "sum_log_x_squared": 225.98663036394532
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "code_understanding_debugging"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.761072952446327,
+      "sum_log_x_squared": 166.05259512840286
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.296423632383707,
+      "sum_log_x_squared": 214.64738105568472
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.25,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variance": 0.1875
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 4.0,
+      "beta": 2.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 1,
+      "observed_successes": 3
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 2.0,
+      "beta": 4.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 3,
+      "observed_successes": 1
+    },
+    "task_type": "critique"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.883485439901882,
+      "sum_log_x_squared": 180.69048208459876
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 28.668764368408343,
+      "sum_log_x_squared": 205.5484568814826
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "evidence_verification"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.225336628690222,
+      "sum_log_x_squared": 159.18501175113036
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.06684337658774,
+      "sum_log_x_squared": 211.40249657099866
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "logical_reasoning"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.290935403679498,
+      "sum_log_x_squared": 159.99217633554133
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.749107818254867,
+      "sum_log_x_squared": 221.27481655946636
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "mathematical_reasoning"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.035819102551102,
+      "sum_log_x_squared": 169.47651689973765
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.55117461669884,
+      "sum_log_x_squared": 233.35700047161816
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "numerical_reasoning"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.05859117378092,
+      "sum_log_x_squared": 169.77582386279903
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.364358010305136,
+      "sum_log_x_squared": 231.052450028953
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "planning"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.842361625938914,
+      "sum_log_x_squared": 166.95756777628594
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.237772124535937,
+      "sum_log_x_squared": 228.81991055302652
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "structured_extraction"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.486220003487514,
+      "sum_log_x_squared": 175.38993456931476
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.35959657063067,
+      "sum_log_x_squared": 215.54426858748946
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "synthesis"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -23.973918796881385,
+      "sum_log_x_squared": 143.84657206616276
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.932317600897854,
+      "sum_log_x_squared": 239.2482927249008
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.5,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "variance": 0.25
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "task_type": "tool_use_reasoning"
+  },
+  {
+    "architecture_id": "S0",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -29.516783404223922,
+      "sum_log_x_squared": 217.88560271142876
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.101644726023263,
+      "sum_log_x_squared": 226.56072913786454
+    },
+    "model_identifiers": [
+      "offline_replay/S0"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "uncertainty_abstention"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 48,
+      "sum_log_x": -368.7100550250926,
+      "sum_log_x_squared": 2839.5559123810303
+    },
+    "latency_log": {
+      "n": 48,
+      "sum_log_x": 366.5144454436304,
+      "sum_log_x_squared": 2804.7919950649343
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 48,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.8958333333333334,
+      "n": 48,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.09331597222222222
+    },
+    "risk_level": "*",
+    "scope": "global",
+    "severe_failure": {
+      "alpha": 1.4166666666666667,
+      "beta": 4.583333333333334,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 43,
+      "observed_successes": 5
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 4.583333333333334,
+      "beta": 1.4166666666666665,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 5,
+      "observed_successes": 43
+    },
+    "task_type": "*"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -31.185272421662873,
+      "sum_log_x_squared": 243.22937973247028
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.89633102155397,
+      "sum_log_x_squared": 223.54378427568406
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "classification"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -32.35096265753257,
+      "sum_log_x_squared": 261.7759030614537
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.799630794193746,
+      "sum_log_x_squared": 222.03510852202567
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "code_understanding_debugging"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -28.447264476572308,
+      "sum_log_x_squared": 202.7164664235882
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 31.551110806428976,
+      "sum_log_x_squared": 248.98860547235103
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.5,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "variance": 0.25
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "task_type": "critique"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -31.388608393531797,
+      "sum_log_x_squared": 246.3320534450505
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.0921052603338,
+      "sum_log_x_squared": 226.92469223429254
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "evidence_verification"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -29.476728606325537,
+      "sum_log_x_squared": 217.31648648740168
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.51253475079766,
+      "sum_log_x_squared": 232.78842789667647
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "logical_reasoning"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -33.216399903822115,
+      "sum_log_x_squared": 275.83230564265847
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 31.637574446991554,
+      "sum_log_x_squared": 251.9608174493917
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "mathematical_reasoning"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.398079258121946,
+      "sum_log_x_squared": 231.07247567617065
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.36438035554186,
+      "sum_log_x_squared": 230.60222988665018
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "numerical_reasoning"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.697610151974533,
+      "sum_log_x_squared": 235.9990762488806
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.47360219355881,
+      "sum_log_x_squared": 232.84836189419343
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "planning"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.593128525228558,
+      "sum_log_x_squared": 234.12233534241233
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.667830687628264,
+      "sum_log_x_squared": 220.14936085032227
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "structured_extraction"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.878918250675277,
+      "sum_log_x_squared": 238.38281093871973
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.58762361116745,
+      "sum_log_x_squared": 233.92195484655937
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "synthesis"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -28.523765701391408,
+      "sum_log_x_squared": 203.48650056260294
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.67620913470414,
+      "sum_log_x_squared": 267.0084846353734
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.25,
+      "n": 4,
+      "raw_bounded_observations": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "variance": 0.1875
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 4.0,
+      "beta": 2.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 1,
+      "observed_successes": 3
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 2.0,
+      "beta": 4.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 3,
+      "observed_successes": 1
+    },
+    "task_type": "tool_use_reasoning"
+  },
+  {
+    "architecture_id": "S1",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -31.55331667825363,
+      "sum_log_x_squared": 249.2901188196214
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.255512380730142,
+      "sum_log_x_squared": 214.02016710141436
+    },
+    "model_identifiers": [
+      "offline_replay/S1"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "uncertainty_abstention"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 46,
+      "sum_log_x": -289.2438227981127,
+      "sum_log_x_squared": 1823.0053139100514
+    },
+    "latency_log": {
+      "n": 48,
+      "sum_log_x": 396.2487433209221,
+      "sum_log_x_squared": 3274.3396185690603
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 48,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.8958333333333334,
+      "n": 48,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.09331597222222222
+    },
+    "risk_level": "*",
+    "scope": "global",
+    "severe_failure": {
+      "alpha": 1.4166666666666667,
+      "beta": 4.583333333333334,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 43,
+      "observed_successes": 5
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 4.583333333333334,
+      "beta": 1.4166666666666665,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 5,
+      "observed_successes": 43
+    },
+    "task_type": "*"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.83426070459656,
+      "sum_log_x_squared": 166.87922489185513
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.18678100115325,
+      "sum_log_x_squared": 259.0271735814095
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "classification"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.048836754449297,
+      "sum_log_x_squared": 169.6506291511833
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.72608914987049,
+      "sum_log_x_squared": 267.7702786906275
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "code_understanding_debugging"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 2,
+      "sum_log_x": -12.422488131123792,
+      "sum_log_x_squared": 77.16087081545815
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 33.38033495070696,
+      "sum_log_x_squared": 278.61367304576527
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.25,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variance": 0.1875
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 4.0,
+      "beta": 2.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 1,
+      "observed_successes": 3
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 2.0,
+      "beta": 4.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 3,
+      "observed_successes": 1
+    },
+    "task_type": "critique"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.759855784207566,
+      "sum_log_x_squared": 165.90464286138217
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.24865952378593,
+      "sum_log_x_squared": 260.29033055077997
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "evidence_verification"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -24.034418909690068,
+      "sum_log_x_squared": 144.50847947564836
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.63630837595457,
+      "sum_log_x_squared": 266.36125718566785
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "logical_reasoning"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -24.769943652454714,
+      "sum_log_x_squared": 153.4537824565857
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 33.747326205670426,
+      "sum_log_x_squared": 285.4906113831379
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "mathematical_reasoning"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -24.874214015237293,
+      "sum_log_x_squared": 154.69947025316017
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 33.248128059025326,
+      "sum_log_x_squared": 276.38543229320146
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "numerical_reasoning"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -24.939066208239016,
+      "sum_log_x_squared": 155.5438585738179
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 33.382444527282324,
+      "sum_log_x_squared": 278.89892990409845
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "planning"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -24.764035308520675,
+      "sum_log_x_squared": 153.32179223295066
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.74399910746113,
+      "sum_log_x_squared": 268.20350437459507
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "structured_extraction"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.332170768189016,
+      "sum_log_x_squared": 160.4328514619674
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.79839070823756,
+      "sum_log_x_squared": 268.95561803776855
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "synthesis"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -22.84729677039802,
+      "sum_log_x_squared": 130.60924451236335
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 34.675291668281545,
+      "sum_log_x_squared": 300.6489960926393
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.5,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "variance": 0.25
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "task_type": "tool_use_reasoning"
+  },
+  {
+    "architecture_id": "S2",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -27.617235791006717,
+      "sum_log_x_squared": 190.8404672236793
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.474990043492596,
+      "sum_log_x_squared": 263.6938134293696
+    },
+    "model_identifiers": [
+      "offline_replay/S2"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "uncertainty_abstention"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 46,
+      "sum_log_x": -326.5462170525269,
+      "sum_log_x_squared": 2347.9458842256827
+    },
+    "latency_log": {
+      "n": 48,
+      "sum_log_x": 380.22000112436973,
+      "sum_log_x_squared": 3021.613911236992
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 48,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.8958333333333334,
+      "n": 48,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.09331597222222222
+    },
+    "risk_level": "*",
+    "scope": "global",
+    "severe_failure": {
+      "alpha": 1.4166666666666667,
+      "beta": 4.583333333333334,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 43,
+      "observed_successes": 5
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 4.583333333333334,
+      "beta": 1.4166666666666665,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 5,
+      "observed_successes": 43
+    },
+    "task_type": "*"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.83426070459656,
+      "sum_log_x_squared": 166.87922489185513
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.18678100115325,
+      "sum_log_x_squared": 259.0271735814095
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "classification"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -32.35096265753257,
+      "sum_log_x_squared": 261.7759030614537
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.799630794193746,
+      "sum_log_x_squared": 222.03510852202567
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "code_understanding_debugging"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 2,
+      "sum_log_x": -12.422488131123792,
+      "sum_log_x_squared": 77.16087081545815
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 33.38033495070696,
+      "sum_log_x_squared": 278.61367304576527
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.25,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variance": 0.1875
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 4.0,
+      "beta": 2.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 1,
+      "observed_successes": 3
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 2.0,
+      "beta": 4.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 3,
+      "observed_successes": 1
+    },
+    "task_type": "critique"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.759855784207566,
+      "sum_log_x_squared": 165.90464286138217
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.24865952378593,
+      "sum_log_x_squared": 260.29033055077997
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "evidence_verification"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -29.476728606325537,
+      "sum_log_x_squared": 217.31648648740168
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.51253475079766,
+      "sum_log_x_squared": 232.78842789667647
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "logical_reasoning"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -33.216399903822115,
+      "sum_log_x_squared": 275.83230564265847
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 31.637574446991554,
+      "sum_log_x_squared": 251.9608174493917
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "mathematical_reasoning"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.398079258121946,
+      "sum_log_x_squared": 231.07247567617065
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.36438035554186,
+      "sum_log_x_squared": 230.60222988665018
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "numerical_reasoning"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.697610151974533,
+      "sum_log_x_squared": 235.9990762488806
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.47360219355881,
+      "sum_log_x_squared": 232.84836189419343
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "planning"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -30.593128525228558,
+      "sum_log_x_squared": 234.12233534241233
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.667830687628264,
+      "sum_log_x_squared": 220.14936085032227
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "structured_extraction"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.332170768189016,
+      "sum_log_x_squared": 160.4328514619674
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.79839070823756,
+      "sum_log_x_squared": 268.95561803776855
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "synthesis"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -22.84729677039802,
+      "sum_log_x_squared": 130.60924451236335
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 34.675291668281545,
+      "sum_log_x_squared": 300.6489960926393
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.5,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "variance": 0.25
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "task_type": "tool_use_reasoning"
+  },
+  {
+    "architecture_id": "S3",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -27.617235791006717,
+      "sum_log_x_squared": 190.8404672236793
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.474990043492596,
+      "sum_log_x_squared": 263.6938134293696
+    },
+    "model_identifiers": [
+      "offline_replay/S3"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "uncertainty_abstention"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 46,
+      "sum_log_x": -295.27796636323905,
+      "sum_log_x_squared": 1899.6777277552492
+    },
+    "latency_log": {
+      "n": 48,
+      "sum_log_x": 377.7931224723667,
+      "sum_log_x_squared": 2983.12290928574
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 48,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.8958333333333334,
+      "n": 48,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.09331597222222222
+    },
+    "risk_level": "*",
+    "scope": "global",
+    "severe_failure": {
+      "alpha": 1.4166666666666667,
+      "beta": 4.583333333333334,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 43,
+      "observed_successes": 5
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 4.583333333333334,
+      "beta": 1.4166666666666665,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 5,
+      "observed_successes": 43
+    },
+    "task_type": "*"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.83426070459656,
+      "sum_log_x_squared": 166.87922489185513
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.18678100115325,
+      "sum_log_x_squared": 259.0271735814095
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "classification"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -27.011614479076734,
+      "sum_log_x_squared": 182.46332936304952
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.05941863032631,
+      "sum_log_x_squared": 225.98663036394532
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "code_understanding_debugging"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 2,
+      "sum_log_x": -12.422488131123792,
+      "sum_log_x_squared": 77.16087081545815
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 33.38033495070696,
+      "sum_log_x_squared": 278.61367304576527
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.25,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variance": 0.1875
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 4.0,
+      "beta": 2.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 1,
+      "observed_successes": 3
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 2.0,
+      "beta": 4.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 3,
+      "observed_successes": 1
+    },
+    "task_type": "critique"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.759855784207566,
+      "sum_log_x_squared": 165.90464286138217
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.24865952378593,
+      "sum_log_x_squared": 260.29033055077997
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "evidence_verification"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.225336628690222,
+      "sum_log_x_squared": 159.18501175113036
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.06684337658774,
+      "sum_log_x_squared": 211.40249657099866
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "logical_reasoning"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.290935403679498,
+      "sum_log_x_squared": 159.99217633554133
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 29.749107818254867,
+      "sum_log_x_squared": 221.27481655946636
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "mathematical_reasoning"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.035819102551102,
+      "sum_log_x_squared": 169.47651689973765
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.55117461669884,
+      "sum_log_x_squared": 233.35700047161816
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "numerical_reasoning"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -26.05859117378092,
+      "sum_log_x_squared": 169.77582386279903
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.364358010305136,
+      "sum_log_x_squared": 231.052450028953
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "planning"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.842361625938914,
+      "sum_log_x_squared": 166.95756777628594
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 30.237772124535937,
+      "sum_log_x_squared": 228.81991055302652
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "low",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "structured_extraction"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -25.332170768189016,
+      "sum_log_x_squared": 160.4328514619674
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.79839070823756,
+      "sum_log_x_squared": 268.95561803776855
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "synthesis"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -22.84729677039802,
+      "sum_log_x_squared": 130.60924451236335
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 34.675291668281545,
+      "sum_log_x_squared": 300.6489960926393
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 0.5,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "variance": 0.25
+    },
+    "risk_level": "medium",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 3.0,
+      "beta": 3.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 2,
+      "observed_successes": 2
+    },
+    "task_type": "tool_use_reasoning"
+  },
+  {
+    "architecture_id": "S4",
+    "architecture_version": "A0-A6-v0",
+    "benchmark_date": "2026-11-03",
+    "cost_log": {
+      "n": 4,
+      "sum_log_x": -27.617235791006717,
+      "sum_log_x_squared": 190.8404672236793
+    },
+    "latency_log": {
+      "n": 4,
+      "sum_log_x": 32.474990043492596,
+      "sum_log_x_squared": 263.6938134293696
+    },
+    "model_identifiers": [
+      "offline_replay/S4"
+    ],
+    "observation_count": 4,
+    "prior_construction_method": "empirical mean with bounded pseudo-observation strength",
+    "prompt_config_hashes": "[redacted]",
+    "quality": {
+      "mean": 1.0,
+      "n": 4,
+      "raw_bounded_observations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "variance": 0.0
+    },
+    "risk_level": "high",
+    "scope": "task_risk",
+    "severe_failure": {
+      "alpha": 1.0,
+      "beta": 5.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 4,
+      "observed_successes": 0
+    },
+    "source_benchmark_version": "muse-baseline-v1",
+    "success": {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "effective_prior_strength": 4.0,
+      "observed_failures": 0,
+      "observed_successes": 4
+    },
+    "task_type": "uncertainty_abstention"
+  }
+]

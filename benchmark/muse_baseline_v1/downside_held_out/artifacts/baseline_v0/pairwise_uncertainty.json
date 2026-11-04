@@ -1,0 +1,562 @@
+[
+  {
+    "left": "offline_replay/S0@S0",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1773
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1773
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1773
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1773
+      }
+    },
+    "right": "offline_replay/S1@S1",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S0@S0",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1803
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1803
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1803
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1803
+      }
+    },
+    "right": "offline_replay/S2@S2",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S0@S0",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1790
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1790
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1790
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1790
+      }
+    },
+    "right": "offline_replay/S3@S3",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S0@S0",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1770
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1770
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1770
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1770
+      }
+    },
+    "right": "offline_replay/S4@S4",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S1@S1",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1784
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1784
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1784
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1784
+      }
+    },
+    "right": "offline_replay/S2@S2",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S1@S1",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1777
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1777
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1777
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1777
+      }
+    },
+    "right": "offline_replay/S3@S3",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S1@S1",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1771
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1771
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1771
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1771
+      }
+    },
+    "right": "offline_replay/S4@S4",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S2@S2",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1780
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1780
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1780
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1780
+      }
+    },
+    "right": "offline_replay/S3@S3",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S2@S2",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1770
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1770
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1770
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1770
+      }
+    },
+    "right": "offline_replay/S4@S4",
+    "sample_size": 12
+  },
+  {
+    "left": "offline_replay/S3@S3",
+    "metrics": {
+      "correlation": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1783
+      },
+      "covariance": {
+        "confidence_level": 0.95,
+        "estimate": 0.1388888888888889,
+        "lower": 0.0,
+        "upper": 0.24305555555555555,
+        "valid_resamples": 2000
+      },
+      "disagreement_rate": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 2000
+      },
+      "jaccard_failure_similarity": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 2000
+      },
+      "p_right_fails_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1783
+      },
+      "p_right_succeeds_given_left_fails": {
+        "confidence_level": 0.95,
+        "estimate": 0.0,
+        "lower": 0.0,
+        "upper": 0.0,
+        "valid_resamples": 1783
+      },
+      "phi": {
+        "confidence_level": 0.95,
+        "estimate": 1.0,
+        "lower": 1.0,
+        "upper": 1.0,
+        "valid_resamples": 1783
+      }
+    },
+    "right": "offline_replay/S4@S4",
+    "sample_size": 12
+  }
+]

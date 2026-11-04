@@ -1,0 +1,80 @@
+{
+  "dominated_ids": [],
+  "frontier_ids": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "pair_selection_diagnostics": [
+    {
+      "correlation": 1.0,
+      "joint_failure_rate": 0.16666666666666666,
+      "mean_individual_quality": 0.8333333333333334,
+      "pair": [
+        "offline_replay/S0@S0",
+        "offline_replay/S1@S1"
+      ],
+      "strategy": "covariance_aware_pair"
+    },
+    {
+      "correlation": 1.0,
+      "joint_failure_rate": 0.16666666666666666,
+      "mean_individual_quality": 0.8333333333333334,
+      "pair": [
+        "offline_replay/S0@S0",
+        "offline_replay/S4@S4"
+      ],
+      "strategy": "random_diverse_pair"
+    },
+    {
+      "correlation": null,
+      "joint_failure_rate": 0.16666666666666666,
+      "mean_individual_quality": 0.8333333333333334,
+      "pair": [
+        "offline_replay/S0@S0"
+      ],
+      "strategy": "top_model_only"
+    },
+    {
+      "correlation": 1.0,
+      "joint_failure_rate": 0.16666666666666666,
+      "mean_individual_quality": 0.8333333333333334,
+      "pair": [
+        "offline_replay/S0@S0",
+        "offline_replay/S1@S1"
+      ],
+      "strategy": "top_two_models"
+    }
+  ],
+  "probability_of_dominance": {
+    "S0>S1": 0.0,
+    "S0>S2": 1.0,
+    "S0>S3": 0.0795,
+    "S0>S4": 1.0,
+    "S1>S0": 0.9235,
+    "S1>S2": 1.0,
+    "S1>S3": 0.9995,
+    "S1>S4": 1.0,
+    "S2>S0": 0.0,
+    "S2>S1": 0.0,
+    "S2>S3": 0.0,
+    "S2>S4": 0.0,
+    "S3>S0": 0.002,
+    "S3>S1": 0.0,
+    "S3>S2": 0.9995,
+    "S3>S4": 0.9465,
+    "S4>S0": 0.0,
+    "S4>S1": 0.0,
+    "S4>S2": 0.9995,
+    "S4>S3": 0.0
+  },
+  "uncertain_ids": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ]
+}

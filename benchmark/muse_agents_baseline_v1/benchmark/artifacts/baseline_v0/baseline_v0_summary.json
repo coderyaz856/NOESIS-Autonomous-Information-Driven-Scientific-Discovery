@@ -1,0 +1,4604 @@
+{
+  "covariance": {
+    "bootstrap_intervals": [
+      {
+        "left": "muse_agent/muse-spark-1.2@A0",
+        "metrics": {
+          "correlation": {
+            "confidence_level": 0.95,
+            "estimate": 0.8730158730158729,
+            "lower": 0.6493057006437712,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "covariance": {
+            "confidence_level": 0.95,
+            "estimate": 0.0954861111111111,
+            "lower": 0.038773148148148154,
+            "upper": 0.14795524691358022,
+            "valid_resamples": 2000
+          },
+          "disagreement_rate": {
+            "confidence_level": 0.95,
+            "estimate": 0.027777777777777776,
+            "lower": 0.0,
+            "upper": 0.06944444444444445,
+            "valid_resamples": 2000
+          },
+          "jaccard_failure_similarity": {
+            "confidence_level": 0.95,
+            "estimate": 0.8,
+            "lower": 0.5,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "p_right_fails_given_left_fails": {
+            "confidence_level": 0.95,
+            "estimate": 0.8888888888888888,
+            "lower": 0.6360795454545459,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "p_right_succeeds_given_left_fails": {
+            "confidence_level": 0.95,
+            "estimate": 0.11111111111111116,
+            "lower": 0.0,
+            "upper": 0.363920454545453,
+            "valid_resamples": 2000
+          },
+          "phi": {
+            "confidence_level": 0.95,
+            "estimate": 0.8730158730158729,
+            "lower": 0.6493057006437712,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          }
+        },
+        "right": "muse_agent/muse-spark-1.3@A0",
+        "sample_size": 72
+      },
+      {
+        "left": "muse_agent/muse-spark-1.2@A0",
+        "metrics": {
+          "correlation": {
+            "confidence_level": 0.95,
+            "estimate": 0.8730158730158729,
+            "lower": 0.6493057006437712,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "covariance": {
+            "confidence_level": 0.95,
+            "estimate": 0.0954861111111111,
+            "lower": 0.039351851851851846,
+            "upper": 0.14815779320987646,
+            "valid_resamples": 2000
+          },
+          "disagreement_rate": {
+            "confidence_level": 0.95,
+            "estimate": 0.027777777777777776,
+            "lower": 0.0,
+            "upper": 0.06944444444444445,
+            "valid_resamples": 2000
+          },
+          "jaccard_failure_similarity": {
+            "confidence_level": 0.95,
+            "estimate": 0.8,
+            "lower": 0.5,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "p_right_fails_given_left_fails": {
+            "confidence_level": 0.95,
+            "estimate": 0.8888888888888888,
+            "lower": 0.6360795454545459,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "p_right_succeeds_given_left_fails": {
+            "confidence_level": 0.95,
+            "estimate": 0.11111111111111116,
+            "lower": 0.0,
+            "upper": 0.363920454545453,
+            "valid_resamples": 2000
+          },
+          "phi": {
+            "confidence_level": 0.95,
+            "estimate": 0.8730158730158729,
+            "lower": 0.6493057006437712,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          }
+        },
+        "right": "muse_agent/muse-wonder-1.0@A0",
+        "sample_size": 72
+      },
+      {
+        "left": "muse_agent/muse-spark-1.3@A0",
+        "metrics": {
+          "correlation": {
+            "confidence_level": 0.95,
+            "estimate": 0.8730158730158729,
+            "lower": 0.6493057006437712,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "covariance": {
+            "confidence_level": 0.95,
+            "estimate": 0.0954861111111111,
+            "lower": 0.038580246913580245,
+            "upper": 0.15104166666666666,
+            "valid_resamples": 2000
+          },
+          "disagreement_rate": {
+            "confidence_level": 0.95,
+            "estimate": 0.027777777777777776,
+            "lower": 0.0,
+            "upper": 0.06944444444444445,
+            "valid_resamples": 2000
+          },
+          "jaccard_failure_similarity": {
+            "confidence_level": 0.95,
+            "estimate": 0.8,
+            "lower": 0.5,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "p_right_fails_given_left_fails": {
+            "confidence_level": 0.95,
+            "estimate": 0.8888888888888888,
+            "lower": 0.625,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          },
+          "p_right_succeeds_given_left_fails": {
+            "confidence_level": 0.95,
+            "estimate": 0.11111111111111116,
+            "lower": 0.0,
+            "upper": 0.375,
+            "valid_resamples": 2000
+          },
+          "phi": {
+            "confidence_level": 0.95,
+            "estimate": 0.8730158730158729,
+            "lower": 0.6493057006437712,
+            "upper": 1.0,
+            "valid_resamples": 2000
+          }
+        },
+        "right": "muse_agent/muse-wonder-1.0@A0",
+        "sample_size": 72
+      }
+    ],
+    "case_ids": [
+      "dev-classification-01#repeat-0",
+      "dev-classification-02#repeat-0",
+      "dev-classification-03#repeat-0",
+      "dev-classification-04#repeat-0",
+      "dev-code_understanding_debugging-01#repeat-0",
+      "dev-code_understanding_debugging-02#repeat-0",
+      "dev-code_understanding_debugging-03#repeat-0",
+      "dev-code_understanding_debugging-04#repeat-0",
+      "dev-critique-01#repeat-0",
+      "dev-critique-02#repeat-0",
+      "dev-critique-03#repeat-0",
+      "dev-critique-04#repeat-0",
+      "dev-evidence_verification-01#repeat-0",
+      "dev-evidence_verification-02#repeat-0",
+      "dev-evidence_verification-03#repeat-0",
+      "dev-evidence_verification-04#repeat-0",
+      "dev-logical_reasoning-01#repeat-0",
+      "dev-logical_reasoning-02#repeat-0",
+      "dev-logical_reasoning-03#repeat-0",
+      "dev-logical_reasoning-04#repeat-0",
+      "dev-mathematical_reasoning-01#repeat-0",
+      "dev-mathematical_reasoning-02#repeat-0",
+      "dev-mathematical_reasoning-03#repeat-0",
+      "dev-mathematical_reasoning-04#repeat-0",
+      "dev-numerical_reasoning-01#repeat-0",
+      "dev-numerical_reasoning-02#repeat-0",
+      "dev-numerical_reasoning-03#repeat-0",
+      "dev-numerical_reasoning-04#repeat-0",
+      "dev-planning-01#repeat-0",
+      "dev-planning-02#repeat-0",
+      "dev-planning-03#repeat-0",
+      "dev-planning-04#repeat-0",
+      "dev-structured_extraction-01#repeat-0",
+      "dev-structured_extraction-02#repeat-0",
+      "dev-structured_extraction-03#repeat-0",
+      "dev-structured_extraction-04#repeat-0",
+      "dev-synthesis-01#repeat-0",
+      "dev-synthesis-02#repeat-0",
+      "dev-synthesis-03#repeat-0",
+      "dev-synthesis-04#repeat-0",
+      "dev-tool_use_reasoning-01#repeat-0",
+      "dev-tool_use_reasoning-02#repeat-0",
+      "dev-tool_use_reasoning-03#repeat-0",
+      "dev-tool_use_reasoning-04#repeat-0",
+      "dev-uncertainty_abstention-01#repeat-0",
+      "dev-uncertainty_abstention-02#repeat-0",
+      "dev-uncertainty_abstention-03#repeat-0",
+      "dev-uncertainty_abstention-04#repeat-0",
+      "held_out-classification-06#repeat-0",
+      "held_out-code_understanding_debugging-06#repeat-0",
+      "held_out-critique-06#repeat-0",
+      "held_out-evidence_verification-06#repeat-0",
+      "held_out-logical_reasoning-06#repeat-0",
+      "held_out-mathematical_reasoning-06#repeat-0",
+      "held_out-numerical_reasoning-06#repeat-0",
+      "held_out-planning-06#repeat-0",
+      "held_out-structured_extraction-06#repeat-0",
+      "held_out-synthesis-06#repeat-0",
+      "held_out-tool_use_reasoning-06#repeat-0",
+      "held_out-uncertainty_abstention-06#repeat-0",
+      "tuning-classification-05#repeat-0",
+      "tuning-code_understanding_debugging-05#repeat-0",
+      "tuning-critique-05#repeat-0",
+      "tuning-evidence_verification-05#repeat-0",
+      "tuning-logical_reasoning-05#repeat-0",
+      "tuning-mathematical_reasoning-05#repeat-0",
+      "tuning-numerical_reasoning-05#repeat-0",
+      "tuning-planning-05#repeat-0",
+      "tuning-structured_extraction-05#repeat-0",
+      "tuning-synthesis-05#repeat-0",
+      "tuning-tool_use_reasoning-05#repeat-0",
+      "tuning-uncertainty_abstention-05#repeat-0"
+    ],
+    "conditional_failure": [
+      [
+        1.0,
+        0.8888888888888888,
+        0.8888888888888888
+      ],
+      [
+        0.8888888888888888,
+        1.0,
+        0.8888888888888888
+      ],
+      [
+        0.8888888888888888,
+        0.8888888888888888,
+        1.0
+      ]
+    ],
+    "correlation": [
+      [
+        1.0,
+        0.8730158730158729,
+        0.8730158730158729
+      ],
+      [
+        0.8730158730158729,
+        1.0,
+        0.8730158730158729
+      ],
+      [
+        0.8730158730158729,
+        0.8730158730158729,
+        1.0
+      ]
+    ],
+    "failure_jaccard": [
+      [
+        1.0,
+        0.8,
+        0.8
+      ],
+      [
+        0.8,
+        1.0,
+        0.8
+      ],
+      [
+        0.8,
+        0.8,
+        1.0
+      ]
+    ],
+    "labels": [
+      "muse_agent/muse-spark-1.2@A0",
+      "muse_agent/muse-spark-1.3@A0",
+      "muse_agent/muse-wonder-1.0@A0"
+    ],
+    "matrix": [
+      [
+        0.109375,
+        0.0954861111111111,
+        0.0954861111111111
+      ],
+      [
+        0.0954861111111111,
+        0.109375,
+        0.0954861111111111
+      ],
+      [
+        0.0954861111111111,
+        0.0954861111111111,
+        0.109375
+      ]
+    ],
+    "shrinkage_intensity": 0.25,
+    "shrunken_matrix": [
+      [
+        0.109375,
+        0.07161458333333333,
+        0.07161458333333333
+      ],
+      [
+        0.07161458333333333,
+        0.109375,
+        0.07161458333333333
+      ],
+      [
+        0.07161458333333333,
+        0.07161458333333333,
+        0.109375
+      ]
+    ]
+  },
+  "execution": {
+    "actual_estimated_spend_usd": 8.02017575,
+    "calls_per_model": {
+      "muse-spark-1.1": 1,
+      "muse-spark-1.2": 73,
+      "muse-spark-1.3": 79,
+      "muse-wonder-1.0": 79
+    },
+    "inference_calls": 232,
+    "limits": {
+      "max_benchmark_spend_usd": 12.0,
+      "max_calls_per_model": null,
+      "max_concurrency": 1,
+      "max_provider_requests": 251,
+      "max_total_calls": 250
+    },
+    "provider_requests": 232,
+    "reserved_spend_usd": 1.078128000000004,
+    "stopped_after_authorized_phases": true
+  },
+  "model_reliability": [
+    {
+      "correct_given_provider_success": 0.875,
+      "latency_mean_ms_given_provider_success": 2794.4429541666473,
+      "latency_median_ms_given_provider_success": 2649.342649998289,
+      "latency_p90_ms_given_provider_success": 3409.0471000017715,
+      "latency_p95_ms_given_provider_success": 3534.3235000000277,
+      "model": "muse-spark-1.2",
+      "operational_correct_probability": 0.875,
+      "operational_severe_failure_probability": 0.125,
+      "provider": "muse_agent",
+      "provider_failures": 0,
+      "provider_success_probability": 1.0,
+      "provider_successes": 72,
+      "scored_provider_successes": 72,
+      "severe_failure_given_provider_success": 0.125,
+      "total_calls": 72
+    },
+    {
+      "correct_given_provider_success": 0.875,
+      "latency_mean_ms_given_provider_success": 3012.291476389136,
+      "latency_median_ms_given_provider_success": 2884.5029500007513,
+      "latency_p90_ms_given_provider_success": 3747.6566000004823,
+      "latency_p95_ms_given_provider_success": 4474.231700001837,
+      "model": "muse-spark-1.3",
+      "operational_correct_probability": 0.875,
+      "operational_severe_failure_probability": 0.125,
+      "provider": "muse_agent",
+      "provider_failures": 0,
+      "provider_success_probability": 1.0,
+      "provider_successes": 72,
+      "scored_provider_successes": 72,
+      "severe_failure_given_provider_success": 0.125,
+      "total_calls": 72
+    },
+    {
+      "correct_given_provider_success": 0.875,
+      "latency_mean_ms_given_provider_success": 2977.815673611177,
+      "latency_median_ms_given_provider_success": 2828.3405499987566,
+      "latency_p90_ms_given_provider_success": 3341.2129000025743,
+      "latency_p95_ms_given_provider_success": 3561.7987000005087,
+      "model": "muse-wonder-1.0",
+      "operational_correct_probability": 0.875,
+      "operational_severe_failure_probability": 0.125,
+      "provider": "muse_agent",
+      "provider_failures": 0,
+      "provider_success_probability": 1.0,
+      "provider_successes": 72,
+      "scored_provider_successes": 72,
+      "severe_failure_given_provider_success": 0.125,
+      "total_calls": 72
+    }
+  ],
+  "offline_replay": {
+    "architecture_results": [
+      {
+        "architecture_id": "S0",
+        "architecture_name": "S0",
+        "cost": 0.06310400000000001,
+        "expected_quality": 0.8333333333333334,
+        "failure_rate": 0.16666666666666666,
+        "latency": 2923.6384833335856,
+        "metadata": {
+          "agents": [],
+          "difficulty_levels": [
+            "easy",
+            "hard",
+            "medium"
+          ],
+          "risk_levels": [
+            "high",
+            "low",
+            "medium"
+          ]
+        },
+        "privacy_class": null,
+        "quality_variance": 0.1388888888888889,
+        "required_capabilities": [],
+        "risk": 1.0,
+        "sample_size": 12,
+        "source": "benchmark",
+        "tail_risk": {
+          "alpha": 0.1,
+          "cvar_score": 0.0,
+          "lower_percentile_score": 0.0,
+          "method": "empirical_lower_tail",
+          "sample_size": 12,
+          "score": 1.0,
+          "severe_failure_rate": 0.16666666666666666,
+          "worst_case_score": 0.0
+        },
+        "task_types": [
+          "classification",
+          "code_understanding_debugging",
+          "critique",
+          "evidence_verification",
+          "logical_reasoning",
+          "mathematical_reasoning",
+          "numerical_reasoning",
+          "planning",
+          "structured_extraction",
+          "synthesis",
+          "tool_use_reasoning",
+          "uncertainty_abstention"
+        ]
+      },
+      {
+        "architecture_id": "S1",
+        "architecture_name": "S1",
+        "cost": 0.019716916666666667,
+        "expected_quality": 0.8333333333333334,
+        "failure_rate": 0.16666666666666666,
+        "latency": 2720.504399999603,
+        "metadata": {
+          "agents": [],
+          "difficulty_levels": [
+            "easy",
+            "hard",
+            "medium"
+          ],
+          "risk_levels": [
+            "high",
+            "low",
+            "medium"
+          ]
+        },
+        "privacy_class": null,
+        "quality_variance": 0.1388888888888889,
+        "required_capabilities": [],
+        "risk": 1.0,
+        "sample_size": 12,
+        "source": "benchmark",
+        "tail_risk": {
+          "alpha": 0.1,
+          "cvar_score": 0.0,
+          "lower_percentile_score": 0.0,
+          "method": "empirical_lower_tail",
+          "sample_size": 12,
+          "score": 1.0,
+          "severe_failure_rate": 0.16666666666666666,
+          "worst_case_score": 0.0
+        },
+        "task_types": [
+          "classification",
+          "code_understanding_debugging",
+          "critique",
+          "evidence_verification",
+          "logical_reasoning",
+          "mathematical_reasoning",
+          "numerical_reasoning",
+          "planning",
+          "structured_extraction",
+          "synthesis",
+          "tool_use_reasoning",
+          "uncertainty_abstention"
+        ]
+      },
+      {
+        "architecture_id": "S2",
+        "architecture_name": "S2",
+        "cost": 0.08282091666666667,
+        "expected_quality": 0.8333333333333334,
+        "failure_rate": 0.16666666666666666,
+        "latency": 5644.142883333188,
+        "metadata": {
+          "agents": [],
+          "difficulty_levels": [
+            "easy",
+            "hard",
+            "medium"
+          ],
+          "risk_levels": [
+            "high",
+            "low",
+            "medium"
+          ]
+        },
+        "privacy_class": null,
+        "quality_variance": 0.1388888888888889,
+        "required_capabilities": [],
+        "risk": 1.0,
+        "sample_size": 12,
+        "source": "benchmark",
+        "tail_risk": {
+          "alpha": 0.1,
+          "cvar_score": 0.0,
+          "lower_percentile_score": 0.0,
+          "method": "empirical_lower_tail",
+          "sample_size": 12,
+          "score": 1.0,
+          "severe_failure_rate": 0.16666666666666666,
+          "worst_case_score": 0.0
+        },
+        "task_types": [
+          "classification",
+          "code_understanding_debugging",
+          "critique",
+          "evidence_verification",
+          "logical_reasoning",
+          "mathematical_reasoning",
+          "numerical_reasoning",
+          "planning",
+          "structured_extraction",
+          "synthesis",
+          "tool_use_reasoning",
+          "uncertainty_abstention"
+        ]
+      },
+      {
+        "architecture_id": "S3",
+        "architecture_name": "S3",
+        "cost": 0.05136558333333333,
+        "expected_quality": 0.8333333333333334,
+        "failure_rate": 0.16666666666666666,
+        "latency": 4236.816199999642,
+        "metadata": {
+          "agents": [],
+          "difficulty_levels": [
+            "easy",
+            "hard",
+            "medium"
+          ],
+          "risk_levels": [
+            "high",
+            "low",
+            "medium"
+          ]
+        },
+        "privacy_class": null,
+        "quality_variance": 0.1388888888888889,
+        "required_capabilities": [],
+        "risk": 1.0,
+        "sample_size": 12,
+        "source": "benchmark",
+        "tail_risk": {
+          "alpha": 0.1,
+          "cvar_score": 0.0,
+          "lower_percentile_score": 0.0,
+          "method": "empirical_lower_tail",
+          "sample_size": 12,
+          "score": 1.0,
+          "severe_failure_rate": 0.16666666666666666,
+          "worst_case_score": 0.0
+        },
+        "task_types": [
+          "classification",
+          "code_understanding_debugging",
+          "critique",
+          "evidence_verification",
+          "logical_reasoning",
+          "mathematical_reasoning",
+          "numerical_reasoning",
+          "planning",
+          "structured_extraction",
+          "synthesis",
+          "tool_use_reasoning",
+          "uncertainty_abstention"
+        ]
+      },
+      {
+        "architecture_id": "S4",
+        "architecture_name": "S4",
+        "cost": 0.07296104166666667,
+        "expected_quality": 0.8333333333333334,
+        "failure_rate": 0.16666666666666666,
+        "latency": 4337.211449999813,
+        "metadata": {
+          "agents": [],
+          "difficulty_levels": [
+            "easy",
+            "hard",
+            "medium"
+          ],
+          "risk_levels": [
+            "high",
+            "low",
+            "medium"
+          ]
+        },
+        "privacy_class": null,
+        "quality_variance": 0.1388888888888889,
+        "required_capabilities": [],
+        "risk": 1.0,
+        "sample_size": 12,
+        "source": "benchmark",
+        "tail_risk": {
+          "alpha": 0.1,
+          "cvar_score": 0.0,
+          "lower_percentile_score": 0.0,
+          "method": "empirical_lower_tail",
+          "sample_size": 12,
+          "score": 1.0,
+          "severe_failure_rate": 0.16666666666666666,
+          "worst_case_score": 0.0
+        },
+        "task_types": [
+          "classification",
+          "code_understanding_debugging",
+          "critique",
+          "evidence_verification",
+          "logical_reasoning",
+          "mathematical_reasoning",
+          "numerical_reasoning",
+          "planning",
+          "structured_extraction",
+          "synthesis",
+          "tool_use_reasoning",
+          "uncertainty_abstention"
+        ]
+      }
+    ],
+    "confidence_bounds": [
+      {
+        "architecture_id": "S0",
+        "cost": {
+          "confidence_level": 0.95,
+          "estimate": 0.06310400000000001,
+          "lower": 0.06269666666666666,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.063759
+        },
+        "cost_median": {
+          "confidence_level": 0.95,
+          "estimate": 0.062854,
+          "lower": 0.062584,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.062996
+        },
+        "failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "latency": {
+          "confidence_level": 0.95,
+          "estimate": 2923.6384833335856,
+          "lower": 2697.1387083340232,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 3146.621133333914
+        },
+        "latency_median": {
+          "confidence_level": 0.95,
+          "estimate": 3066.166399999929,
+          "lower": 2522.701899997628,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 3213.729049999529
+        },
+        "quality": {
+          "confidence_level": 0.95,
+          "estimate": 0.8333333333333334,
+          "lower": 0.5833333333333334,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "quality_median": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": 1.0,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "risk_level": "*",
+        "sample_size": 12,
+        "severe_failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "split": "*",
+        "task_type": "*"
+      },
+      {
+        "architecture_id": "S1",
+        "cost": {
+          "confidence_level": 0.95,
+          "estimate": 0.019716916666666667,
+          "lower": 0.019628645833333333,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.01982035416666667
+        },
+        "cost_median": {
+          "confidence_level": 0.95,
+          "estimate": 0.019662,
+          "lower": 0.019582250000000002,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.019769999999999996
+        },
+        "failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "latency": {
+          "confidence_level": 0.95,
+          "estimate": 2720.504399999603,
+          "lower": 2489.807649999117,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 2977.6832583320356
+        },
+        "latency_median": {
+          "confidence_level": 0.95,
+          "estimate": 2625.1219999994646,
+          "lower": 2414.0074500010087,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 2871.572699998069
+        },
+        "quality": {
+          "confidence_level": 0.95,
+          "estimate": 0.8333333333333334,
+          "lower": 0.5833333333333334,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "quality_median": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": 1.0,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "risk_level": "*",
+        "sample_size": 12,
+        "severe_failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "split": "*",
+        "task_type": "*"
+      },
+      {
+        "architecture_id": "S2",
+        "cost": {
+          "confidence_level": 0.95,
+          "estimate": 0.08282091666666667,
+          "lower": 0.08233852083333333,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.08354329166666667
+        },
+        "cost_median": {
+          "confidence_level": 0.95,
+          "estimate": 0.0824575,
+          "lower": 0.08219850000000001,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.082891875
+        },
+        "failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "latency": {
+          "confidence_level": 0.95,
+          "estimate": 5644.142883333188,
+          "lower": 5273.114374999143,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 6036.994383332967
+        },
+        "latency_median": {
+          "confidence_level": 0.95,
+          "estimate": 5773.666100001719,
+          "lower": 5092.06770000128,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 6132.568049999463
+        },
+        "quality": {
+          "confidence_level": 0.95,
+          "estimate": 0.8333333333333334,
+          "lower": 0.5833333333333334,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "quality_median": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": 1.0,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "risk_level": "*",
+        "sample_size": 12,
+        "severe_failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "split": "*",
+        "task_type": "*"
+      },
+      {
+        "architecture_id": "S3",
+        "cost": {
+          "confidence_level": 0.95,
+          "estimate": 0.05136558333333333,
+          "lower": 0.03532383333333333,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.0676329375
+        },
+        "cost_median": {
+          "confidence_level": 0.95,
+          "estimate": 0.051128625,
+          "lower": 0.019634875000000003,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.08232675
+        },
+        "failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "latency": {
+          "confidence_level": 0.95,
+          "estimate": 4236.816199999642,
+          "lower": 3292.388441666541,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 5188.435799998842
+        },
+        "latency_median": {
+          "confidence_level": 0.95,
+          "estimate": 4099.913699999888,
+          "lower": 2610.3369500015106,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 5901.428200000737
+        },
+        "quality": {
+          "confidence_level": 0.95,
+          "estimate": 0.8333333333333334,
+          "lower": 0.5833333333333334,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "quality_median": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": 1.0,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "risk_level": "*",
+        "sample_size": 12,
+        "severe_failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "split": "*",
+        "task_type": "*"
+      },
+      {
+        "architecture_id": "S4",
+        "cost": {
+          "confidence_level": 0.95,
+          "estimate": 0.07296104166666667,
+          "lower": 0.06769997916666666,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.07850368749999999
+        },
+        "cost_median": {
+          "confidence_level": 0.95,
+          "estimate": 0.07280575,
+          "lower": 0.062976,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.08232675
+        },
+        "failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "latency": {
+          "confidence_level": 0.95,
+          "estimate": 4337.211449999813,
+          "lower": 3436.1995833338974,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 5280.232783332697
+        },
+        "latency_median": {
+          "confidence_level": 0.95,
+          "estimate": 4108.46754999875,
+          "lower": 2801.516100002118,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 5901.428200000737
+        },
+        "quality": {
+          "confidence_level": 0.95,
+          "estimate": 0.8333333333333334,
+          "lower": 0.5833333333333334,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "quality_median": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": 1.0,
+          "method": "percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 1.0
+        },
+        "risk_level": "*",
+        "sample_size": 12,
+        "severe_failure": {
+          "confidence_level": 0.95,
+          "estimate": 0.16666666666666666,
+          "lower": 0.046965142183853836,
+          "method": "wilson",
+          "resamples": 0,
+          "upper": 0.44803086225297334
+        },
+        "split": "*",
+        "task_type": "*"
+      }
+    ],
+    "economics": [
+      {
+        "baseline_policy_id": "S1",
+        "cost_saving_vs_always_both_usd": 0.03145533333333334,
+        "damage_probability": 0.0,
+        "escalation_probability": 0.5,
+        "expected_loss_reduction": 0.0,
+        "incremental_cost_usd": 0.031648666666666665,
+        "incremental_latency_ms": 1516.311800000039,
+        "incremental_quality": 0.0,
+        "latency_saving_vs_always_both_ms": 1407.3266833335465,
+        "mean_cost_usd": 0.05136558333333333,
+        "mean_latency_ms": 4236.816199999642,
+        "mean_quality": 0.8333333333333334,
+        "policy_id": "S3",
+        "quality_gain_per_incremental_dollar": 0.0,
+        "quality_gain_per_incremental_second": 0.0,
+        "rescue_probability": 0.0,
+        "sample_size": 12,
+        "severe_failure_probability": 0.16666666666666666,
+        "severe_failures_avoided": 0.0,
+        "severe_failures_avoided_per_incremental_dollar": 0.0,
+        "tail_risk_reduction_per_incremental_dollar": 0.0
+      },
+      {
+        "baseline_policy_id": "S0",
+        "cost_saving_vs_always_both_usd": 0.009859875000000004,
+        "damage_probability": 0.0,
+        "escalation_probability": 0.5,
+        "expected_loss_reduction": 0.0,
+        "incremental_cost_usd": 0.009857041666666663,
+        "incremental_latency_ms": 1413.5729666662278,
+        "incremental_quality": 0.0,
+        "latency_saving_vs_always_both_ms": 1306.931433333375,
+        "mean_cost_usd": 0.07296104166666667,
+        "mean_latency_ms": 4337.211449999813,
+        "mean_quality": 0.8333333333333334,
+        "policy_id": "S4",
+        "quality_gain_per_incremental_dollar": 0.0,
+        "quality_gain_per_incremental_second": 0.0,
+        "rescue_probability": 0.0,
+        "sample_size": 12,
+        "severe_failure_probability": 0.16666666666666666,
+        "severe_failures_avoided": 0.0,
+        "severe_failures_avoided_per_incremental_dollar": 0.0,
+        "tail_risk_reduction_per_incremental_dollar": 0.0
+      },
+      {
+        "baseline_policy_id": "S1",
+        "cost_saving_vs_always_both_usd": 0.0,
+        "damage_probability": 0.0,
+        "escalation_probability": 1.0,
+        "expected_loss_reduction": 0.0,
+        "incremental_cost_usd": 0.06310400000000001,
+        "incremental_latency_ms": 2923.6384833335856,
+        "incremental_quality": 0.0,
+        "latency_saving_vs_always_both_ms": 0.0,
+        "mean_cost_usd": 0.08282091666666667,
+        "mean_latency_ms": 5644.142883333188,
+        "mean_quality": 0.8333333333333334,
+        "policy_id": "S2",
+        "quality_gain_per_incremental_dollar": 0.0,
+        "quality_gain_per_incremental_second": 0.0,
+        "rescue_probability": 0.0,
+        "sample_size": 12,
+        "severe_failure_probability": 0.16666666666666666,
+        "severe_failures_avoided": 0.0,
+        "severe_failures_avoided_per_incremental_dollar": 0.0,
+        "tail_risk_reduction_per_incremental_dollar": 0.0
+      }
+    ],
+    "empirical_pareto_frontier": [
+      "S1"
+    ],
+    "empirically_dominated": [
+      "S0",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "evidence_mode": "OFFLINE_REPLAY_ESTIMATE",
+    "paired_quality_comparisons": [
+      {
+        "baseline": "S1",
+        "policy": "S2",
+        "quality_difference": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": 0.0,
+          "method": "paired_percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.0
+        },
+        "statistically_unresolved_at_95_percent": true
+      },
+      {
+        "baseline": "S1",
+        "policy": "S3",
+        "quality_difference": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": 0.0,
+          "method": "paired_percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.0
+        },
+        "statistically_unresolved_at_95_percent": true
+      },
+      {
+        "baseline": "S0",
+        "policy": "S4",
+        "quality_difference": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": 0.0,
+          "method": "paired_percentile_bootstrap",
+          "resamples": 2000,
+          "upper": 0.0
+        },
+        "statistically_unresolved_at_95_percent": true
+      }
+    ],
+    "robust_pareto_frontier": {
+      "dominated_ids": [],
+      "frontier_ids": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "probability_of_dominance": {
+        "S0>S1": 0.0,
+        "S0>S2": 1.0,
+        "S0>S3": 0.0795,
+        "S0>S4": 1.0,
+        "S1>S0": 0.9235,
+        "S1>S2": 1.0,
+        "S1>S3": 0.9995,
+        "S1>S4": 1.0,
+        "S2>S0": 0.0,
+        "S2>S1": 0.0,
+        "S2>S3": 0.0,
+        "S2>S4": 0.0,
+        "S3>S0": 0.002,
+        "S3>S1": 0.0,
+        "S3>S2": 0.9995,
+        "S3>S4": 0.9465,
+        "S4>S0": 0.0,
+        "S4>S1": 0.0,
+        "S4>S2": 0.9995,
+        "S4>S3": 0.0
+      },
+      "uncertain_ids": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ]
+    }
+  },
+  "prior_configuration": {
+    "maximum_prior_strength": 5.0,
+    "prior_strength": 4.0
+  },
+  "protocol_version": "pre-challenge-baseline-v0-protocol (Muse Code agents in every slot)",
+  "provider_backed_confirmation": [
+    {
+      "architecture_id": "S3_PROVIDER_BACKED",
+      "damage": 0,
+      "escalations": 6,
+      "quality": 0.8333333333333334,
+      "quality_wilson": {
+        "confidence_level": 0.95,
+        "estimate": 0.8333333333333334,
+        "lower": 0.5519691377470267,
+        "method": "wilson",
+        "resamples": 0,
+        "upper": 0.9530348578161462
+      },
+      "rescue_opportunities": 2,
+      "rescues": 0,
+      "sample_size": 12
+    },
+    {
+      "architecture_id": "S4_PROVIDER_BACKED",
+      "damage": 0,
+      "escalations": 6,
+      "quality": 0.8333333333333334,
+      "quality_wilson": {
+        "confidence_level": 0.95,
+        "estimate": 0.8333333333333334,
+        "lower": 0.5519691377470267,
+        "method": "wilson",
+        "resamples": 0,
+        "upper": 0.9530348578161462
+      },
+      "rescue_opportunities": 2,
+      "rescues": 0,
+      "sample_size": 12
+    }
+  ],
+  "provider_diagnosis": {
+    "observations": [
+      {
+        "configured_model": "muse-spark-1.3",
+        "error_category": null,
+        "error_type": null,
+        "estimated_cost_usd": 0.019441250000000004,
+        "http_status": null,
+        "input_tokens": 15502,
+        "latency_ms": 3202.7272999985144,
+        "output": "OK",
+        "output_tokens": 15,
+        "provider": "muse_agent",
+        "resolved_provider_model": "muse-spark-1.3",
+        "success": true,
+        "timestamp": "2026-11-03T21:30:56.758822+00:00"
+      },
+      {
+        "configured_model": "muse-spark-1.2",
+        "error_category": null,
+        "error_type": null,
+        "estimated_cost_usd": 0.019538500000000004,
+        "http_status": null,
+        "input_tokens": 15505,
+        "latency_ms": 2612.7726000013354,
+        "output": "OK",
+        "output_tokens": 37,
+        "provider": "muse_agent",
+        "resolved_provider_model": "muse-spark-1.2",
+        "success": true,
+        "timestamp": "2026-11-03T21:30:59.373227+00:00"
+      },
+      {
+        "configured_model": "muse-spark-1.1",
+        "error_category": null,
+        "error_type": null,
+        "estimated_cost_usd": 0.0196475,
+        "http_status": null,
+        "input_tokens": 15514,
+        "latency_ms": 3197.1692999977677,
+        "output": "OK",
+        "output_tokens": 60,
+        "provider": "muse_agent",
+        "resolved_provider_model": "muse-spark-1.1",
+        "success": true,
+        "timestamp": "2026-11-03T21:31:02.572294+00:00"
+      },
+      {
+        "configured_model": "muse-wonder-1.0",
+        "error_category": null,
+        "error_type": null,
+        "estimated_cost_usd": 0.062312000000000006,
+        "http_status": null,
+        "input_tokens": 15513,
+        "latency_ms": 3523.416299998644,
+        "output": "OK",
+        "output_tokens": 13,
+        "provider": "muse_agent",
+        "resolved_provider_model": "muse-wonder-1.0",
+        "success": true,
+        "timestamp": "2026-11-03T21:31:06.097182+00:00"
+      }
+    ],
+    "security_note": "No exception messages, response headers, request headers, or environment values are persisted."
+  },
+  "scoring_sha256": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+  "scoring_version": "SCORING_V1",
+  "status": "FROZEN_COMPLETE",
+  "unresolved_conclusions": [
+    "S2 versus S1 quality remains unresolved at 95% confidence.",
+    "S3 versus S1 quality remains unresolved at 95% confidence.",
+    "S4 versus S0 quality remains unresolved at 95% confidence.",
+    "Held-out n=12 is deliberately compact; tail-risk and rescue estimates remain wide."
+  ],
+  "weak_architecture_priors": [
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 10
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 12
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 10,
+        "observed_successes": 2
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S3_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 10
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 12
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 10,
+        "observed_successes": 2
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "S4_PROVIDER_BACKED",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 10
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 12
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 10,
+        "observed_successes": 2
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 10
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 12
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 10,
+        "observed_successes": 2
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      }
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "entity_id": "provider_backed/S4",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 1
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    }
+  ],
+  "weak_model_priors": [
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.5,
+        "beta": 1.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 27,
+        "observed_successes": 189
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 216
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.5,
+        "beta": 4.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 189,
+        "observed_successes": 27
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 2.111111111111111,
+        "beta": 3.888888888888889,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 13,
+        "observed_successes": 5
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 3.888888888888889,
+        "beta": 2.111111111111111,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 5,
+        "observed_successes": 13
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.8888888888888888,
+        "beta": 4.111111111111111,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 14,
+        "observed_successes": 4
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 4.111111111111111,
+        "beta": 1.8888888888888888,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 4,
+        "observed_successes": 14
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "entity_id": "A0",
+      "entity_kind": "architecture",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 18
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 18,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.5,
+        "beta": 1.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 9,
+        "observed_successes": 63
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 72
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.5,
+        "beta": 4.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 63,
+        "observed_successes": 9
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 5,
+        "observed_successes": 1
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 5
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 2.333333333333333,
+        "beta": 3.666666666666667,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 4,
+        "observed_successes": 2
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 3.6666666666666665,
+        "beta": 2.3333333333333335,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 4
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.2",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.5,
+        "beta": 1.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 9,
+        "observed_successes": 63
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 72
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.5,
+        "beta": 4.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 63,
+        "observed_successes": 9
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 2.333333333333333,
+        "beta": 3.666666666666667,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 4,
+        "observed_successes": 2
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 3.6666666666666665,
+        "beta": 2.3333333333333335,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 4
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 5,
+        "observed_successes": 1
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 5
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-spark-1.3",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 4.5,
+        "beta": 1.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 9,
+        "observed_successes": 63
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 72
+      },
+      "scope": "global",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.5,
+        "beta": 4.5,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 63,
+        "observed_successes": 9
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "*",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "classification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "code_understanding_debugging",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 2.333333333333333,
+        "beta": 3.666666666666667,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 4,
+        "observed_successes": 2
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 3.6666666666666665,
+        "beta": 2.3333333333333335,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 2,
+        "observed_successes": 4
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "critique",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "evidence_verification",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "logical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "mathematical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "numerical_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "planning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "structured_extraction",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "synthesis",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 1.6666666666666665,
+        "beta": 4.333333333333334,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 5,
+        "observed_successes": 1
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 4.333333333333334,
+        "beta": 1.6666666666666665,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 1,
+        "observed_successes": 5
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "tool_use_reasoning",
+      "verification_rescue": null
+    },
+    {
+      "correctness_given_provider_success": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "entity_id": "muse_agent/muse-wonder-1.0",
+      "entity_kind": "model",
+      "prior_strength": 4.0,
+      "provider_availability": {
+        "alpha": 5.0,
+        "beta": 1.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 0,
+        "observed_successes": 6
+      },
+      "scope": "task_family",
+      "scoring_config_hash": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+      "severe_failure_given_provider_success": {
+        "alpha": 1.0,
+        "beta": 5.0,
+        "effective_prior_strength": 4.0,
+        "observed_failures": 6,
+        "observed_successes": 0
+      },
+      "source_benchmark_version": "pre-challenge-architecture-baseline-v0",
+      "task_type": "uncertainty_abstention",
+      "verification_rescue": null
+    }
+  ]
+}

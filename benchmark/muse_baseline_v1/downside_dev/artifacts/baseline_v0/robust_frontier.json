@@ -1,0 +1,80 @@
+{
+  "dominated_ids": [],
+  "frontier_ids": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "pair_selection_diagnostics": [
+    {
+      "correlation": 0.7767441860465116,
+      "joint_failure_rate": 0.08333333333333333,
+      "mean_individual_quality": 0.8958333333333334,
+      "pair": [
+        "offline_replay/S0@S0",
+        "offline_replay/S1@S1"
+      ],
+      "strategy": "covariance_aware_pair"
+    },
+    {
+      "correlation": 0.7767441860465116,
+      "joint_failure_rate": 0.08333333333333333,
+      "mean_individual_quality": 0.8958333333333334,
+      "pair": [
+        "offline_replay/S1@S1",
+        "offline_replay/S4@S4"
+      ],
+      "strategy": "random_diverse_pair"
+    },
+    {
+      "correlation": null,
+      "joint_failure_rate": 0.10416666666666667,
+      "mean_individual_quality": 0.8958333333333334,
+      "pair": [
+        "offline_replay/S0@S0"
+      ],
+      "strategy": "top_model_only"
+    },
+    {
+      "correlation": 0.7767441860465116,
+      "joint_failure_rate": 0.08333333333333333,
+      "mean_individual_quality": 0.8958333333333334,
+      "pair": [
+        "offline_replay/S0@S0",
+        "offline_replay/S1@S1"
+      ],
+      "strategy": "top_two_models"
+    }
+  ],
+  "probability_of_dominance": {
+    "S0>S1": 0.0,
+    "S0>S2": 1.0,
+    "S0>S3": 0.0005,
+    "S0>S4": 0.975,
+    "S1>S0": 0.0,
+    "S1>S2": 0.6405,
+    "S1>S3": 0.659,
+    "S1>S4": 0.6565,
+    "S2>S0": 0.0,
+    "S2>S1": 0.0,
+    "S2>S3": 0.0,
+    "S2>S4": 0.0,
+    "S3>S0": 0.0,
+    "S3>S1": 0.0,
+    "S3>S2": 1.0,
+    "S3>S4": 0.1145,
+    "S4>S0": 0.0,
+    "S4>S1": 0.0,
+    "S4>S2": 1.0,
+    "S4>S3": 0.0
+  },
+  "uncertain_ids": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ]
+}
