@@ -4,6 +4,7 @@ import type { CurveSet, LabActivity, LabExperiment, LabState, ScoringRow } from 
 import { HypothesisSymbol, ScientificText } from '../components/ScientificText';
 import { sounds } from '../hooks/useSound';
 import { useLab } from './LabContext';
+import { useRun } from './RunPanel';
 
 /* Benchmark claims supplied by the team brief — not served by the lab feed. */
 const COMPUTE_SAVING = 35.15;
@@ -94,8 +95,103 @@ function DrawnChart({ curves, play }: { curves: CurveSet; play: boolean }) {
   );
 }
 
-export function DiscoveryStory({ state, activity, kind, sampleExperiment }: { state: LabState; activity: LabActivity[]; kind: 'live' | 'record' | 'sample'; sampleExperiment?: LabExperiment }) {
+type StoryProps = { state: LabState; activity: LabActivity[]; kind: 'live' | 'record' | 'sample'; sampleExperiment?: LabExperiment };
+
+/** Lab mode tells the executed-experiment story; open mode tells the research story
+ * (evidence → hypotheses → proposed protocols → critique → decision), never claiming execution. */
+export function DiscoveryStory(props: StoryProps) {
+  return props.state.mode === 'open' ? <OpenStory {...props} /> : <LabStory {...props} />;
+}
+
+function OpenStory({ state, activity, kind }: StoryProps) {
   const lab = useLab();
+  const { run } = useRun();
+  const runActive = run?.status === 'running' || run?.status === 'prepared';
+  const label = kind === 'live' ? 'LIVE' : kind === 'record' ? 'RECORDED' : 'SAMPLE';
+  const protocols = state.protocols ?? [];
+  const log = activity.filter((a) => a.kind === 'tool' || a.kind === 'handoff' || (a.kind === 'gate' && a.decision !== 'accept')).slice(-14);
+  const lastDecision = state.decisions[state.decisions.length - 1];
+  const critiques = activity.filter((a): a is Extract<LabActivity, { kind: 'say' }> => a.kind === 'say' && a.agent === 'critic');
+  const verdicts = activity.filter((a): a is Extract<LabActivity, { kind: 'gate' }> => a.kind === 'gate' && a.decision === 'verdict');
+
+  return (
+    <div className="discovery-story" aria-label="Research story (open mode)">
+      <div className="story-glow" aria-hidden="true" />
+      <Step n={1} title="Research question">
+        <h2 className="story-question">{state.question}</h2>
+        <p><span className="badge badge-warn">OPEN RESEARCH</span> <span className="quiet small">Outside the lab's simulation engine: Meta agents research, hypothesise and design studies. No experiment is executed and no result is simulated.</span></p>
+      </Step>
+
+      <Step n={2} title="Prior evidence · sources verified, claims are agent summaries">
+        {state.evidence.length ? (
+          <ul className="lab-list">
+            {state.evidence.map((e, i) => (
+              <li key={`${e.source_id}-${i}`}>
+                <span className="mono">{e.source_id}</span> <span className={`badge badge-${e.relation === 'contradicts' ? 'bad' : e.relation === 'supports' ? 'ok' : 'warn'}`}>{e.relation}</span> <strong>{e.title}</strong>{e.year ? ` (${e.year})` : ''}
+                {e.claim ? <p className="quiet small"><span className="badge badge-warn">agent summary</span> {e.claim} (not checked against the paper)</p> : null}
+                {e.limitation ? <p className="quiet small">Limitation: {e.limitation}</p> : null}
+              </li>
+            ))}
+          </ul>
+        ) : <p className="quiet">{runActive ? 'Literature agent searching OpenAlex / arXiv…' : 'No evidence recorded.'}</p>}
+      </Step>
+
+      <Step n={3} title="Competing hypotheses · untested">
+        {state.hypotheses.length ? (
+          <ul className="lab-list">
+            {state.hypotheses.map((h) => <li key={h.id}><strong className="mono">{h.id}</strong> {h.statement} <span className="badge badge-warn">{h.status}</span></li>)}
+          </ul>
+        ) : <p className="quiet">{runActive ? 'Designer agent drafting hypotheses…' : 'No hypotheses registered.'}</p>}
+      </Step>
+
+      <Step n={4} title="Proposed studies · not executed" tone="is-accent">
+        {protocols.length ? protocols.map((p) => (
+          <article key={p.id} className="story-exp">
+            <span className="mono">{p.id} · tests {p.hypotheses.join(', ')} · by {p.proposed_by}</span>
+            <strong>{p.title}</strong>
+            <span className="quiet small"><strong>Design:</strong> {p.design}</span>
+            <span className="quiet small"><strong>Outcome:</strong> {p.measurements} · <strong>vs</strong> {p.comparator}</span>
+            <span className="quiet small"><strong>Falsifier:</strong> {p.falsifier}</span>
+            <span className="quiet small"><strong>Sample size:</strong> {p.sample_size} · <strong>Cost:</strong> {p.cost_estimate}</span>
+            <span className="quiet small"><strong>Risks:</strong> {p.risks}</span>
+          </article>
+        )) : <p className="quiet">{runActive ? 'Designer agent writing study protocols…' : 'No protocols proposed.'}</p>}
+      </Step>
+
+      <Step n={5} title="Agents at work">
+        <pre className="story-terminal" aria-live="polite">
+          <span className="term-head">noesis@research · {label} · {lab.sourceId ?? 'sample'}</span>{'\n'}
+          {log.map((a, i) => (
+            <span key={i} className="term-line">
+              {a.kind === 'tool' ? `$ ${a.agent} › ${a.name}(${a.args.slice(0, 60)})`
+                : a.kind === 'gate' ? (a.decision === 'verdict' ? `⚖ verifier verdict: ${a.verdict}` : `⚑ gate escalates ${a.agent} → ${a.verifier_model ?? 'verifier'} (${a.reasons.join(', ')})`)
+                : a.kind === 'handoff' ? `→ ${a.from} hands off to ${a.to ?? '…'}: ${a.title}` : ''}{'\n'}
+            </span>
+          ))}
+          {runActive ? <span className="term-cursor">▋ agents working…{'\n'}</span> : <span className="term-done">✓ {run?.status === 'failed' || run?.status === 'interrupted' ? `run ${run.status}` : 'run complete'}{'\n'}</span>}
+        </pre>
+      </Step>
+
+      <Step n={6} title="Critique & verification">
+        {critiques.length ? <blockquote className="story-quote">{critiques[critiques.length - 1]?.text.slice(0, 1200)}</blockquote> : <p className="quiet">{runActive ? 'Waiting for the critic…' : 'No critique recorded.'}</p>}
+        {verdicts.map((v, i) => <p key={i} className="quiet small">Wonder verifier on <em>{v.title.replace(/^verify: /, '')}</em>: <code>{v.verdict}</code></p>)}
+      </Step>
+
+      <Step n={7} title="Decision" tone="is-accent">
+        {lastDecision ? (
+          <div className="story-pivot">
+            <div className="pivot-after"><span className="eyebrow">Recommended next step</span><p>{lastDecision.decision}</p>{lastDecision.rationale ? <p className="quiet small">{lastDecision.rationale}</p> : null}</div>
+          </div>
+        ) : <p className="quiet">No decision recorded yet.</p>}
+      </Step>
+    </div>
+  );
+}
+
+function LabStory({ state, activity, kind, sampleExperiment }: StoryProps) {
+  const lab = useLab();
+  const { run } = useRun();
+  const runActive = run?.status === 'running' || run?.status === 'prepared';
   const round = state.rounds[state.rounds.length - 1];
   const top = [...(round?.rows ?? [])].sort((a, b) => b.utility - a.utility).slice(0, 2);
   const chosenId = round?.selected ?? state.selected;
@@ -126,7 +222,7 @@ export function DiscoveryStory({ state, activity, kind, sampleExperiment }: { st
     return () => { off = true; };
   }, [sampleExperiment, resultId, lab.baseUrl, lab.sourceId, state.completed]);
 
-  const log = useMemo(() => activity.filter((a) => a.kind === 'tool' || a.kind === 'handoff').slice(-10), [activity]);
+  const log = useMemo(() => activity.filter((a) => a.kind === 'tool' || a.kind === 'handoff' || (a.kind === 'gate' && a.decision !== 'accept')).slice(-10), [activity]);
 
   useEffect(() => {
     const el = termRef.current;
@@ -199,10 +295,12 @@ export function DiscoveryStory({ state, activity, kind, sampleExperiment }: { st
           <span className="term-head">noesis@lab · {label} · {lab.sourceId ?? 'sample'}</span>{'\n'}
           {log.slice(0, lines).map((a, i) => (
             <span key={i} className="term-line">
-              {a.kind === 'tool' ? `$ ${a.agent} › ${a.name}(${a.args.slice(0, 60)})` : `→ ${a.from} hands off to ${a.to ?? '…'}: ${a.title}`}{'\n'}
+              {a.kind === 'tool' ? `$ ${a.agent} › ${a.name}(${a.args.slice(0, 60)})`
+                : a.kind === 'gate' ? (a.decision === 'verdict' ? `⚖ verifier verdict: ${a.verdict}` : `⚑ gate escalates ${a.agent} → ${a.verifier_model ?? 'verifier'} (${a.reasons.join(', ')})`)
+                : a.kind === 'handoff' ? `→ ${a.from} hands off to ${a.to ?? '…'}: ${a.title}` : ''}{'\n'}
             </span>
           ))}
-          {lines < log.length ? <span className="term-cursor">▋</span> : <span className="term-done">✓ run complete{'\n'}</span>}
+          {lines < log.length ? <span className="term-cursor">▋</span> : runActive ? <span className="term-cursor">▋ agents working…{'\n'}</span> : <span className="term-done">✓ {run?.status === 'failed' || run?.status === 'interrupted' ? `run ${run.status}` : 'run complete'}{'\n'}</span>}
         </pre>
       </Step>
 
@@ -254,8 +352,8 @@ export function DiscoveryStory({ state, activity, kind, sampleExperiment }: { st
       <Step n={9} title="Impact">
         <div className="story-impact">
           <strong>{COMPUTE_SAVING}%</strong>
-          <span>compute saved vs. exhaustive testing</span>
-          <span className="badge badge-warn">BENCHMARK · team-reported</span>
+          <span>simulation compute saved vs. always-full-size designs (1.54×, 95% CI 1.28–1.90×; development-stage, 28/35 vs 29/35 reference agreement)</span>
+          <span className="badge badge-warn">BENCHMARK · recorded study · discolab/results/escalation</span>
         </div>
       </Step>
 

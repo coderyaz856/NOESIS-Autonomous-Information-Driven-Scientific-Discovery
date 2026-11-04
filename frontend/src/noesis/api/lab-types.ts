@@ -12,6 +12,131 @@ export interface LabSource {
   events: number;
   experiments: number;
   prereg_sha256: string | null;
+  /** 'muse' for runs launched through Muse Code, 'omnigent' for recorded Omnigent runs. */
+  runtime?: 'muse' | 'omnigent' | null;
+  run_status?: LabRunStatus | null;
+  created_at?: string | null;
+}
+
+export type LabRunStatus = 'prepared' | 'running' | 'completed' | 'failed' | 'interrupted';
+
+export interface LabUsage {
+  input_tokens: number;
+  cached_tokens: number;
+  output_tokens: number;
+  calls: number;
+  cost_usd: number;
+  reasoning_tokens?: number;
+  failed_calls?: number;
+}
+
+export interface LabAgentUsage extends LabUsage {
+  agent: string;
+  model: string | null;
+  runs: number;
+  seconds: number;
+}
+
+export interface LabApprovalRequest {
+  id: string;
+  status: 'pending' | 'approved' | 'declined';
+  reason?: string;
+  requested_by?: string;
+  requested_at?: number;
+  decided_by?: string;
+  decided_at?: number;
+}
+
+export interface LabScope {
+  in_scope: boolean;
+  hypotheses: string[];
+  focus?: string;
+  reason: string;
+  model?: string;
+  cost_usd?: number;
+}
+
+export interface LabRoleConfig {
+  model: string;
+  effort: string;
+  max_model_steps: number;
+}
+
+/** `/lab/run` — a Muse Code run record with live spend (bridge.run_view). */
+export interface LabRun {
+  runtime: 'muse' | null;
+  mode?: LabMode;
+  run_id?: string;
+  source?: string;
+  question?: string;
+  scope?: LabScope | null;
+  rounds?: number;
+  ceiling_usd?: number;
+  config?: { preset?: string; roles?: Record<string, LabRoleConfig> } | null;
+  harness?: { harness?: string; muse_version?: string } | null;
+  created_at?: string | null;
+  started_at?: string | null;
+  finished_at?: string | null;
+  wall_seconds?: number | null;
+  final_report?: string | null;
+  error?: string | null;
+  status?: LabRunStatus;
+  usage?: LabUsage;
+  per_agent?: LabAgentUsage[];
+  active_agents?: { agent: string; title: string | null }[];
+  model_calls_started?: number;
+  approvals?: LabApprovalRequest[];
+}
+
+/** GET /lab-proxy/session: how this app server authorises lab writes.
+ * open: development, writes go to the local bridge; operator: hosted, needs an
+ * operator session; disabled: hosted and read-only. */
+export interface LabSession {
+  write_mode: 'open' | 'operator' | 'disabled';
+  signed_in: boolean;
+}
+
+export interface LabCapabilities {
+  runs_enabled: boolean;
+  harness: string;
+  max_rounds: number;
+  max_ceiling_usd: number;
+  modes?: Record<LabMode, string>;
+  supported_domain: {
+    domain: string;
+    hypotheses: { id: string; statement: string }[];
+    landscapes?: unknown;
+    experiment_kinds?: unknown;
+  };
+}
+
+/** 'lab': pre-registered GA/entropy study with executed experiments. 'open': any other
+ * research question — literature, hypotheses, proposed protocols; nothing executed. */
+export type LabMode = 'lab' | 'open';
+
+/** A study design recorded in open mode. Never executed by the lab. */
+export interface LabProtocol {
+  id: string;
+  title: string;
+  hypotheses: string[];
+  design: string;
+  measurements: string;
+  comparator: string;
+  falsifier: string;
+  sample_size: string;
+  cost_estimate: string;
+  risks: string;
+  proposed_by: string;
+  executed: false;
+}
+
+export interface LabStartRunResponse {
+  source: string;
+  run_id: string;
+  mode: LabMode;
+  scope: LabScope;
+  rounds: number;
+  ceiling_usd: number;
 }
 
 export interface LabHypothesis {
@@ -33,6 +158,13 @@ export interface LabEvidence {
   relation: string | null;
   hypothesis_id: string | null;
   claim: string | null;
+  credibility?: string | null;
+  limitation?: string | null;
+  /** What record_evidence checked: the source's identity and metadata, never the claim. */
+  source_check?: string;
+  /** Always an agent's summary of the source; `claim_verified` is false. */
+  claim_origin?: string;
+  claim_verified?: false;
 }
 
 export interface LabCandidate {
@@ -89,14 +221,28 @@ export interface LabDecision {
   next_experiment: string | null;
 }
 
+/** Verification state of a critic's analysis. The analysis is written first; the Noesis
+ * gate (and, if it escalates, the Wonder verifier) judges it afterwards. */
+export interface LabAnalysisVerification {
+  status: 'unverified' | 'not_escalated' | 'confirmed' | 'corrected' | 'rejected' | 'unparsed';
+  reasons?: string[];
+  verifier_model?: string | null;
+  verifier_report?: string | null;
+}
+
 export interface LabAnalysis {
   by: string;
   interpretation: string;
   threats_to_validity: string[];
+  /** Absent on runs recorded before verification tracking (treat as unverified). */
+  verification?: LabAnalysisVerification;
 }
 
 export interface LabState {
   question: string;
+  /** Absent on runs recorded before open mode existed (treated as 'lab'). */
+  mode?: LabMode;
+  protocols?: LabProtocol[];
   compute_seconds: { used: number; budget: number };
   hypotheses: LabHypothesis[];
   evidence: LabEvidence[];
@@ -115,9 +261,15 @@ export interface LabState {
 
 export type LabActivity =
   | { t: number; kind: 'handoff'; from: string; to: string | null; title: string; state: 'running' | 'finished' }
-  | { t: number; kind: 'approval'; agent: string; text: string }
-  | { t: number; kind: 'tool'; agent: string; name: string; args: string }
-  | { t: number; kind: 'say'; agent: string; text: string };
+  | { t: number; kind: 'approval'; agent: string; text: string; id?: string; state?: string }
+  | { t: number; kind: 'tool'; agent: string; name: string; args: string; ok?: boolean; error?: string | null; ms?: number }
+  | { t: number; kind: 'say'; agent: string; text: string }
+  /** Noesis escalation gate on a specialist report (decision) or the verifier's verdict. */
+  | {
+      t: number; kind: 'gate'; agent: string; title: string; decision: 'accept' | 'escalate' | 'verdict';
+      reasons: string[]; family?: string | null; ucb?: number | null; threshold?: number;
+      verifier_model?: string | null; verdict?: 'CONFIRMED' | 'CORRECTED' | 'REJECTED' | 'UNPARSED';
+    };
 
 export interface LabVerdict {
   verdict: string;

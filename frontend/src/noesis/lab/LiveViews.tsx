@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ApiError } from '../api/client';
 import { labApi } from '../api/lab';
-import type { CI, CurveSet, LabActivity, LabEvidence, LabExperiment, LabHypothesis, LabState } from '../api/lab-types';
+import type { CI, CurveSet, LabActivity, LabAnalysis, LabEvidence, LabExperiment, LabHypothesis, LabState } from '../api/lab-types';
 import { ObjectInspector } from '../components/ObjectInspector';
 import { HypothesisSymbol, PosteriorProbability, ScientificText } from '../components/ScientificText';
 import { useShell } from '../components/shell';
 import { EmptyState, StatusBadge } from '../components/ui';
 import { useLab } from './LabContext';
 import { DiscoveryStory } from './DiscoveryStory';
+import { ApprovalControls, RunPanel, useRun } from './RunPanel';
 
 /* ------------------------------------------------------------ helpers */
 
@@ -15,9 +16,10 @@ const STAGES = ['Question', 'Evidence', 'Hypothesis', 'Experiment', 'Result', 'U
 
 const AGENTS: { id: string; label: string; role: string }[] = [
   { id: 'pi', label: 'Principal investigator', role: 'Chooses, runs and concludes experiments' },
-  { id: 'literature', label: 'Literature analyst', role: 'Records verified prior work' },
+  { id: 'literature', label: 'Literature analyst', role: 'Records prior work (sources verified, claims summarised)' },
   { id: 'designer', label: 'Experiment designer', role: 'Proposes and scores competing experiments' },
   { id: 'critic', label: 'Scientific critic', role: 'Interprets results, flags threats to validity' },
+  { id: 'verifier', label: 'Verifier (escalation)', role: 'Checks escalated reports against the lab record' },
 ];
 
 const fmt = (n: number | null | undefined, d = 3) => (n == null || Number.isNaN(n) ? '—' : Number(n.toFixed(d)).toString());
@@ -76,7 +78,7 @@ function achievements(id: string, s: LabState, activity: LabActivity[]): string[
   } else if (id === 'literature') {
     const n = s.evidence.length;
     const hyps = new Set(s.evidence.map((e) => e.hypothesis_id).filter(Boolean));
-    out.push(`Recorded ${n} verified source(s) covering ${hyps.size} hypothesis(es)`);
+    out.push(`Recorded ${n} source(s) (identity verified; claims are agent summaries) covering ${hyps.size} hypothesis(es)`);
     out.push(`Ran ${calls('search_literature') + calls('search_arxiv_papers')} literature search(es)`);
   } else if (id === 'designer') {
     out.push(`Proposed ${s.candidates.filter((c) => c.proposed_by === 'designer').length || s.candidates.length} competing experiment(s)`);
@@ -117,7 +119,7 @@ export function LiveDiscovery() {
     const items = activity.filter((x) => (x.kind === 'handoff' ? x.to : x.agent) === active).slice(-25).reverse();
     setInspector(
       <ObjectInspector
-        kind="Omnigent agent"
+        kind={source?.runtime === 'muse' ? 'Muse Code agent' : 'Omnigent agent'}
         title={agent?.label ?? active}
         status={perAgent[active]?.running ? 'Working' : 'Idle'}
         details={<ul className="lab-feed compact">{items.map((x, i) => <ActivityRow key={`${x.t}-${i}`} item={x} />)}</ul>}
@@ -130,6 +132,7 @@ export function LiveDiscovery() {
 
   return (
     <section className="experience experience-workspace lab-view">
+      <RunPanel />
       <DiscoveryStory state={state} activity={activity} kind={source?.kind ?? 'record'} />
       <LoopStrip reached={reachedStage(state)} />
       <div className="lab-agents">
@@ -147,7 +150,7 @@ export function LiveDiscovery() {
         })}
       </div>
       <h3 className="lab-h">Agent activity</h3>
-      {activity.length === 0 ? <EmptyState title="No agent activity yet" body="The Omnigent event log for this source is empty." /> : (
+      {activity.length === 0 ? <EmptyState title="No agent activity yet" body="No agent has reported a handoff, tool call or message for this source yet." /> : (
         <ul className="lab-feed">{activity.slice(-60).reverse().map((x, i) => <ActivityRow key={`${x.t}-${i}`} item={x} />)}</ul>
       )}
     </section>
@@ -162,8 +165,33 @@ function ActivityRow({ item }: { item: LabActivity }) {
       {item.kind === 'tool' ? <span><strong>{item.agent}</strong> called <code>{item.name}</code> <span className="quiet mono">{item.args}</span></span> : null}
       {item.kind === 'say' ? <span><strong>{item.agent}</strong>: {item.text}</span> : null}
       {item.kind === 'approval' ? <span><strong>{item.agent}</strong> requested approval: {item.text}</span> : null}
+      {item.kind === 'gate' ? <GateText item={item} /> : null}
     </li>
   );
+}
+
+const REASON_TEXT: Record<string, string> = {
+  schema_or_constraint_failure: 'agent or tool failure',
+  explicit_abstention: 'no usable report',
+  task_risk_level: 'touches held-out data',
+  historical_task_family_error_ucb: 'high measured error rate for this task family',
+  task_family: 'task family always verified',
+};
+
+function GateText({ item }: { item: Extract<LabActivity, { kind: 'gate' }> }) {
+  const why = item.reasons.map((r) => REASON_TEXT[r] ?? r).join(', ');
+  if (item.decision === 'verdict') {
+    return <span><strong>verifier</strong> verdict on <em>{item.title.replace(/^verify: /, '')}</em>: <code>{item.verdict}</code></span>;
+  }
+  if (item.decision === 'escalate') {
+    return (
+      <span>
+        <strong>Noesis gate</strong> escalated <strong>{item.agent}</strong>'s report to a <code>{item.verifier_model}</code> verifier — {why}
+        {item.ucb != null ? <span className="quiet mono"> (error UCB {item.ucb.toFixed(2)} ≥ {item.threshold})</span> : null}
+      </span>
+    );
+  }
+  return <span><strong>Noesis gate</strong> accepted <strong>{item.agent}</strong>'s report without verification{item.family ? <span className="quiet"> · {item.family}{item.ucb != null ? ` error UCB ${item.ucb.toFixed(2)} < ${item.threshold}` : ''}</span> : null}</span>;
 }
 
 /* ----------------------------------------------------------- Hypotheses */
@@ -268,6 +296,7 @@ export function LiveHypotheses() {
 
 export function LiveApproval() {
   const { state, activity, source } = useLab();
+  const { run, reload } = useRun();
   if (!state) return <Loading label="Loading approval state…" />;
   const approvals = activity.filter((a): a is Extract<LabActivity, { kind: 'approval' }> => a.kind === 'approval');
   const blocked = state.candidates.filter((c) => c.feasible === false || (c.violations?.length ?? 0) > 0);
@@ -280,8 +309,9 @@ export function LiveApproval() {
       <article className="lab-card">
         <p className="eyebrow">Policy</p>
         <strong>Confirmatory runs on held-out landscapes need human approval</strong>
-        <p>Held-out data can only be seen once, so the lab pauses and asks before the principal investigator spends it. Approval is given in the lab terminal; this view shows what was requested.</p>
+        <p>Held-out data can only be seen once, so the lab pauses and asks before the principal investigator spends it. For runs started from this app (Muse Code), approve or decline here; unanswered requests are declined automatically. Recorded Omnigent runs were approved in the lab terminal.</p>
       </article>
+      {run?.runtime === 'muse' ? <ApprovalControls approvals={run.approvals ?? []} onDone={reload} /> : null}
       <h3 className="lab-h">Approval requests ({approvals.length})</h3>
       {approvals.length === 0 ? (
         <EmptyState title="No approvals requested" body={source?.kind === 'live' ? 'New requests appear here as soon as the lab asks.' : 'This recorded run never reached a confirmatory run.'} />
@@ -320,8 +350,9 @@ function EvidenceItem({ e }: { e: LabEvidence }) {
   return (
     <article className="research-entry lab-evidence">
       <p className="eyebrow">{e.source} · {e.relation ?? 'related'}{e.hypothesis_id ? ` · ${e.hypothesis_id}` : ''}</p>
-      <p>{e.claim}</p>
       <cite>{href ? <a href={href} target="_blank" rel="noreferrer">{e.title}</a> : e.title}{e.year ? ` (${e.year})` : ''}</cite>
+      <p className="quiet small"><span className="badge badge-ok">source verified</span> identity and metadata re-fetched from {e.source}</p>
+      {e.claim ? <p><span className="badge badge-warn">agent summary</span> {e.claim} <span className="quiet small">(not checked against the paper)</span></p> : null}
     </article>
   );
 }
@@ -358,6 +389,15 @@ function Curves({ curves }: { curves: Record<string, CurveSet> }) {
   );
 }
 
+const VERIFICATION_LABEL: Record<NonNullable<LabAnalysis['verification']>['status'], { badge: string; text: string; tone: 'ok' | 'warn' | 'bad' | 'idle' | 'info' }> = {
+  unverified: { badge: 'unverified', text: 'not yet verified', tone: 'warn' },
+  not_escalated: { badge: 'not verified', text: 'gate accepted it without a verifier', tone: 'warn' },
+  confirmed: { badge: 'verifier confirmed', text: 'confirmed by the verifier', tone: 'ok' },
+  corrected: { badge: 'corrected by verifier', text: 'the verifier corrected it', tone: 'bad' },
+  rejected: { badge: 'rejected by verifier', text: 'the verifier rejected it', tone: 'bad' },
+  unparsed: { badge: 'verdict unreadable', text: 'verifier verdict could not be read', tone: 'warn' },
+};
+
 function CriticAnalysis({ analysis }: { analysis: NonNullable<LabExperiment['analysis']> }) {
   const sections = analysis.interpretation
     .split(/\b(?=(?:RESULT|INTERPRETATION|CONCLUSION|LIMITATION|RECOMMENDATION):?\s)/i)
@@ -368,15 +408,29 @@ function CriticAnalysis({ analysis }: { analysis: NonNullable<LabExperiment['ana
       return match ? { label: match[1] ?? 'Assessment', text: match[2] ?? part } : { label: 'Assessment', text: part };
     });
 
+  const v = analysis.verification ?? { status: 'unverified' as const };
+  const label = VERIFICATION_LABEL[v.status];
+
   return (
     <section className="lab-analysis" aria-label="Critic analysis">
       <header className="lab-analysis-head">
         <div>
-          <p className="eyebrow">Independent review</p>
+          <p className="eyebrow">Agent interpretation · {label.text}</p>
           <h4>Critic analysis</h4>
         </div>
         <StatusBadge tone="info">{analysis.by}</StatusBadge>
+        <StatusBadge tone={label.tone}>{label.badge}</StatusBadge>
       </header>
+      <p className="quiet small">
+        Recorded before verification. Posterior updates come from the experiment's numbers via the pre-registered rule, not from this text.
+        {v.verifier_model ? ` Checked afterwards by ${v.verifier_model}.` : ''}
+      </p>
+      {(v.status === 'corrected' || v.status === 'rejected') && v.verifier_report ? (
+        <section className="lab-analysis-section" aria-label="Verifier correction">
+          <h5>{v.status === 'corrected' ? 'Verifier correction (supersedes the critic text below)' : 'Verifier rejection (do not rely on the critic text below)'}</h5>
+          <p className="lab-longform"><ScientificText>{v.verifier_report}</ScientificText></p>
+        </section>
+      ) : null}
       <div className="lab-analysis-sections">
         {sections.map((section, index) => (
           <section key={`${section.label}-${index}`} className="lab-analysis-section">
