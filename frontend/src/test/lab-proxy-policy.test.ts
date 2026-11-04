@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
-  allowedOrigins, checkWriteAllowed, readCookie, relayFetch, resolveTarget, SESSION_TTL_SECONDS, sessionStatus, signIn,
+  allowedOrigins, buildServerEnv, checkWriteAllowed, readCookie, relayFetch, resolveTarget, SESSION_TTL_SECONDS, sessionStatus, signIn,
   signOut, verifySession, WRITE_TOKEN_HEADER, writeMode,
 } from "@/noesis/api/lab-proxy-policy";
 
@@ -144,6 +144,30 @@ describe("operator session", () => {
     const h = new Headers({ cookie: "a=1; noesis_lab_session=v.x; b=2" });
     expect(readCookie(h, "noesis_lab_session")).toBe("v.x");
     expect(readCookie(new Headers({ cookie: "xnoesis_lab_session=v" }), "noesis_lab_session")).toBeNull();
+  });
+});
+
+describe("server settings", () => {
+  it("treat a production build as production even when NODE_ENV is missing or says development", () => {
+    expect(buildServerEnv({}, {}, false)["NODE_ENV"]).toBe("production");
+    expect(buildServerEnv({ NODE_ENV: "development" }, {}, false)["NODE_ENV"]).toBe("production");
+    expect(writeMode(buildServerEnv({}, {}, false))).toBe("disabled");
+    expect(allowedOrigins(buildServerEnv({}, {}, false)).size).toBe(0);
+  });
+
+  it("keep a dev build in development", () => {
+    expect(writeMode(buildServerEnv({ NODE_ENV: "production" }, {}, true))).toBe("open");
+  });
+
+  it("read Cloudflare string bindings and let process.env override them", () => {
+    const env = buildServerEnv(
+      { NOESIS_LAB_ORIGINS: "https://lab.example.org" },
+      { NOESIS_LAB_WRITE_TOKEN: "from-binding", NOESIS_LAB_ORIGINS: "https://old.example.org", ASSETS: { fetch() {} } },
+      false,
+    );
+    expect(writeMode(env)).toBe("operator");
+    expect([...allowedOrigins(env)]).toEqual(["https://lab.example.org"]);
+    expect(env["ASSETS"]).toBeUndefined();
   });
 });
 

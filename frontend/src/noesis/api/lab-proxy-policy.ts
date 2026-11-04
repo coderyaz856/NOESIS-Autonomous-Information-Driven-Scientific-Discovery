@@ -221,6 +221,21 @@ export async function relayFetch(upstream: URL, init: RequestInit, fetchImpl: ty
   return res;
 }
 
+/** The settings the proxy sees. Two rules keep a hosted app from failing open:
+ * - Development vs production comes from the build (`vite dev` vs `vite build`), never
+ *   from a runtime variable. Cloudflare Workers set no NODE_ENV, and a deployment that
+ *   forgot it must not count as development (open writes, local default origins).
+ * - Settings are read from Cloudflare bindings (`globalThis.__env__`, string values
+ *   only) and from `process.env`, so they work on Workers and on Node. */
+export function buildServerEnv(processEnv: ProxyEnv, bindings: Record<string, unknown>, devBuild: boolean): ProxyEnv {
+  const env: ProxyEnv = {};
+  for (const [k, v] of Object.entries(bindings)) if (typeof v === 'string') env[k] = v;
+  Object.assign(env, processEnv);
+  env['NODE_ENV'] = devBuild ? 'development' : 'production';
+  return env;
+}
+
 export function serverEnv(): ProxyEnv {
-  return (globalThis as { process?: { env?: ProxyEnv } }).process?.env ?? {};
+  const g = globalThis as { process?: { env?: ProxyEnv }; __env__?: Record<string, unknown> };
+  return buildServerEnv(g.process?.env ?? {}, g.__env__ ?? {}, import.meta.env.DEV === true);
 }
