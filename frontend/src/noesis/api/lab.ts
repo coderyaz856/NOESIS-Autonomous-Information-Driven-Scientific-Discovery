@@ -1,5 +1,7 @@
 import { api } from './client';
-import type { LabActivity, LabExperiment, LabSource, LabState } from './lab-types';
+import type {
+  LabActivity, LabCapabilities, LabExperiment, LabRun, LabSession, LabSource, LabStartRunResponse, LabState,
+} from './lab-types';
 
 export const LAB_URL_KEY = 'noesis-lab-url';
 
@@ -20,4 +22,17 @@ export const labApi = {
   activity: (base: string, source: string) => api.get<{ activity: LabActivity[] }>(labUrl(base, 'activity', { source })),
   experiment: (base: string, source: string, id: string) => api.get<LabExperiment>(labUrl(base, 'experiment', { source, id })),
   streamUrl: (base: string, source: string) => labUrl(base, 'stream', { source }),
+  run: (base: string, source: string) => api.get<LabRun>(labUrl(base, 'run', { source })),
+  capabilities: (base: string) => api.get<LabCapabilities>(labUrl(base, 'capabilities')),
+  /** Starts a Muse Code discovery run. The lab checks the question against the
+   * supported domain first and answers 422 `out_of_scope` when it cannot run it. */
+  startRun: (base: string, question: string, opts: { rounds?: number; ceiling_usd?: number } = {}) =>
+    api.post<LabStartRunResponse>(labUrl(base, 'runs'), { question, ...opts }),
+  answerApproval: (base: string, source: string, id: string, decision: 'approve' | 'decline') =>
+    api.post<{ id: string; status: string }>(labUrl(base, 'approvals'), { source, id, decision }),
+  /** The app server's write mode and this browser's operator session. The
+   * session is an HttpOnly cookie, so page code never holds the token. */
+  session: () => api.get<LabSession>('/lab-proxy/session'),
+  signIn: (token: string) => api.post<LabSession>('/lab-proxy/session', { token }),
+  signOut: () => api.delete<LabSession>('/lab-proxy/session'),
 };

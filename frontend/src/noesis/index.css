@@ -2228,3 +2228,42 @@ body::before {
 details > :not(summary) { animation: chips-reveal .3s ease both; }
 @media (prefers-reduced-motion: reduce) { .story-step, .story-chart path, .b-after, .rank-bar i { transition: none !important; animation: none !important; opacity: 1; transform: none; stroke-dashoffset: 0; } .discovery-story::before, .pivot-arrow { animation: none; } }
 @media (max-width: 640px) { .story-pivot { grid-template-columns: 1fr; } .pivot-arrow { transform: rotate(90deg); justify-self: center; } .rank-row { grid-template-columns: 30px 1fr; } }
+
+/* Muse Code run panel, approval controls, command-surface errors */
+.command-message.is-error { color: var(--bad); }
+.lab-run-head { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.lab-run-head .eyebrow { margin: 0; }
+.lab-run-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px 16px; margin: 0; }
+.lab-run-stats dt { color: var(--muted); font-size: 12px; }
+.lab-run-stats dd { margin: 0; font-size: 13px; overflow-wrap: anywhere; }
+.lab-approvals { display: grid; gap: 8px; }
+.lab-approval-row { padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); font-size: 13px; }
+.lab-approval-row.is-pending { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; background: var(--warn-bg); }
+.lab-approval-row p { margin: 4px 0 0; }
+.lab-approval-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.lab-error { color: var(--bad); margin: 0; }
+.lab-report { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; margin: 8px 0 0; max-height: 420px; overflow: auto; }
+@media (max-width: 640px) {
+  .lab-approval-row.is-pending { grid-template-columns: 1fr; }
+}
+/* Operator sign-in for hosted runs (the token goes to the server once; an HttpOnly cookie follows). */
+.operator-access { margin: 8px 0 0; font-size: 12.5px; }
+.operator-unlock { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--mat-pop); }
+.operator-unlock label { display: grid; gap: 4px; flex: 1 1 200px; min-width: 0; }
+.operator-unlock input { min-width: 0; padding: 6px 8px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: transparent; color: inherit; font: inherit; }
+.operator-unlock .lab-error { flex-basis: 100%; }
+.operator-lock { padding: 2px 6px; font-size: 12px; }
+/* Docked question box: messages sit on a solid panel so they never collide with the hero text. */
+.command-surface-wrap.is-dock .command-message.is-visible {
+  margin: 0 0 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--mat-pop);
+  font-size: 12.5px;
+  line-height: 1.45;
+  max-height: 30vh;
+  overflow: auto;
+}
+.command-surface-wrap.is-dock .command-message:not(.is-visible) { display: none; }
+.command-surface-wrap.is-dock .command-scope { color: var(--ink-soft); }
