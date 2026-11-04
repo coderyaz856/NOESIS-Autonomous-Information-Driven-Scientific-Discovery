@@ -336,6 +336,36 @@ browser could never legitimately hold. Hosted writes now work as follows:
 **Docs.** `docs/README.md` and two other docs now link only to documents on
 this branch.
 
+## 4f. Clean install and hosted sign-in smoke test (2026-11-04)
+
+- **Clean install.** `npm ci` from the committed lockfile, then `tsc` clean
+  and vitest 33 passed; `vite build` succeeded (Cloudflare Worker target).
+- **Fail-open bug fixed.** The proxy chose development or production from
+  `NODE_ENV` at runtime, and Cloudflare Workers set none. A deployed app would
+  have run as development, with writes open to anyone, even with a token
+  configured. The build mode now decides; settings are read from Cloudflare
+  variables and `process.env`. Three regression tests were added (vitest 36).
+- **Smoke test.** The built Worker ran locally with `wrangler dev` and a
+  generated test token, against a Noesis bridge with runs enabled.
+  - No token configured: the app is read-only and sign-in is refused.
+  - With a token:
+    - no session → 401;
+    - wrong token → 401;
+    - cross-site sign-in → 403;
+    - correct token → 200, with an HttpOnly, SameSite=Strict, Secure, 8 h
+      cookie that does not contain the token;
+    - cross-site or origin-less writes → 403;
+    - a non-allow-listed bridge → 403;
+    - sign-out clears the cookie.
+  - One live run started through the session (open mode, 1 round, $0.25 soft
+    guard). It was stopped as soon as its first agent call began.
+  - Recorded spend: $0.0031 (classification). Two interrupted agent calls are
+    unrecorded; the worst case is about $0.07 at the benchmark's average
+    per-call cost.
+  - A copied cookie stays valid after sign-out until expiry or token rotation
+    (stateless sessions).
+  - Not yet tested on a real Cloudflare deployment.
+
 ## 5. Open items / needs the user's decision
 
 1. **`actual_api_keys.txt`** is tracked in the separate Agentic repository
