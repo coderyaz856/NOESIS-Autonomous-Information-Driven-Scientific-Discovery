@@ -12,7 +12,7 @@ const usd = (n: number | null | undefined) => (n == null ? '—' : `$${n < 0.01 
 const tokens = (n: number | null | undefined) => (n == null ? '—' : n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}k` : String(n));
 
 function statusTone(s: LabRunStatus | undefined) {
-  return s === 'completed' ? 'ok' : s === 'failed' || s === 'interrupted' ? 'bad' : s === 'running' || s === 'prepared' ? 'info' : 'idle';
+  return s === 'completed' ? 'ok' : s === 'failed' || s === 'interrupted' || s === 'stopped' ? 'bad' : s === 'running' || s === 'prepared' ? 'info' : 'idle';
 }
 
 /** Live view of the selected Muse Code run (`/lab/run`): status, scope,

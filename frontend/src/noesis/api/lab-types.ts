@@ -18,7 +18,7 @@ export interface LabSource {
   created_at?: string | null;
 }
 
-export type LabRunStatus = 'prepared' | 'running' | 'completed' | 'failed' | 'interrupted';
+export type LabRunStatus = 'prepared' | 'running' | 'completed' | 'failed' | 'interrupted' | 'stopped';
 
 export interface LabUsage {
   input_tokens: number;
@@ -92,8 +92,25 @@ export interface LabRun {
  * open: development, writes go to the local bridge; operator: hosted, needs an
  * operator session; disabled: hosted and read-only. */
 export interface LabSession {
-  write_mode: 'open' | 'operator' | 'disabled';
+  write_mode: 'open' | 'operator' | 'trial' | 'disabled';
   signed_in: boolean;
+}
+
+export interface LabTrial {
+  enabled: boolean;
+  accepting: boolean;
+  reason: 'budget_exhausted' | 'budget_store_not_durable' | 'budget_store_unreadable' | null;
+  total_usd: number;
+  committed_usd?: number;
+  remaining_usd?: number;
+  recorded_usd?: number;
+  run_ceiling_usd: number;
+  run_reserve_usd: number;
+  max_run_seconds: number;
+  runs_per_hour: number;
+  client_runs_per_hour: number;
+  client_runs_per_day: number;
+  durable: boolean;
 }
 
 export interface LabCapabilities {
@@ -101,6 +118,10 @@ export interface LabCapabilities {
   harness: string;
   max_rounds: number;
   max_ceiling_usd: number;
+  /** Set when the lab runs a bounded public trial (enforced by the lab, see discolab/trial.py). */
+  trial?: LabTrial | null;
+  /** The run in progress, if any (`lab_home/<id>`); one run at a time. */
+  active_run?: string | null;
   modes?: Record<LabMode, string>;
   supported_domain: {
     domain: string;

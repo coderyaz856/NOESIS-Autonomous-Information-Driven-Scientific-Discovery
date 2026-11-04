@@ -228,6 +228,14 @@ cd frontend;  npx vitest run; npx tsc --noEmit -p .
   - There is no sign-in rate limiting, so use a long random token.
   - Smoke-tested on the built Cloudflare Worker running locally (`wrangler
     dev`), not yet on a real deployment.
+  - The proxy authenticates to the bridge with the server-side secret
+    `NOESIS_BRIDGE_TOKEN` (`X-Noesis-Bridge-Token` header). A production build
+    without it refuses to relay.
+- **The bridge authenticates every request when hosted.** Started with
+  `--require-auth` and a token file, it answers any request without the token
+  with 401. Without a token it is local-only (loopback) and must never be
+  published. Agents never receive the token. See `deploy/lab/README.md` for
+  the Linux host (HTTPS via Caddy, persistent state, server-side Meta key).
 - **The MCP tool server fails closed.** If `DISCOLAB_TOOLS` is missing, empty
   or names an unknown tool, it serves no tools and exits.
 - **Muse Code is required on the machine running the lab.** The browser only talks

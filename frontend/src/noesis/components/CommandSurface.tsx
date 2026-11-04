@@ -30,19 +30,30 @@ export function CommandSurface({ docked }: { docked: boolean }) {
   const { navigate } = useShell();
   const [questions, setQuestions] = useState<{ id: string; kind: string; question: string }[]>([]);
 
+  const [fallback, setFallback] = useState(false);
+
   useEffect(() => {
     if (lab.status !== 'connected') { setQuestions([]); setCaps(null); return; }
     let cancelled = false;
     Promise.all(lab.sources.map((src) => labApi.state(lab.baseUrl, src.id).then((st) => ({ id: src.id, kind: src.kind as string, question: st.question })).catch(() => null)))
       .then((rows) => { if (!cancelled) setQuestions(rows.filter((r): r is { id: string; kind: string; question: string } => r !== null)); });
-    labApi.capabilities(lab.baseUrl).then((c) => { if (!cancelled) setCaps(c); }).catch(() => { if (!cancelled) setCaps(null); });
-    return () => { cancelled = true; };
+    const loadCaps = () => labApi.capabilities(lab.baseUrl).then((c) => { if (!cancelled) setCaps(c); }).catch(() => { if (!cancelled) setCaps(null); });
+    void loadCaps();
+    // Keep the busy / budget state current while the page is open.
+    const id = window.setInterval(loadCaps, 15000);
+    return () => { cancelled = true; window.clearInterval(id); };
   }, [lab.baseUrl, lab.sources, lab.status]);
 
   const open = (sourceId: string | null) => {
     if (sourceId) lab.setSourceId(sourceId);
     navigate('discovery');
   };
+
+  /** A completed, recorded Muse Code run to watch when the live lab is busy or the trial budget is spent. */
+  const recorded = lab.sources.find((s) => s.kind === 'record' && s.runtime === 'muse') ?? null;
+  const trial = caps?.trial ?? null;
+  const trialClosed = !!trial && !trial.accepting;
+  const busySource = caps?.active_run ?? null;
 
   const fail = (text: string) => { setPhase('error'); setMessage(text); };
 
@@ -68,14 +79,33 @@ export function CommandSurface({ docked }: { docked: boolean }) {
       lab.refresh();
       navigate('discovery');
     } catch (reason) {
-      if (reason instanceof ApiError && reason.status === 409) return fail(`${reason.message}. Wait for it to finish, or open it from Discovery.`);
+      void labApi.capabilities(lab.baseUrl).then(setCaps).catch(() => undefined);
+      if (reason instanceof ApiError && reason.status === 409) {
+        setFallback(true);
+        return fail('Another visitor\'s live run is in progress (one at a time). Watch it live, or watch the recorded run, then try again when it finishes.');
+      }
+      if (reason instanceof ApiError && ['budget_exhausted', 'budget_store_not_durable', 'budget_store_unreadable', 'rate_limited'].includes(reason.code)) {
+        setFallback(true);
+        return fail(reason.message);
+      }
       if (reason instanceof ApiError && (reason.status === 401 || reason.code === 'writes_disabled')) void refreshLabSession();
       fail(reason instanceof ApiError ? reason.message : String(reason));
     }
   };
 
+  const minutes = trial ? Math.round(trial.max_run_seconds / 60) : 0;
+  const trialNote = !trial
+    ? null
+    : trial.accepting
+      ? `Public trial: ask one question and watch Meta agents work on it live (about ${minutes} min, one run at a time, ${trial.client_runs_per_day} per visitor per day). Trial budget left: $${(trial.remaining_usd ?? 0).toFixed(2)} of $${trial.total_usd.toFixed(2)} (estimated).`
+      : trial.reason === 'budget_exhausted'
+        ? 'The public trial budget is used up, so new live runs are closed. The recorded run below shows the full agent flow and report.'
+        : 'Live runs are paused (the trial\'s spend record is not on persistent storage). The recorded run below shows the full agent flow and report.';
+
   const scopeNote = session?.write_mode === 'disabled'
     ? 'Read-only hosted app: recorded runs can be explored here; new runs start from a local lab (see the README).'
+    : trialNote && caps?.runs_enabled
+    ? trialNote
     : caps
     ? caps.runs_enabled
       ? `Any research question. Meta agents (${caps.harness}) research it: verified sources (claims are agent summaries), falsifiable hypotheses, study protocols and critique. Experiments are executed only for the lab's simulation domain: ${caps.supported_domain.domain}`
@@ -138,6 +168,21 @@ export function CommandSurface({ docked }: { docked: boolean }) {
       )}
       {revealed && scopeNote && phase !== 'error' ? <p className="command-message command-scope is-visible">{scopeNote}</p> : null}
       <p className={cx('command-message', message && 'is-visible', phase === 'error' && 'is-error')} role={phase === 'error' ? 'alert' : undefined} aria-live="polite">{message}</p>
+      {(revealed || fallback) && (busySource || trialClosed || fallback) ? (
+        <div className="question-chips" aria-label="Watch a run">
+          {busySource ? (
+            <button type="button" className="question-chip" onClick={() => open(busySource)}>
+              <small>LIVE · in progress now</small>Watch the run that is in progress
+            </button>
+          ) : null}
+          {recorded && (trialClosed || fallback || busySource) ? (
+            <button type="button" className="question-chip" onClick={() => open(recorded.id)}>
+              <small>RECORDED run · {recorded.created_at ? new Date(recorded.created_at).toLocaleDateString() : 'earlier'} · not live</small>
+              Watch a complete recorded run: agent flow, ledger and final report
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       {revealed || phase === 'error' ? <OperatorUnlock session={session} /> : null}
     </div>
   );
