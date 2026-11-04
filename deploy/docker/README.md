@@ -37,7 +37,7 @@ files in the container's `/tmp`, removed from the bridge's environment, and neve
 Pin the release by digest (shown in [Releases](#releases)); a version tag works too.
 
 ```bash
-IMAGE=ghcr.io/saadqacif/noesis-lab@sha256:<digest>
+IMAGE=ghcr.io/saadqacif/noesis-lab@sha256:47014a2516caec0522da525bf25981be3062397121fcdc84b01ce3275a5759ca  # 0.1.1
 docker pull "$IMAGE"
 
 # A fresh bridge token; keep it out of shell history and files you share.
@@ -112,6 +112,6 @@ clean runner and repeats the smoke test.
 
 | Version | Digest | Source |
 | --- | --- | --- |
-| _pending first release_ | | |
+| `0.1.1` | `sha256:47014a2516caec0522da525bf25981be3062397121fcdc84b01ce3275a5759ca` | `624d4d0`, linux/amd64, 308 MiB compressed (859 MiB unpacked) |
 
 Run the same smoke test yourself: `bash deploy/docker/smoke-test.sh "$IMAGE"`.
