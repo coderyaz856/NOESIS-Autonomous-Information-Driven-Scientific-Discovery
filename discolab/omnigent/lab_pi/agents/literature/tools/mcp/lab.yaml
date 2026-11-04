@@ -6,4 +6,5 @@ args: ["-m", "discolab.mcp_server"]
 env:
   DISCOLAB_HOME: "${DISCOLAB_HOME}"
   DISCOLAB_ACTOR: "literature"
+  DISCOLAB_TOOLS: "get_research_state,search_literature,search_arxiv_papers,record_evidence"  # explicit allow-list; the server refuses to start without one
 tools: [get_research_state, search_literature, search_arxiv_papers, record_evidence]

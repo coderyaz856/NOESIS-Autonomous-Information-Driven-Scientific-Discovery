@@ -1,0 +1,56 @@
+# Muse Code agent configuration for discolab (one headless `muse exec` per role).
+# Tool allow-lists and specialist prompts come from the original agent bundle
+# (../omnigent/lab_pi); the PI's Muse-specific instructions are in pi.md.
+#
+# This file is the frozen default. A run copies the resolved configuration
+# into <lab>/run.json, so every recorded run states exactly what it used.
+#
+# preset "empty": Muse Code's smallest built-in harness prompt. Measured on a
+# one-tool probe: 38,009 input tokens vs 54,323 for "native-basic".
+preset: empty
+
+roles:
+  pi:
+    model: muse-spark-1.3
+    effort: medium
+    max_model_steps: 40
+  literature:
+    model: muse-spark-1.3
+    effort: low
+    max_model_steps: 30
+  designer:
+    model: muse-spark-1.3
+    effort: medium
+    max_model_steps: 20
+  critic:
+    model: muse-spark-1.3
+    effort: medium
+    max_model_steps: 15
+  # Second-pass agent used only when the Noesis gate escalates a report.
+  verifier:
+    model: muse-wonder-1.0
+    effort: medium
+    max_model_steps: 12
+
+# Noesis dynamic escalation (benchmark policy S3 "Spark 1.3 then selective
+# Wonder 1.0", applied to agent hand-offs). The gate thresholds come from the
+# frozen benchmark gate copied into escalation_gate.json (fitted on dev+tuning
+# only). Each specialist maps to the corpus task family closest to its work.
+escalation:
+  enabled: true
+  gate_file: escalation_gate.json
+  role_task_family:
+    literature: evidence_verification
+    designer: planning
+    critic: critique
+
+# Soft spend guard (NOT a hard cap): the `delegate` tool refuses new hand-offs
+# once the run's recorded spend reaches this many US dollars (estimated from
+# token usage with the Model API list prices; see discolab/muse.py PRICES).
+# Costs are counted when an agent finishes, so agents already running, or
+# started together in one delegate call, can push the final spend past it.
+default_ceiling_usd: 3.0
+
+# How long a confirmatory (held-out) experiment waits for a human decision
+# before it is declined (fail closed).
+approval_wait_sec: 600

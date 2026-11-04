@@ -1,0 +1,37 @@
+{
+  "source_file": "../benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/frozen_gate_configuration.json",
+  "source_sha256": "fd396c22d8fd4235e748fb5e41c622b89d6ffd2c8a7b893d5d9e0f11eaa6768d",
+  "source_note": "Frozen gate from the Muse Code agent-harness rerun of Baseline v0 (benchmark/reports/MUSE_AGENTS_BASELINE_V1.md); fitted on dev+tuning only; first agent Spark 1.3, verifier Wonder 1.0",
+  "first_agent_model": "muse-spark-1.3",
+  "verifier_agent_model": "muse-wonder-1.0",
+  "gate": {
+    "escalate_high_risk": true,
+    "escalate_task_families": [],
+    "historical_task_family_error_ucb": {
+      "classification": 0.43448246478317465,
+      "code_understanding_debugging": 0.43448246478317465,
+      "critique": 0.8823792257673521,
+      "evidence_verification": 0.43448246478317465,
+      "logical_reasoning": 0.43448246478317465,
+      "mathematical_reasoning": 0.43448246478317465,
+      "numerical_reasoning": 0.43448246478317465,
+      "planning": 0.43448246478317465,
+      "structured_extraction": 0.43448246478317465,
+      "synthesis": 0.43448246478317465,
+      "tool_use_reasoning": 0.9637758913675698,
+      "uncertainty_abstention": 0.43448246478317465
+    },
+    "historical_error_ucb_threshold": 0.5,
+    "fitted_splits": [
+      "dev",
+      "tuning"
+    ],
+    "signals": [
+      "schema_or_constraint_failure",
+      "explicit_abstention",
+      "task_risk_level",
+      "historical_task_family_error_ucb",
+      "task_family"
+    ]
+  }
+}
