@@ -3,7 +3,7 @@ import { ApiError } from '@/noesis/api/client';
 import { labApi } from '@/noesis/api/lab';
 import type { LabActivity, LabExperiment, LabMode, LabRun, LabState } from '@/noesis/api/lab-types';
 import { useLab } from '@/noesis/lab/LabContext';
-import { sourceLabel, type SourceLabel } from './model';
+import { activityFinished, sourceLabel, type SourceLabel } from './model';
 
 /** Shape of the bundled recording at /recordings/demo.json (see docs/RECORDING_FORMAT.md). */
 export interface Recording {
@@ -223,7 +223,7 @@ export function useRun(): RunView {
     if (mode === 'live') {
       const kind = lab.source?.kind ?? 'live';
       const runStatus = lab.run?.status;
-      const running = runStatus ? runStatus === 'running' || runStatus === 'prepared' : kind === 'live' && lab.streaming;
+      const running = runStatus ? runStatus === 'running' || runStatus === 'prepared' : kind === 'live' && lab.streaming && !activityFinished(lab.activity);
       return {
         ...base, researchMode: lab.run?.mode ?? startMode, runRecord: lab.run,
         phase: lab.state ? (running ? 'running' : 'complete') : 'starting',

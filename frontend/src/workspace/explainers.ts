@@ -1,9 +1,11 @@
 /** Plain-language metric explanations. Formulas are quoted from the project's own documents. */
-export type MetricKey = 'entropy' | 'eig' | 'posterior' | 'cvar' | 'ci';
+export type MetricKey = 'entropy' | 'eig' | 'posterior' | 'cvar' | 'ci' | 'auroc' | 'rmst';
 
 export interface Explainer {
   title: string;
   plain: string;
+  /** One-sentence hover translation. */
+  short?: string;
   formula: string;
   /** The same formula in TeX, rendered with proper notation. */
   tex: string;
@@ -38,6 +40,22 @@ export const EXPLAINERS: Record<MetricKey, Explainer> = {
     formula: 'CVaR_α(L) = E[ L | L ≥ VaR_α(L) ]',
     tex: '\\mathrm{CVaR}_{\\alpha}(L) = \\mathbb{E}\\left[\\, L \\mid L \\ge \\mathrm{VaR}_{\\alpha}(L) \\,\\right]',
     source: { label: 'Financial mathematics §6 Downside risk', href: '/docs/FINANCIAL_MATH_AND_META_AGENT.md' },
+  },
+  auroc: {
+    title: 'AUROC (warning accuracy)',
+    short: 'How well a signal separates runs about to stagnate from healthy ones: 0.5 is a coin flip, 1.0 is perfect.',
+    plain: 'The chance that the warning signal ranks a run that is about to stagnate above a run that is not. 0.5 means no better than guessing; 1.0 means always right. The pre-registered tests compare AUROC with and without entropy features, out of sample.',
+    formula: 'AUROC = P(score(stagnating) > score(healthy))',
+    tex: '\\mathrm{AUROC} = P\\big(s(x^{+}) > s(x^{-})\\big)',
+    source: { label: 'Pre-registration · hypotheses (delta AUROC)', href: '/docs/prereg.yaml.txt' },
+  },
+  rmst: {
+    title: 'RMST (recovery time)',
+    short: 'Average number of generations a controller needed to recover after a shift, capped at a fixed horizon; lower is faster.',
+    plain: 'Restricted mean survival time: the mean recovery time up to a fixed horizon, keeping runs that never recovered as censored rather than dropping them. Lower means the controller recovered faster.',
+    formula: 'RMST(τ) = ∫_0^τ S(t) dt',
+    tex: '\\mathrm{RMST}(\\tau) = \\int_0^{\\tau} S(t)\\,dt',
+    source: { label: 'Glossary · RMST', href: '/docs/GLOSSARY.md' },
   },
   ci: {
     title: '95% confidence interval',

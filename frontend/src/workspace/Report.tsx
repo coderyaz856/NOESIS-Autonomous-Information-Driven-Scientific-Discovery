@@ -3,10 +3,11 @@ import { createPortal } from 'react-dom';
 import QRCode from 'qrcode';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { LabExperiment, LabState } from '@/noesis/api/lab-types';
+import type { LabActivity, LabExperiment, LabState } from '@/noesis/api/lab-types';
+import { AgentGraph } from './TraceConsole';
 import { CurveChart, FrontierChart } from './charts';
 import { EXPLAINERS } from './explainers';
-import { computeSaved, displayVerdict, experimentStatus, findingHeadline, fmtCI, tallyVerdicts, verdictStatus, type SourceLabel } from './model';
+import { agentDisplayName, computeSaved, displayVerdict, traceGraph, experimentStatus, findingHeadline, fmtCI, formatBudgetPercent, tallyVerdicts, verdictStatus, type SourceLabel } from './model';
 import { Expandable, IntervalBar, MetaFooter, MetricInfo, SectionTitle, StatusChip, TeX } from './parts';
 
 export const REPO_URL = 'https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery';
@@ -47,26 +48,27 @@ interface ReportProps {
   label?: SourceLabel | null;
   runId?: string | null;
   print?: boolean;
+  activity?: LabActivity[];
 }
 
 /** Screen report plus a print-only copy (light, paginated) used for "Download PDF". */
-// Desktop and mobile layouts each mount a Report; only the first one owns the print copy.
+// Desktop and mobile layouts may each mount a Report; exactly one (re-elected on unmount) owns the print copy.
 const printOwners: symbol[] = [];
+const ownerListeners = new Set<() => void>();
+const notifyOwners = () => ownerListeners.forEach((l) => l());
 
 export function Report(props: ReportProps) {
-  const [mounted, setMounted] = useState(false);
+  const [me] = useState(() => Symbol('report'));
   const [owner, setOwner] = useState(false);
   useEffect(() => {
-    const me = Symbol('report');
-    printOwners.push(me);
-    setOwner(printOwners[0] === me);
-    setMounted(true);
-    return () => { printOwners.splice(printOwners.indexOf(me), 1); };
-  }, []);
+    const update = () => setOwner(printOwners[0] === me);
+    printOwners.push(me); ownerListeners.add(update); notifyOwners();
+    return () => { printOwners.splice(printOwners.indexOf(me), 1); ownerListeners.delete(update); notifyOwners(); };
+  }, [me]);
   return (
     <>
       <ReportBody {...props} />
-      {mounted && owner && createPortal(<div className="print-root"><ReportBody {...props} print /></div>, document.body)}
+      {owner && createPortal(<div className="print-root"><ReportBody {...props} print /></div>, document.body)}
     </>
   );
 }
@@ -75,25 +77,30 @@ function PrintHeader({ label, runId }: { label?: SourceLabel | null | undefined;
   const [qr, setQr] = useState<string | null>(null);
   useEffect(() => { QRCode.toDataURL(REPO_URL, { margin: 0, width: 160 }).then(setQr).catch(() => setQr(null)); }, []);
   return (
-    <header className="mb-6 flex items-start justify-between gap-6 border-b pb-4">
-      <div>
-        <p className="mb-2 inline-block rounded-full border px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.15em]">Orchestrated by Omnigent | Powered by Meta Model API</p>
-        <p className="text-xs uppercase tracking-[0.2em]">Noesis · Evidence report</p>
-        <p className="mt-1 text-sm">Source: <strong>{label === 'LIVE' ? 'LIVE RUN' : 'RECORDED DEMONSTRATION'}</strong>{runId ? ` · run ${runId}` : ''}</p>
-        <p className="text-sm">Generated {new Date().toLocaleString()}</p>
+    <header className="print-cover mb-6 overflow-hidden rounded-xl">
+      <div className="flex items-start justify-between gap-6 p-5">
+        <div className="min-w-0">
+          <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.25em] opacity-80">Orchestrated by Omnigent · Powered by Meta Model API</p>
+          <p className="mt-2 font-display text-2xl font-semibold tracking-tight">Noesis <span className="font-normal opacity-80">Evidence report</span></p>
+          <div className="mt-3 flex flex-wrap gap-2 font-mono text-[9px] uppercase tracking-wider">
+            <span className="rounded-full border border-current px-2 py-0.5">{label === 'LIVE' ? 'Live run' : 'Recorded demonstration'}</span>
+            {runId && <span className="rounded-full border border-current px-2 py-0.5">{runId}</span>}
+            <span className="rounded-full border border-current px-2 py-0.5">{new Date().toLocaleString()}</span>
+          </div>
+        </div>
+        {qr && (
+          <figure className="shrink-0 rounded-md bg-[white] p-1.5 text-center">
+            <img src={qr} alt="QR code linking to the Noesis source code on GitHub" className="size-16" />
+            <figcaption className="mt-0.5 text-[7px] text-[black]">Source on GitHub</figcaption>
+          </figure>
+        )}
       </div>
-      {qr && (
-        <figure className="text-center">
-          <img src={qr} alt="QR code linking to the Noesis source code on GitHub" className="size-20" />
-          <figcaption className="mt-1 text-[9px]">Source code on GitHub</figcaption>
-        </figure>
-      )}
       {label !== 'LIVE' && <div className="print-stamp" aria-hidden>RECORDED DEMONSTRATION</div>}
     </header>
   );
 }
 
-function SummaryBox({ state, experiments }: { state: LabState; experiments: Record<string, LabExperiment> }) {
+function SummaryBox({ state, experiments, print = false }: { state: LabState; experiments: Record<string, LabExperiment>; print?: boolean }) {
   const saved = computeSaved(state.compute_seconds);
   const t = tallyVerdicts(experiments);
   const next = state.next_decision;
@@ -103,7 +110,7 @@ function SummaryBox({ state, experiments }: { state: LabState; experiments: Reco
       <div className="grid gap-5 sm:grid-cols-[auto_1fr] sm:items-center">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Compute saved</p>
-          <p className="font-mono text-6xl font-semibold leading-none text-primary tabular-nums">{saved === null ? '—' : `${Math.round(saved * 100)}%`}</p>
+          <p className="break-words font-mono text-4xl font-semibold leading-none text-primary tabular-nums">{saved === null ? '—' : formatBudgetPercent(saved)}</p>
           <p className="mt-2 font-mono text-xs text-muted-foreground">
             Budget {fmtSeconds(state.compute_seconds.budget)} vs. Noesis {fmtSeconds(state.compute_seconds.used)}
           </p>
@@ -114,7 +121,7 @@ function SummaryBox({ state, experiments }: { state: LabState; experiments: Reco
             <li><StatusChip status="failed" label={`${t.refuted} not supported`} /></li>
             <li><StatusChip status="uncertain" label={`${t.inconclusive} inconclusive`} /></li>
           </ul>
-          {next?.decision && <p className="text-sm leading-relaxed"><span className="text-muted-foreground">Next decision:</span> <strong>{next.decision}</strong></p>}
+          {!print && next?.decision && <p className="text-sm leading-relaxed"><span className="text-muted-foreground">Next decision:</span> <strong>{next.decision}</strong></p>}
           <p className="text-xs text-muted-foreground">Compute saved is the share of the pre-registered compute budget the lab did not need, from the lab's reported seconds.</p>
         </div>
       </div>
@@ -136,7 +143,7 @@ function fmtSeconds(s: number): string {
   return `${Math.round(s)} s`;
 }
 
-function ReportBody({ state, experiments, label, runId, print = false }: ReportProps) {
+function ReportBody({ state, experiments, label, runId, print = false, activity }: ReportProps) {
   const completed = state.completed.map((id) => ({ id, exp: experiments[id], cand: state.candidates.find((c) => c.id === id) }));
   const threats = Object.values(state.analyses).flatMap((a) => a.threats_to_validity);
   const next = state.next_decision;
@@ -160,11 +167,11 @@ function ReportBody({ state, experiments, label, runId, print = false }: ReportP
         )}
       </header>
 
-      <SummaryBox state={state} experiments={experiments} />
+      <SummaryBox state={state} experiments={experiments} print={print} />
 
       <section className="space-y-3">
         <SectionTitle n={1}>Question &amp; hypotheses</SectionTitle>
-        <p className="leading-relaxed">{state.question}</p>
+        {!print && <p className="leading-relaxed">{state.question}</p>}
         <ul className="space-y-2">
           {state.hypotheses.map((h) => (
             <li key={h.id} className="avoid-break rounded-lg border bg-card/60 p-3">
@@ -325,6 +332,8 @@ function ReportBody({ state, experiments, label, runId, print = false }: ReportP
         <MetaFooter />
       </section>
 
+      {print && activity && activity.length > 0 && <AgentTraceSection activity={activity} />}
+
       {print ? (
         <section className="space-y-3 page-break-before">
           <h3 className="font-display text-xl">Appendix · Metric definitions</h3>
@@ -365,5 +374,29 @@ function ReportBody({ state, experiments, label, runId, print = false }: ReportP
       </section>
       )}
     </article>
+  );
+}
+
+/** Print-only: who handed what to whom, from lab activity only. */
+function AgentTraceSection({ activity }: { activity: LabActivity[] }) {
+  const g = traceGraph(activity);
+  return (
+    <section className="page-break-before space-y-3">
+      <SectionTitle n={7}>Agent workflow &amp; traceability</SectionTitle>
+      <p className="text-sm text-muted-foreground">Each circle is an agent with the number of actions it took; arrows show work handed from one agent to another, as recorded in the lab's activity log.</p>
+      <div className="avoid-break mx-auto max-w-[150mm] rounded-xl bg-console p-3 text-console-foreground"><AgentGraph graph={g} selected={null} onSelect={() => {}} /></div>
+      {g.links.length > 0 && (
+        <table className="avoid-break w-full text-sm">
+          <thead><tr className="text-left text-xs text-muted-foreground"><th className="py-1 pr-3 font-normal">From</th><th className="py-1 pr-3 font-normal">To</th><th className="py-1 pr-3 font-normal">Handoffs</th><th className="py-1 font-normal">Work transmitted</th></tr></thead>
+          <tbody>{g.links.map((l) => (
+            <tr key={`${l.from}-${l.to}`} className="border-t align-top">
+              <td className="py-1 pr-3">{agentDisplayName(l.from)}</td><td className="py-1 pr-3">{agentDisplayName(l.to)}</td>
+              <td className="py-1 pr-3 font-mono tabular-nums">{l.count}</td><td className="py-1 text-xs">{l.titles.join('; ') || '—'}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+      )}
+      <p className="text-xs text-muted-foreground">{g.segments.length} work segments across {g.agents.length} agents. Full tool payloads are in the app's Traceability console.</p>
+    </section>
   );
 }

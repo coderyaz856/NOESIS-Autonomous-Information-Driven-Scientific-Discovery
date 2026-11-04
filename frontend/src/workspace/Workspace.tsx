@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, Bot, Hand, MessageSquare, RotateCcw, Settings2, Users, Wrench } from 'lucide-react';
+import { useEffect, useState, type FormEvent } from 'react';
+import { ArrowRight, RotateCcw, Settings2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -12,10 +12,15 @@ import logo from '@/assets/logo_neosis.png';
 import teamPicture from '@/assets/team-picture.jpeg';
 import { EXAMPLE_QUESTIONS } from './explainers';
 import { labApi } from '@/noesis/api/lab';
-import { AGENT_ROLE_LABEL, activityToSteps, agentRole, researchModeNote, spendText, type AgentRole, type Step } from './model';
-import { MetaBadge, MetaThinking, MetricInfo, SourceBadge, StatusChip } from './parts';
+import { activityToSteps, formatBudgetPercent, researchModeNote, spendText, type Step } from './model';
+import { MetricInfo, SourceBadge, StatusChip } from './parts';
 import { HypothesisStrip, Report } from './Report';
 import { useRun, type RunView } from './useRun';
+import { OrchestrationMap } from './OrchestrationMap';
+import { TraceConsole } from './TraceConsole';
+import { AgentBoard, HypothesisTrails } from './AgentBoard';
+import { Insights } from './Insights';
+import { PanelRightClose, PanelRightOpen, Printer } from 'lucide-react';
 
 export function Workspace() {
   return <LabProvider><Shell /></LabProvider>;
@@ -27,7 +32,7 @@ function Shell() {
   return (
     <div className="min-h-dvh">
       <Header />
-      <main id="main" className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
+      <main id="main" className={`mx-auto w-full px-3 pb-12 sm:px-4 ${idle ? 'max-w-6xl' : 'max-w-[96rem]'}`}>
         {idle ? <Ask run={run} /> : <RunWorkspace run={run} />}
       </main>
     </div>
@@ -247,12 +252,13 @@ function RunWorkspace({ run }: { run: RunView }) {
   const sinceEvent = useElapsed(run.lastEventAt);
   const quiet = run.phase === 'running' && sinceEvent > 20;
   const [tab, setTab] = useState('run');
+  const [consoleOpen, setConsoleOpen] = useState(true);
   useEffect(() => { if (run.phase === 'complete') setTab('report'); }, [run.phase]);
 
   return (
     <div className="pt-4">
       {/* Pinned question */}
-      <div className="sticky top-14 z-20 -mx-4 border-b bg-background/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+      <div className="sticky top-14 z-20 -mx-3 border-b bg-background/90 px-3 py-2 backdrop-blur sm:-mx-4 sm:px-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex flex-wrap items-center gap-2">
@@ -266,7 +272,13 @@ function RunWorkspace({ run }: { run: RunView }) {
             </div>
             <h1 className="line-clamp-2 font-display text-lg leading-snug sm:text-xl">{run.question ?? 'Starting…'}</h1>
           </div>
-          <Button variant="outline" className="min-h-11 gap-2" onClick={run.reset}><RotateCcw aria-hidden className="size-4" /> New question</Button>
+          <div role="toolbar" aria-label="Run actions" className="flex items-center gap-0.5 rounded-md border bg-surface-sunken/60 p-0.5">
+            <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2 text-xs" onClick={run.reset}><RotateCcw aria-hidden className="size-3.5" />New</Button>
+            {run.phase === 'complete' && <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2 text-xs" onClick={() => window.print()}><Printer aria-hidden className="size-3.5" />PDF</Button>}
+            <Button variant="ghost" size="sm" className="hidden h-8 gap-1.5 px-2 text-xs lg:inline-flex" aria-pressed={consoleOpen} onClick={() => setConsoleOpen((o) => !o)}>
+              {consoleOpen ? <PanelRightClose aria-hidden className="size-3.5" /> : <PanelRightOpen aria-hidden className="size-3.5" />}Console
+            </Button>
+          </div>
         </div>
         {run.substituted && (
           <p className="mt-2 rounded-md bg-recorded-soft px-3 py-2 text-xs text-foreground">
@@ -291,26 +303,43 @@ function RunWorkspace({ run }: { run: RunView }) {
 
       {(run.phase === 'running' || run.phase === 'complete') && run.state && (
         <>
-          {/* Desktop: two columns */}
-          <div className="mt-6 hidden gap-8 lg:grid lg:grid-cols-[minmax(0,22rem)_1fr]">
-            <aside aria-label="Run timeline" className="lg:sticky lg:top-40 lg:max-h-[calc(100dvh-11rem)] lg:overflow-y-auto">
-              <Timeline steps={steps} run={run} quiet={quiet} />
-            </aside>
-            <div className="min-w-0">
-              <MainPanel run={run} />
+          {/* Desktop: overview + traceability console */}
+          <div className={`mt-3 hidden gap-4 lg:grid ${consoleOpen ? 'lg:grid-cols-[minmax(0,1fr)_400px]' : 'lg:grid-cols-[minmax(0,1fr)_2.5rem]'}`}>
+            <div className="min-w-0 space-y-3">
+              <OrchestrationMap activity={run.activity} running={run.phase === 'running'} />
+              <div className="grid gap-4 xl:grid-cols-[18rem_minmax(0,1fr)]">
+                <aside aria-label="Run timeline" className="xl:sticky xl:top-36 xl:max-h-[calc(100dvh-10rem)] xl:overflow-y-auto">
+                  <Timeline steps={steps} run={run} quiet={quiet} />
+                </aside>
+                <div className="min-w-0 space-y-3">
+                  {run.phase === 'complete' && <Insights state={run.state} experiments={run.experiments} />}
+                  <MainPanel run={run} />
+                </div>
+              </div>
             </div>
+            <aside aria-label="Traceability console" className="print:hidden lg:sticky lg:top-32 lg:h-[calc(100dvh-9rem)]">
+              {consoleOpen ? <TraceConsole activity={run.activity} state={run.state} /> : (
+                <button type="button" onClick={() => setConsoleOpen(true)} className="flex h-full w-full items-start justify-center rounded-lg border bg-console pt-3 font-mono text-[10px] text-muted-foreground [writing-mode:vertical-rl]">Traceability console</button>
+              )}
+            </aside>
           </div>
           {/* Mobile: tabs */}
-          <Tabs value={tab} onValueChange={setTab} className="mt-4 lg:hidden">
-            <TabsList className="grid w-full grid-cols-2">
+          <Tabs value={tab} onValueChange={setTab} className="mt-3 lg:hidden">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="run" className="min-h-10">Live run</TabsTrigger>
               <TabsTrigger value="report" className="min-h-10">Report</TabsTrigger>
+              <TabsTrigger value="trace" className="min-h-10">Trace</TabsTrigger>
             </TabsList>
-            <TabsContent value="run" className="mt-4 space-y-6">
+            <TabsContent value="run" className="mt-3 space-y-4">
+              <OrchestrationMap activity={run.activity} running={run.phase === 'running'} />
               <HypothesisStrip state={run.state} />
               <Timeline steps={steps} run={run} quiet={quiet} />
             </TabsContent>
-            <TabsContent value="report" className="mt-4"><MainPanel run={run} /></TabsContent>
+            <TabsContent value="report" className="mt-3 space-y-3">
+              {run.phase === 'complete' && <Insights state={run.state} experiments={run.experiments} />}
+              <MainPanel run={run} />
+            </TabsContent>
+            <TabsContent value="trace" className="mt-3 h-[75dvh]"><TraceConsole activity={run.activity} state={run.state} /></TabsContent>
           </Tabs>
         </>
       )}
@@ -334,7 +363,8 @@ function MainPanel({ run }: { run: RunView }) {
             Compute used: {Math.round(run.state.compute_seconds.used)}s of {run.state.compute_seconds.budget}s budget.
           </p>
           <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-muted" role="progressbar" aria-label="Compute budget used"
-            aria-valuemin={0} aria-valuemax={run.state.compute_seconds.budget} aria-valuenow={Math.round(run.state.compute_seconds.used)}>
+            aria-valuemin={0} aria-valuemax={run.state.compute_seconds.budget} aria-valuenow={run.state.compute_seconds.used}
+            aria-valuetext={`${formatBudgetPercent(run.state.compute_seconds.used / run.state.compute_seconds.budget)} used`}>
             <div className="h-full bg-primary" style={{ width: `${Math.min(100, (run.state.compute_seconds.used / Math.max(1, run.state.compute_seconds.budget)) * 100)}%` }} />
           </div>
           {run.label === 'RECORDED' && <Button variant="secondary" className="mt-4 min-h-11" onClick={run.skipToEnd}>Skip to report</Button>}
@@ -342,74 +372,23 @@ function MainPanel({ run }: { run: RunView }) {
       </div>
     );
   }
-  return <Report state={run.state} experiments={run.experiments} label={run.label} runId={run.label === 'LIVE' ? lab.sourceId : null} />;
+  return <Report state={run.state} experiments={run.experiments} label={run.label} runId={run.label === 'LIVE' ? lab.sourceId : null} activity={run.activity} />;
 }
-
-const ROLE_CLS: Record<AgentRole, string> = {
-  insight: 'bg-recorded-soft text-recorded border-recorded/40',
-  planner: 'bg-running-soft text-running border-running/40',
-  runner: 'bg-uncertain-soft text-uncertain border-uncertain/40',
-  analysis: 'bg-success-soft text-success border-success/40',
-};
-
-/** Role badge (colour + text) with the lab's own agent name as its accessible title. */
-function AgentChip({ agent }: { agent: string }) {
-  const role = agentRole(agent);
-  return (
-    <span title={`Lab agent: ${agent}`} className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${ROLE_CLS[role]}`}>
-      {AGENT_ROLE_LABEL[role]}<span className="sr-only"> ({agent})</span>
-    </span>
-  );
-}
-
-const KIND_ICON = { handoff: Bot, tool: Wrench, approval: Hand, message: MessageSquare } as const;
-const KIND_LABEL = { handoff: 'Decision', tool: 'Tool / experiment', approval: 'Approval', message: 'Message' } as const;
 
 function Timeline({ steps, run, quiet }: { steps: Step[]; run: RunView; quiet: boolean }) {
-  const endRef = useRef<HTMLLIElement>(null);
-  useEffect(() => { if (run.phase === 'running') endRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, [steps.length, run.phase]);
-  const last = steps.length - 1;
   return (
-    <div>
-      <h2 className="mb-3 text-sm font-medium text-muted-foreground">What the agents are doing</h2>
-      {steps.length === 0 && run.phase === 'running' && <p className="text-sm text-muted-foreground">Waiting for the first agent action…</p>}
-      {steps.length === 0 && run.phase === 'complete' && <p className="text-sm text-muted-foreground">No agent activity was recorded for this run.</p>}
-      <ol className="relative space-y-3 border-l pl-5" aria-live="polite" aria-relevant="additions">
-        <span aria-hidden className="trace-flow pointer-events-none absolute -left-px top-0 h-full w-px" />
-        {steps.map((s, i) => {
-          const Icon = KIND_ICON[s.kind];
-          const current = run.phase === 'running' && i === last;
-          const role = agentRole(s.agent);
-          const meta = role === 'insight' || role === 'analysis';
-          return (
-            <li key={s.id} ref={i === last ? endRef : undefined} className="animate-step-in">
-              <span aria-hidden className={`absolute -left-[9px] mt-1 flex size-4 items-center justify-center rounded-full border bg-background ${current ? 'border-primary shadow-[0_0_12px_var(--primary)]' : ''}`}>
-                <span className={`size-1.5 rounded-full ${current ? 'bg-primary animate-pulse-dot' : 'bg-muted-foreground'}`} />
-              </span>
-              <div className={`glass rounded-lg p-3 ${current ? 'border-primary/50 bg-running-soft' : ''}`} aria-current={current ? 'step' : undefined}>
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="flex min-w-0 flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                    <Icon aria-hidden className="size-3.5 shrink-0" />
-                    <AgentChip agent={s.agent} />
-                    {meta && <MetaBadge />}
-                    <span className="truncate">{KIND_LABEL[s.kind]}</span>
-                  </span>
-                  {current && meta ? <MetaThinking /> : <StatusChip status={current && s.status === 'succeeded' ? 'running' : s.status} />}
-                </div>
-                <p className="mt-1 text-sm font-medium">{s.title}</p>
-                <details className="mt-1 text-xs text-muted-foreground">
-                  <summary className="cursor-pointer select-none line-clamp-2">{s.detail}</summary>
-                  <pre className="mt-2 max-h-60 overflow-auto whitespace-pre-wrap break-words font-mono">{s.detail}</pre>
-                </details>
-              </div>
-            </li>
-          );
-        })}
-      </ol>
+    <div className="space-y-4">
+      <div>
+        <h2 className="mb-2 text-sm font-medium text-muted-foreground">What each agent did</h2>
+        {steps.length === 0 && run.phase === 'running' && <p className="text-sm text-muted-foreground">Waiting for the first agent action…</p>}
+        {steps.length === 0 && run.phase === 'complete' && <p className="text-sm text-muted-foreground">No agent activity was recorded for this run.</p>}
+        {steps.length > 0 && <AgentBoard steps={steps} running={run.phase === 'running'} />}
+      </div>
+      {run.state && <HypothesisTrails state={run.state} experiments={run.experiments} />}
       <Approvals run={run} />
       {quiet && (
-        <p className="mt-4 rounded-md bg-uncertain-soft px-3 py-2 text-xs" role="status">
-          Still working — experiments can take several minutes. You can leave this page open; new steps will appear as they arrive.
+        <p className="rounded-md bg-uncertain-soft px-3 py-2 text-xs" role="status">
+          Still working — experiments can take several minutes. New steps will appear as they arrive.
         </p>
       )}
     </div>

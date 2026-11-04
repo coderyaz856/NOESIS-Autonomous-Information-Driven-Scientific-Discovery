@@ -43,20 +43,20 @@ export function MetricInfo({ metric, children }: { metric: MetricKey; children?:
   const e = EXPLAINERS[metric];
   return (
     <Dialog>
-      <DialogTrigger className="inline-flex min-h-6 items-center gap-1 rounded text-left text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground" aria-label={`What is ${e.title}?`}>
+      <DialogTrigger className="inline-flex min-h-6 items-center gap-1 rounded text-left text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground" aria-label={`What is ${e.title}?`} title={e.short ?? e.plain.split('. ')[0] + '.'}>
         {children ?? e.title}
         <Info aria-hidden className="size-3.5" />
       </DialogTrigger>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="font-display text-xl">{e.title}</DialogTitle>
-          <DialogDescription className="text-base leading-relaxed text-foreground/90">{e.plain}</DialogDescription>
+      <DialogContent className="flex max-h-[85dvh] w-[calc(100vw-2rem)] max-w-xl flex-col overflow-y-auto overflow-x-hidden rounded-lg">
+        <DialogHeader className="min-w-0 pr-6">
+          <DialogTitle className="font-display text-xl break-words">{e.title}</DialogTitle>
+          <DialogDescription className="text-base leading-relaxed break-words text-foreground/90">{e.plain}</DialogDescription>
         </DialogHeader>
-        <div className="rounded-lg border bg-surface-sunken p-3">
+        <div className="min-w-0 max-w-full overflow-x-auto rounded-lg border bg-surface-sunken p-3">
           <p className="mb-1 text-xs uppercase tracking-wider text-muted-foreground">Documented formula</p>
           <TeX tex={e.tex} block />
         </div>
-        <a href={e.source.href} target="_blank" rel="noreferrer" className="text-sm text-primary underline underline-offset-4">
+        <a href={e.source.href} target="_blank" rel="noreferrer" className="break-words text-sm text-primary underline underline-offset-4">
           Source: {e.source.label}
         </a>
       </DialogContent>
@@ -128,5 +128,5 @@ export function MetaFooter() {
 /** Render a TeX formula with KaTeX (works during server rendering too). */
 export function TeX({ tex, block = false }: { tex: string; block?: boolean }) {
   const html = katex.renderToString(tex, { displayMode: block, throwOnError: false, output: 'htmlAndMathml' });
-  return <span className={block ? 'block overflow-x-auto py-1 text-foreground' : 'text-foreground'} dangerouslySetInnerHTML={{ __html: html }} />;
+  return <span className={block ? 'block max-w-full overflow-x-auto overflow-y-hidden py-1 text-foreground [&_.katex-display]:my-1' : 'text-foreground'} dangerouslySetInnerHTML={{ __html: html }} />;
 }

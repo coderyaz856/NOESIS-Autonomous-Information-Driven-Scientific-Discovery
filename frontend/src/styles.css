@@ -47,6 +47,11 @@
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
   --color-surface-sunken: var(--surface-sunken);
+  --color-console: var(--console);
+  --color-console-foreground: var(--console-foreground);
+  --color-json-key: var(--json-key);
+  --color-json-string: var(--json-string);
+  --color-json-number: var(--json-number);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-failure: var(--failure);
@@ -100,6 +105,11 @@
   --input: oklch(1 0 0 / 16%);
   --ring: oklch(0.82 0.13 195);
   --surface-sunken: oklch(0.13 0.013 240);
+  --console: oklch(0.11 0.012 250);
+  --console-foreground: oklch(0.88 0.01 240);
+  --json-key: oklch(0.78 0.14 210);
+  --json-string: oklch(0.8 0.15 150);
+  --json-number: oklch(0.78 0.17 340);
   --success: oklch(0.8 0.13 160);
   --success-soft: oklch(0.8 0.13 160 / 14%);
   --failure: oklch(0.74 0.15 25);
@@ -238,13 +248,21 @@
     --recorded-soft: oklch(0.95 0.03 300);
     --neon-pink: oklch(0.55 0.22 350);
     --neon-cyan: oklch(0.5 0.12 220);
+    --glass: oklch(1 0 0);
+    --glow-border: oklch(0.85 0.005 260);
+    --card: oklch(0.985 0.003 260);
     background: var(--background);
     color: var(--foreground);
     font-size: 11pt;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .print-root * { box-shadow: none !important; }
+  .print-root * { box-shadow: none !important; backdrop-filter: none !important; }
+  .print-root .bg-console { --neon-cyan: oklch(0.8 0.14 210); --neon-pink: oklch(0.72 0.22 350); --muted-foreground: oklch(0.72 0.01 260); --border: oklch(0.4 0.01 260); }
+  .print-root .bg-console figure { border: none; background: none; }
+  .print-cover { background: linear-gradient(120deg, oklch(0.22 0.04 260), oklch(0.32 0.1 250) 60%, oklch(0.42 0.16 220)); color: oklch(0.98 0 0); }
+  .print-root h3 { border-left: 3px solid var(--primary); padding-left: 8px; }
+  .print-root table thead tr { background: var(--surface-sunken); }
   .print-root .avoid-break, .print-root figure, .print-root tr { break-inside: avoid; }
   .print-root .page-break-before { break-before: page; }
   .print-root h3, .print-root h4 { break-after: avoid; }
@@ -280,3 +298,8 @@
   animation: trace-flow 2.4s ease-in-out infinite;
 }
 @media print { .trace-flow { display: none; } }
+
+@keyframes edge-pulse { from { left: 0%; opacity: 1; } to { left: 100%; opacity: 0.2; } }
+@utility edge-pulse { animation: edge-pulse 1.2s ease-out 1; @media (prefers-reduced-motion: reduce) { animation: none; opacity: 0; } }
+
+@keyframes tg-dash { to { stroke-dashoffset: -18; } }

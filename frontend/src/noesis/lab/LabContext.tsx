@@ -29,6 +29,8 @@ export interface LabContextValue {
   refreshRun: () => void;
 }
 
+const TERMINAL = new Set(['completed', 'failed', 'interrupted', 'stopped']);
+
 const LabContext = createContext<LabContextValue | null>(null);
 
 const message = (reason: unknown) => (reason instanceof ApiError ? reason.message : String(reason));
@@ -46,6 +48,7 @@ export function LabProvider({ children }: { children: ReactNode }) {
   const [streaming, setStreaming] = useState(false);
   const [tick, setTick] = useState(0);
   const refetchTimer = useRef<number | null>(null);
+  const stopStream = useRef<(() => void) | null>(null);
   const [serverLabUrl, setServerLabUrl] = useState<string | null>(null);
   const [capabilities, setCapabilities] = useState<LabCapabilities | null>(null);
   const [session, setSession] = useState<LabSession | null>(null);
@@ -132,7 +135,9 @@ export function LabProvider({ children }: { children: ReactNode }) {
       },
       onError: () => setStreaming(false),
     });
+    stopStream.current = () => { unsubscribe(); setStreaming(false); stopStream.current = null; };
     return () => {
+      stopStream.current = null;
       unsubscribe();
       setStreaming(false);
       if (refetchTimer.current) window.clearTimeout(refetchTimer.current);
@@ -144,11 +149,19 @@ export function LabProvider({ children }: { children: ReactNode }) {
     setRun(null);
     if (!sourceId || status !== 'connected') return;
     let cancelled = false;
+    let id = 0;
     const fetchRun = () => labApi.run(baseUrl, sourceId).then((r) => {
-      if (!cancelled) setRun((r as { unsupported?: boolean }).unsupported || !r?.runtime ? null : r);
+      if (cancelled) return;
+      const rec = (r as { unsupported?: boolean }).unsupported || !r?.runtime ? null : r;
+      setRun(rec);
+      // A finished (or non-Muse) run never changes again: stop polling.
+      if (!rec || (rec.status && TERMINAL.has(rec.status))) {
+        window.clearInterval(id);
+        if (rec?.status && TERMINAL.has(rec.status)) stopStream.current?.();
+      }
     }).catch(() => undefined);
     fetchRun();
-    const id = window.setInterval(fetchRun, 5000);
+    id = window.setInterval(fetchRun, 5000);
     return () => { cancelled = true; window.clearInterval(id); };
   }, [baseUrl, sourceId, status, runTick]);
 

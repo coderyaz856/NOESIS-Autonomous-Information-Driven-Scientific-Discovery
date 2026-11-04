@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Apply scientific budget-percentage precision to report, insights, print and accessible progress text; test endpoint cases.
 - [x] Rename project to Noesis
 - [x] Connect the four lab views to the discovery-lab feed (live + recorded runs)
 - [x] Connection setting (local or pasted public address) and source picker
