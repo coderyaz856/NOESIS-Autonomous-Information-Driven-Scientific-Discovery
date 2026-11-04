@@ -32,6 +32,7 @@ export const labApi = {
     api.post<{ id: string; status: string }>(labUrl(base, 'approvals'), { source, id, decision }),
   /** The app server's write mode and this browser's operator session. The
    * session is an HttpOnly cookie, so page code never holds the token. */
+  config: () => api.get<{ lab_url: string | null; origins: string[] }>('/lab-proxy/config'),
   session: () => api.get<LabSession>('/lab-proxy/session'),
   signIn: (token: string) => api.post<LabSession>('/lab-proxy/session', { token }),
   signOut: () => api.delete<LabSession>('/lab-proxy/session'),
