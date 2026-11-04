@@ -1,4 +1,4 @@
-# Noesis lab backend image (`ghcr.io/coderyaz856/noesis-lab`)
+# Noesis lab backend image (`ghcr.io/saadqacif/noesis-lab`)
 
 This image runs the **Noesis lab backend**: the authenticated `/lab/*` bridge, the
 discolab lab (ledger, MCP tools, recorded runs) and Meta's Muse Code CLI. It is the
@@ -10,7 +10,7 @@ call the Meta Model API with **your own** Meta key and are billed to it.
 
 | | |
 | --- | --- |
-| Image | `ghcr.io/coderyaz856/noesis-lab` |
+| Image | `ghcr.io/saadqacif/noesis-lab` |
 | Release | see [Releases](#releases) for the version tag and its immutable digest |
 | Architecture | `linux/amd64` only (arm64 hosts need emulation, e.g. Docker Desktop on Apple silicon) |
 | Port | `7860` (HTTP; put HTTPS in front of it for anything public) |
@@ -37,7 +37,7 @@ files in the container's `/tmp`, removed from the bridge's environment, and neve
 Pin the release by digest (shown in [Releases](#releases)); a version tag works too.
 
 ```bash
-IMAGE=ghcr.io/coderyaz856/noesis-lab@sha256:<digest>
+IMAGE=ghcr.io/saadqacif/noesis-lab@sha256:<digest>
 docker pull "$IMAGE"
 
 # A fresh bridge token; keep it out of shell history and files you share.

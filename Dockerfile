@@ -1,5 +1,5 @@
 # Noesis lab backend: the authenticated /lab/* bridge, discolab and Muse Code.
-# Used by the Hugging Face Space and published as ghcr.io/coderyaz856/noesis-lab.
+# Used by the Hugging Face Space and published as ghcr.io/saadqacif/noesis-lab.
 # The browser UI is deployed separately. No secret is ever passed at build time:
 # META_API_KEY and NOESIS_BRIDGE_TOKEN are runtime environment variables only.
 FROM python:3.12-slim
