@@ -107,16 +107,21 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            sdk/rust/eigenbrains-sdk/target
-          key: cargo-${{ runner.os }}-${{ hashFiles('sdk/rust/eigenbrains-sdk/Cargo.toml', 'sdk/rust/eigenbrains-sdk/Cargo.lock') }}
+            sdk/rust/noesis-discovery/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('sdk/rust/noesis-discovery/Cargo.toml', 'sdk/rust/noesis-discovery/Cargo.lock') }}
+      - name: Crate protocol fixtures match sdk/protocol/v1
+        run: |
+          for f in schema.json contract-fixtures.json parity-fixtures.json; do
+            cmp "sdk/protocol/v1/$f" "sdk/rust/noesis-discovery/protocol/v1/$f"
+          done
       - name: fmt
-        run: cargo fmt --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml -- --check
+        run: cargo fmt --manifest-path sdk/rust/noesis-discovery/Cargo.toml -- --check
       - name: clippy
-        run: cargo clippy --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml --all-targets -- -D warnings
+        run: cargo clippy --manifest-path sdk/rust/noesis-discovery/Cargo.toml --all-targets -- -D warnings
       - name: test
         env:
           PYTHON: python
-        run: cargo test --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml
+        run: cargo test --manifest-path sdk/rust/noesis-discovery/Cargo.toml
 
   julia-sdk:
     name: Julia SDK

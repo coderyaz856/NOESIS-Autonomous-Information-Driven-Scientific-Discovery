@@ -1,9 +1,9 @@
 //! Independently recompute a Python-produced entropy artifact and record the
 //! result through the shared protocol-v1 evidence store.
 
-use eigenbrains_sdk::kernels::normalized_histogram_entropy;
-use eigenbrains_sdk::npy::read_f64;
-use eigenbrains_sdk::{
+use noesis_discovery::kernels::normalized_histogram_entropy;
+use noesis_discovery::npy::read_f64;
+use noesis_discovery::{
     ArtifactEmission, ArtifactSchema, BridgeConfig, MetricSpec, ResearchExperimentSpec,
 };
 use serde_json::{json, Value};
@@ -58,7 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let output = json!({
         "language": "rust",
-        "implementation": "eigenbrains_sdk::kernels::normalized_histogram_entropy",
+        "implementation": "noesis_discovery::kernels::normalized_histogram_entropy",
         "entropy": entropy,
         "python_reference": python_entropy,
         "abs_difference": difference,

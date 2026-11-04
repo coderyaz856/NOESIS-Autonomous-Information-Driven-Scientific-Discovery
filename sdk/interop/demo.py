@@ -98,7 +98,7 @@ def execute(root: Path, *, cargo: str, julia: str) -> dict[str, Any]:
             "--quiet",
             "--release",
             "--manifest-path",
-            str(REPOSITORY / "sdk" / "rust" / "eigenbrains-sdk" / "Cargo.toml"),
+            str(REPOSITORY / "sdk" / "rust" / "noesis-discovery" / "Cargo.toml"),
             "--example",
             "interop_audit",
             "--",

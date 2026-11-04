@@ -1,0 +1,151 @@
+# Coordinated SDK release: Python (PyPI), Rust (crates.io), Julia (GitHub Release).
+#
+#   workflow_dispatch  -> dry run: build all three packages, list their exact
+#                         contents in the job summary, upload nothing.
+#   push tag sdk-vX.Y.Z -> the same build, then publish. The tag must match the
+#                         version in all three manifests.
+#
+# PyPI uses trusted publishing (OIDC; no token is stored). crates.io needs the
+# CARGO_REGISTRY_TOKEN secret in the `crates-io` environment. No Meta key or
+# other secret is used by the build.
+name: release-sdk
+
+on:
+  push:
+    tags: ["sdk-v*.*.*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-sdk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and list the packages
+    if: github.repository_owner == 'coderyaz856'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Versions agree (and match the tag when publishing)
+        id: version
+        run: |
+          py=$(python -c 'import tomllib;print(tomllib.load(open("discolab/pyproject.toml","rb"))["project"]["version"])')
+          rs=$(python -c 'import tomllib;print(tomllib.load(open("sdk/rust/noesis-discovery/Cargo.toml","rb"))["package"]["version"])')
+          jl=$(python -c 'import tomllib;print(tomllib.load(open("sdk/julia/Project.toml","rb"))["version"])')
+          echo "python $py, rust $rs, julia $jl"
+          [ "$py" = "$rs" ] && [ "$rs" = "$jl" ] || { echo "::error::versions differ"; exit 1; }
+          if [ "${GITHUB_REF_TYPE}" = "tag" ] && [ "${GITHUB_REF_NAME}" != "sdk-v$py" ]; then
+            echo "::error::tag ${GITHUB_REF_NAME} does not match version $py"; exit 1
+          fi
+          echo "version=$py" >> "$GITHUB_OUTPUT"
+      - name: Rust protocol fixtures match sdk/protocol/v1
+        run: |
+          for f in schema.json contract-fixtures.json parity-fixtures.json; do
+            cmp "sdk/protocol/v1/$f" "sdk/rust/noesis-discovery/protocol/v1/$f"
+          done
+      - name: Python sdist and wheel
+        run: |
+          pip install build twine
+          python -m build discolab --outdir dist/python
+          twine check --strict dist/python/*
+      - name: Rust crate (packaged and compiled from the packaged sources)
+        run: |
+          rustup toolchain install stable --profile minimal && rustup default stable
+          cargo package --manifest-path sdk/rust/noesis-discovery/Cargo.toml
+          mkdir -p dist/rust && cp sdk/rust/noesis-discovery/target/package/*.crate dist/rust/
+      - name: Julia package archive
+        run: |
+          v=${{ steps.version.outputs.version }}
+          mkdir -p dist/julia
+          git archive --format=tar.gz --prefix="NoesisDiscovery-$v/" -o "dist/julia/NoesisDiscovery-$v.tar.gz" HEAD:sdk/julia
+      - name: Contents (job summary)
+        run: |
+          {
+            echo "## SDK ${{ steps.version.outputs.version }} package contents"
+            for f in dist/python/*.whl; do echo "### PyPI wheel \`$(basename "$f")\`"; echo '```'; python -m zipfile -l "$f" | awk 'NR>1{print $1}'; echo '```'; done
+            for f in dist/python/*.tar.gz dist/rust/*.crate dist/julia/*.tar.gz; do echo "### \`$(basename "$f")\`"; echo '```'; tar -tzf "$f"; echo '```'; done
+            echo "### SHA-256"; echo '```'; (cd dist && sha256sum */*); echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: sdk-packages
+          path: dist/
+          if-no-files-found: error
+
+  pypi:
+    name: Publish to PyPI
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: sdk-packages
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/python
+
+  crates:
+    name: Publish to crates.io
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    environment: crates-io
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: |
+          rustup toolchain install stable --profile minimal && rustup default stable
+          cargo publish --manifest-path sdk/rust/noesis-discovery/Cargo.toml
+
+  github-release:
+    name: GitHub Release (Julia package and all artifacts)
+    needs: [build, pypi, crates]
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: sdk-packages
+          path: dist
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          V: ${{ needs.build.outputs.version }}
+        run: |
+          (cd dist && sha256sum */* > SHA256SUMS)
+          cat > notes.md <<EOF
+          Noesis Discovery SDK $V: Python, Rust and Julia.
+
+          - Python: \`pip install noesis-discovery==$V\` (import name \`discolab\`)
+          - Rust: \`cargo add noesis-discovery@$V\`
+          - Julia: \`Pkg.add(url="https://github.com/${GITHUB_REPOSITORY}", subdir="sdk/julia", rev="${GITHUB_REF_NAME}")\`, then \`using NoesisDiscovery\`.
+            The package archive is attached below.
+
+          The Rust and Julia SDKs start the Python package as a sidecar (\`python -m discolab.rpc\`).
+          License: PolyForm Noncommercial 1.0.0. SHA-256 checksums are in SHA256SUMS.
+          EOF
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+            --title "Noesis Discovery SDK $V" --notes-file notes.md \
+            dist/python/* dist/rust/* dist/julia/* dist/SHA256SUMS

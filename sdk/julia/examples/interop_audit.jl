@@ -1,7 +1,7 @@
 # Independently recompute Python-produced AUROC evidence and record the result
 # through the same protocol-v1 evidence store.
 
-using EigenBrainsSDK
+using NoesisDiscovery
 using JSON
 
 length(ARGS) == 4 || error(
@@ -22,7 +22,7 @@ compute_seconds = (time_ns() - started) / 1e9
 difference = abs(estimate - Float64(reference["auroc"]))
 output = Dict{String,Any}(
     "language" => "julia",
-    "implementation" => "EigenBrainsSDK.auroc + clustered_auroc",
+    "implementation" => "NoesisDiscovery.auroc + clustered_auroc",
     "auroc" => estimate,
     "python_reference" => Float64(reference["auroc"]),
     "abs_difference" => difference,

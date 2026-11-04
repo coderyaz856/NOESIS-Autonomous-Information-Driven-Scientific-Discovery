@@ -44,7 +44,7 @@ where `discolab` is importable**: both start the Python sidecar
 clients, not independent runtimes.
 
 ```powershell
-cargo run --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml --example evidence -- study
+cargo run --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml --example evidence -- study
 julia --project=.\sdk\julia .\sdk\julia\examples\evidence.jl study
 ```
 
@@ -184,7 +184,7 @@ Tables validate each field's primitive type, nullability, range, and extra
 field policy. Arrays validate declared NumPy dtype and rank. Every artifact
 must use an output schema declared before execution. A derived or analysis
 artifact must identify at least one already-emitted parent. Rust reads float64
-arrays with `eigenbrains_sdk::npy::read_f64`.
+arrays with `noesis_discovery::npy::read_f64`.
 
 ## Evidence lifecycle
 
@@ -228,7 +228,7 @@ def long_search(run):
     run.emit.table(...)
     run.metric(...)
 
-long_search.resume("study", "RUN-...")     # or: eigenbrains-sdk --root study resume RUN-...
+long_search.resume("study", "RUN-...")     # or: noesis-discovery --root study resume RUN-...
 ```
 
 A checkpoint stores the evaluation count, the active elapsed time, the main and
@@ -307,17 +307,17 @@ and any run that does not validate inside the bundle.
 ## Command line
 
 ```powershell
-eigenbrains-sdk --root study list --status validated --since 2026-10-04T00:00:00Z
-eigenbrains-sdk --root study inspect RUN-ABC123
-eigenbrains-sdk --root study validate RUN-ABC123
-eigenbrains-sdk --root study compare RUN-ABC123 RUN-DEF456
-eigenbrains-sdk --root study accept RUN-ABC123 --rationale "registered checks passed"
-eigenbrains-sdk --root study reject RUN-DEF456 --reason "pilot, not part of the protocol"
-eigenbrains-sdk --root study reproduce RUN-ABC123
-eigenbrains-sdk --root study resume RUN-ABC123
-eigenbrains-sdk --root study lineage
-eigenbrains-sdk --root study export RUN-ABC123 RUN-DEF456 --out evidence.zip
-eigenbrains-sdk verify-bundle evidence.zip
+noesis-discovery --root study list --status validated --since 2026-10-04T00:00:00Z
+noesis-discovery --root study inspect RUN-ABC123
+noesis-discovery --root study validate RUN-ABC123
+noesis-discovery --root study compare RUN-ABC123 RUN-DEF456
+noesis-discovery --root study accept RUN-ABC123 --rationale "registered checks passed"
+noesis-discovery --root study reject RUN-DEF456 --reason "pilot, not part of the protocol"
+noesis-discovery --root study reproduce RUN-ABC123
+noesis-discovery --root study resume RUN-ABC123
+noesis-discovery --root study lineage
+noesis-discovery --root study export RUN-ABC123 RUN-DEF456 --out evidence.zip
+noesis-discovery verify-bundle evidence.zip
 ```
 
 Results are JSON on stdout with exit code 0. A failure is one JSON line on
@@ -337,7 +337,7 @@ traceback:
 ## Rust client
 
 ```rust
-use eigenbrains_sdk::{
+use noesis_discovery::{
     ArtifactEmission, ArtifactSchema, BridgeConfig, FieldSchema, MetricSpec,
     ResearchExperimentSpec,
 };
@@ -367,7 +367,7 @@ resumed from its last checkpoint.
 ## Julia client
 
 ```julia
-using EigenBrainsSDK
+using NoesisDiscovery
 
 spec = research_spec("optimization", "hypothesis", "protocols/v1.yaml";
     seed=2026,

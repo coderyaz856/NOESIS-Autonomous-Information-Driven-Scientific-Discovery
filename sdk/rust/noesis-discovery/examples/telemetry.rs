@@ -1,4 +1,4 @@
-use eigenbrains_sdk::kernels::normalized_histogram_entropy;
+use noesis_discovery::kernels::normalized_histogram_entropy;
 use std::time::Instant;
 
 fn main() {

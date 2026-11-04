@@ -649,9 +649,9 @@ mod tests {
     use super::*;
     use std::time::{SystemTime, UNIX_EPOCH};
 
-    const SCHEMA: &str = include_str!("../../../protocol/v1/schema.json");
-    const CONTRACTS: &str = include_str!("../../../protocol/v1/contract-fixtures.json");
-    const PARITY: &str = include_str!("../../../protocol/v1/parity-fixtures.json");
+    const SCHEMA: &str = include_str!("../protocol/v1/schema.json");
+    const CONTRACTS: &str = include_str!("../protocol/v1/contract-fixtures.json");
+    const PARITY: &str = include_str!("../protocol/v1/parity-fixtures.json");
 
     fn temp_root(tag: &str) -> PathBuf {
         let nonce = SystemTime::now()

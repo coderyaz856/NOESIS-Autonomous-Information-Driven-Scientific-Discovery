@@ -1,7 +1,7 @@
 # Record one validated evidence run from Julia:
 #   julia --project=sdk/julia sdk/julia/examples/evidence.jl <lab root>
 # The Python sidecar (`discolab`) must be importable by the selected Python.
-using EigenBrainsSDK
+using NoesisDiscovery
 
 root = isempty(ARGS) ? "study" : ARGS[1]
 client = open_client(root; python=get(ENV, "PYTHON", "python"), actor="julia-example")

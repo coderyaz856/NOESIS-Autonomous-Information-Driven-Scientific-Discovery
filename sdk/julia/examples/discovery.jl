@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate(joinpath(@__DIR__, ".."))
-using EigenBrainsSDK
+using NoesisDiscovery
 
 client = open_client(joinpath(@__DIR__, "..", "..", "..", "lab_home", "julia-demo"))
 try

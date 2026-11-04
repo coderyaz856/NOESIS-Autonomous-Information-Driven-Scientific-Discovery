@@ -121,7 +121,7 @@ only that test process the necessary write access.
 If dependencies are already cached, test without network:
 
 ```powershell
-cargo test --offline --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml
+cargo test --offline --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml
 ```
 
 If they are not cached, verify network and certificate configuration. Do not

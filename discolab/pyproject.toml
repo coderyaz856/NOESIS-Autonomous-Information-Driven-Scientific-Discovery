@@ -1,13 +1,38 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "discolab"
+# Distribution name on PyPI; the import name stays `discolab` (the Rust and Julia
+# SDKs start `python -m discolab.rpc`).
+name = "noesis-discovery"
 version = "0.1.0"
-description = "Dynamic-landscape evaluation environment and bio-inspired search baselines for studying evolutionary-search stagnation"
+description = "Noesis discovery lab SDK: hash-chained evidence runs, reproducible experiments and the discolab research lab"
+readme = "README_PYPI.md"
+license = "PolyForm-Noncommercial-1.0.0"
+license-files = ["LICENSE.md"]
+authors = [{ name = "Noesis contributors" }]
 requires-python = ">=3.12"
+keywords = ["scientific-discovery", "reproducibility", "evidence", "research-agents"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+]
 # The agent runtime is Muse Code (Meta's `muse` CLI), launched as an external
 # process; the lab only needs `mcp` to serve its deterministic tools to it.
 # The original Omnigent bundle (omnigent/lab_pi) stays runnable via the
 # optional `omnigent` extra.
 dependencies = ["numpy>=2", "scipy>=1.13", "pydantic>=2", "pyyaml>=6", "mcp>=1.2,<2", "httpx>=0.27"]
+
+[project.urls]
+Homepage = "https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery"
+Documentation = "https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/blob/main/docs/RESEARCH_SDK.md"
+Source = "https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery"
+
+[project.scripts]
+noesis-discovery = "discolab.sdk_cli:main"
 
 [tool.setuptools]
 # Explicit: the directory also holds omnigent/, results/ and scripts/, which

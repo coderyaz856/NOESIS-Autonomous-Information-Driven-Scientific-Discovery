@@ -2,7 +2,7 @@ using Test
 using JSON
 using Random
 using Statistics
-using EigenBrainsSDK
+using NoesisDiscovery
 
 const PROTOCOL = joinpath(@__DIR__, "..", "..", "protocol", "v1")
 fixture = JSON.parse(read(joinpath(PROTOCOL, "parity-fixtures.json"), String))

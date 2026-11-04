@@ -1,4 +1,16 @@
-# EigenBrains Julia SDK
+# Noesis Discovery — Julia SDK
+
+```julia
+# Python sidecar first: pip install noesis-discovery  (import name: discolab)
+using Pkg
+Pkg.add(url="https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery", subdir="sdk/julia", rev="sdk-v0.1.0")
+using NoesisDiscovery
+```
+
+Licensed under PolyForm Noncommercial 1.0.0 (free for research and other
+noncommercial use). Each release is also attached to the GitHub Release
+`sdk-v0.1.0` of the Noesis repository.
+
 
 A protocol-v1 client with structured remote errors, validated evidence
 contracts, and mathematical primitives. **A Python sidecar is required**:
@@ -34,5 +46,5 @@ and clustered uncertainty in the same evidence store.
 
 Tests check numerical parity with Python fixtures, the exact DeLong reduction,
 the clustered SE against a cluster bootstrap, method and contract parity, and a
-live bridge lifecycle. See [`../../docs/RESEARCH_SDK.md`](../../docs/RESEARCH_SDK.md).
+live bridge lifecycle. See [`docs/RESEARCH_SDK.md`](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/blob/main/docs/RESEARCH_SDK.md).
 Validated on Windows with Julia 1.13.1.

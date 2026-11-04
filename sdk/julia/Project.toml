@@ -1,6 +1,6 @@
-name = "EigenBrainsSDK"
+name = "NoesisDiscovery"
 uuid = "4a8fb1f2-1d9e-4f45-9c62-14eb44de1f37"
-authors = ["EigenBrains"]
+authors = ["Noesis contributors"]
 version = "0.1.0"
 
 [deps]

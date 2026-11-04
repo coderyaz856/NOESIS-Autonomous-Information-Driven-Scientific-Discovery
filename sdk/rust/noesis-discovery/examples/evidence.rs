@@ -1,6 +1,6 @@
 //! Record one validated evidence run from Rust:
 //! `cargo run --example evidence -- <lab root>` (needs `discolab` importable by Python).
-use eigenbrains_sdk::{
+use noesis_discovery::{
     ArtifactEmission, ArtifactSchema, BridgeConfig, FieldSchema, MetricSpec, ResearchExperimentSpec,
 };
 use serde_json::json;

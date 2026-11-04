@@ -1,4 +1,4 @@
-# EigenBrains SDK
+# Noesis Discovery SDK
 
 The SDK exposes the same validated research transitions used by the Omnigent
 agents. It is intentionally not a second implementation of the laboratory.
@@ -122,9 +122,9 @@ repeated measurements on the same inputs and machine; the
 cd discolab
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python -m pytest -q
 cd ..
-cargo fmt --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml --check
-cargo clippy --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml --all-targets -- -D warnings
-cargo test --manifest-path sdk/rust/eigenbrains-sdk/Cargo.toml
+cargo fmt --manifest-path sdk/rust/noesis-discovery/Cargo.toml --check
+cargo clippy --manifest-path sdk/rust/noesis-discovery/Cargo.toml --all-targets -- -D warnings
+cargo test --manifest-path sdk/rust/noesis-discovery/Cargo.toml
 julia --project=sdk/julia sdk/julia/test/runtests.jl
 ```
 

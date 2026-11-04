@@ -161,8 +161,8 @@ It creates a local `study/research-runs/` evidence tree. Inspect the returned
 run identifier with:
 
 ```powershell
-eigenbrains-sdk --root .\study inspect RUN-XXXXXXXXXXXX
-eigenbrains-sdk --root .\study validate RUN-XXXXXXXXXXXX
+noesis-discovery --root .\study inspect RUN-XXXXXXXXXXXX
+noesis-discovery --root .\study validate RUN-XXXXXXXXXXXX
 ```
 
 Use the actual identifier printed by the example.
@@ -170,10 +170,10 @@ Use the actual identifier printed by the example.
 ## Rust SDK
 
 ```powershell
-cargo fmt --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml -- --check
-cargo clippy --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml --all-targets -- -D warnings
-cargo test --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml
-cargo run --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml --example evidence -- .\study-rust
+cargo fmt --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml -- --check
+cargo clippy --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml --all-targets -- -D warnings
+cargo test --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml
+cargo run --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml --example evidence -- .\study-rust
 ```
 
 The Rust client launches the Python bridge. Ensure `discolab` is installed in

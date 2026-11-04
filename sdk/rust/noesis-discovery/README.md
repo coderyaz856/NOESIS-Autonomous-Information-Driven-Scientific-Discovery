@@ -1,4 +1,12 @@
-# EigenBrains Rust SDK
+# Noesis Discovery — Rust SDK
+
+```bash
+pip install noesis-discovery      # the Python sidecar (import name: discolab)
+cargo add noesis-discovery        # this crate (Rust path: noesis_discovery)
+```
+
+Licensed under PolyForm Noncommercial 1.0.0 (free for research and other
+noncommercial use). Source and docs: <https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery>.
 
 A typed client for the versioned local Python bridge plus native numerical
 kernels. **A Python sidecar is required**: the client starts
@@ -29,7 +37,7 @@ cargo run --example evidence -- study
 cargo run --release --example interop_audit -- <root> <population.npy> <reference.json> <protocol> <discolab-source>
 ```
 
-Tests check method and contract parity against `sdk/protocol/v1`, reject every
+Tests check method and contract parity against `protocol/v1` (a copy of the repository's `sdk/protocol/v1`), reject every
 invalid fixture spec, and run a live bridge covering scoped runs, failures,
 listing, checkpoint/resume across bridge processes, decisions and bundles.
 The `telemetry` example is a local timing harness, not a published benchmark.

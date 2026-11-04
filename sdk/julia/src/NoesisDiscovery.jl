@@ -1,4 +1,4 @@
-module EigenBrainsSDK
+module NoesisDiscovery
 
 using JSON
 using Distributions

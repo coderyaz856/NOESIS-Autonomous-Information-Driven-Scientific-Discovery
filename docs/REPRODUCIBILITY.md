@@ -187,8 +187,8 @@ Evidence files should be created exclusively. If a run is wrong:
 Inspect first:
 
 ```powershell
-eigenbrains-sdk --root .\study inspect RUN-XXXXXXXXXXXX
-eigenbrains-sdk --root .\study validate RUN-XXXXXXXXXXXX
+noesis-discovery --root .\study inspect RUN-XXXXXXXXXXXX
+noesis-discovery --root .\study validate RUN-XXXXXXXXXXXX
 ```
 
 Check:
@@ -203,13 +203,13 @@ Check:
 Then reproduce:
 
 ```powershell
-eigenbrains-sdk --root .\study reproduce RUN-XXXXXXXXXXXX
+noesis-discovery --root .\study reproduce RUN-XXXXXXXXXXXX
 ```
 
 Compare the original and reproduced run:
 
 ```powershell
-eigenbrains-sdk --root .\study compare RUN-ORIGINAL RUN-REPRODUCED
+noesis-discovery --root .\study compare RUN-ORIGINAL RUN-REPRODUCED
 ```
 
 Deterministic artifacts should match byte-for-byte. Floating-point experiments

@@ -43,9 +43,9 @@ python -m pytest -q --basetemp $testRoot
 
 # Rust SDK
 cd ..
-cargo fmt --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml -- --check
-cargo clippy --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml --all-targets -- -D warnings
-cargo test --manifest-path .\sdk\rust\eigenbrains-sdk\Cargo.toml
+cargo fmt --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml -- --check
+cargo clippy --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml --all-targets -- -D warnings
+cargo test --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml
 
 # Julia SDK
 julia --project=.\sdk\julia -e 'using Pkg; Pkg.instantiate(); Pkg.test()'

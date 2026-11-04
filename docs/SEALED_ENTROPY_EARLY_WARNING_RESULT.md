@@ -284,7 +284,7 @@ the original input paths (deviation 4), so a fresh rerun is the portable route.
 
 Every run records the protocol SHA-256, its spec, inputs (with SHA-256),
 runner source hash, environment, and a hash-chained event log; lineage
-between runs follows input hashes (`eigenbrains-sdk lineage`).
+between runs follows input hashes (`noesis-discovery lineage`).
 
 ## 13. What EigenBrains decided should not be claimed
 

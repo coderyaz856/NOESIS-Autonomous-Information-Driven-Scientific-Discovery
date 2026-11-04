@@ -47,7 +47,7 @@ def _print(value: Any) -> None:
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = _Parser(prog="eigenbrains-sdk", description=__doc__,
+    parser = _Parser(prog="noesis-discovery", description=__doc__,
                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--root", default=".", help="research project root")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_Parser)
