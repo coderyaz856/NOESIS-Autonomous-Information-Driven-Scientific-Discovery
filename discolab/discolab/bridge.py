@@ -118,8 +118,11 @@ def resolve_source(source: str) -> Path:
     parts = Path(source).parts
     if len(parts) != 2 or parts[0] not in ALLOWED or parts[1] in ("..", "."):
         raise ValueError("source must be lab_home/<name> or results/<name>")
-    p = (ROOT / source).resolve()
-    if ROOT.resolve() not in p.parents or not (p / "ledger.jsonl").exists():
+    # Contain the run inside its own resolved base, not ROOT: in the container
+    # lab_home is a link to persistent storage (/data/lab_home), outside ROOT.
+    base = (ROOT / parts[0]).resolve()
+    p = (base / parts[1]).resolve()
+    if base not in p.parents or not (p / "ledger.jsonl").exists():
         raise ValueError(f"no ledger at {source}")
     return p
 
