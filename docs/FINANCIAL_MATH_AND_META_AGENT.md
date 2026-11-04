@@ -270,7 +270,14 @@ whether the system buys another model call or another block of experimental
 samples. Both policies expose the gate, rescue, damage, cost, latency/work, and
 agreement needed to audit the decision.
 
-## 12. Measured model and architecture results
+## 12. Historical non-Meta model and architecture results
+
+The results in this section describe the original frozen protocol. Their
+non-Meta raw-result bundle is not shipped in this checkout; do not present
+these numbers as current Meta-agent performance. For the retained Meta-only
+measurements and raw observations, see
+[`MUSE_AGENTS_BASELINE_V1.md`](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)
+and [`muse_agents_baseline_v1/`](../benchmark/muse_agents_baseline_v1/).
 
 ### Single-model operational evidence
 
@@ -315,8 +322,7 @@ The provider-backed confirmation made seven verifier calls for `S3` and seven fo
 - The benchmark does not establish performance on a new domain.
 - The measured GPT-OSS/Qwen gate should not be generalized into a universal architecture rule.
 
-The complete frozen results are in Architecture Baseline v0's historical
-ledger file, `benchmark/reports/PRECHALLENGE_BASELINE_V0.md`, and the
-machine-readable summary is in
-`benchmark/artifacts/baseline_v0/baseline_v0_summary.json`. The legacy filename
-is retained to preserve evidence identity; it is not current product wording.
+The historical non-Meta result files remain recoverable from repository
+history but are intentionally absent from the current checkout. The retained
+Meta-agent rerun uses the same frozen benchmark cases and scoring contract;
+its report distinguishes offline replay from provider-backed verification.

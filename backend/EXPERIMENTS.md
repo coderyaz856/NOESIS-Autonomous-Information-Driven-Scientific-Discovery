@@ -138,9 +138,11 @@ cd F:\hack7\backend
 python -m app.benchmark.baseline_cli --runs ..\benchmark\artifacts\recorded-runs.jsonl --benchmark-root ..\benchmark --benchmark-version generic-prior-v0 --benchmark-date 2026-10-03 --split dev --confidence-level 0.95 --bootstrap-resamples 2000 --seed 0 --lower-percentile 0.1 --severe-failure-threshold 0.2 --failure-threshold 0.5 --prior-strength 2 --maximum-prior-strength 5 --correlation-penalty 1
 ```
 
-The command creates the following scrubbed artifacts under
-`benchmark/artifacts/baseline_v0/`, plus the report under
-`benchmark/reports/`:
+When this legacy exporter is run locally, the command creates the following
+scrubbed artifacts under `benchmark/artifacts/baseline_v0/`, plus a report under
+`benchmark/reports/`. These historical non-Meta outputs are not included in
+the current checkout; the retained Meta evidence is under
+`benchmark/muse_agents_baseline_v1/`:
 
 ```text
 raw_runs.jsonl
@@ -179,11 +181,11 @@ cd F:\hack7\backend
 python -m app.benchmark.baseline_plan_cli --benchmark-root ..\benchmark --protocol ..\benchmark\configs\prechallenge_baseline_v0.json --pricing ..\benchmark\configs\pricing_v0.json
 ```
 
-The approval report is written to
-`benchmark/reports/PRECHALLENGE_BASELINE_BUDGET.md`. The compact S0-S4 study
-centers Qwen-first selective GPT-OSS escalation rather than exhaustively
-running A0-A6. The evidence-first demo contract lives in
-`benchmark/reports/EVIDENCE_FIRST_DEMO.md`.
+The legacy planning command can regenerate its budget report locally. The
+historical Qwen-first selective GPT-OSS study and its demo contract are not
+shipped as current reports. For the retained Meta-only S0-S4 study, see
+`benchmark/reports/MUSE_AGENTS_BASELINE_V1.md` and its raw bundle under
+`benchmark/muse_agents_baseline_v1/`.
 
 ## Credential boundary
 

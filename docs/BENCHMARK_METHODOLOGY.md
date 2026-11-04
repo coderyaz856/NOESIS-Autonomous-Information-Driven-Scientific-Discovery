@@ -1,5 +1,11 @@
 # Benchmark methodology
 
+> This document records the frozen generic protocol that the Meta Muse studies
+> reused. Historical non-Meta result bundles and reports are no longer shipped
+> in this checkout. For the current measured results, read the
+> [Muse Code agent report](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)
+> and its [raw evidence bundle](../benchmark/muse_agents_baseline_v1/).
+
 Architecture Baseline v0 is a controlled, provider-backed experiment designed to answer a narrow systems question:
 
 > Can paired model evidence support a selective multi-model policy that preserves useful quality while reducing the cost and latency of always consulting two models?
@@ -126,45 +132,37 @@ The baseline records:
 
 Wilson intervals are used for proportions. Mean quantities and paired differences use deterministic percentile bootstrap intervals with 2,000 resamples. Paired binary comparisons use exact McNemar tests where applicable. Covariance uses paired cases and a `0.25` diagonal-shrinkage sensitivity view.
 
-## Reproducing analysis without provider calls
+## Checking the frozen method without provider calls
 
-The existing observations can be inspected and rendered without contacting a provider:
-
-```powershell
-Push-Location .\backend
-python -m app.benchmark.baseline_execute --root .. --render-existing-summary
-Pop-Location
-```
-
-The offline test suite is:
+The retained Muse observations and summaries live beneath
+`benchmark/muse_agents_baseline_v1/benchmark/` and
+`benchmark/muse_baseline_v1/benchmark/`. Do not run the live benchmark module
+again: the frozen output directories already exist, and the runner refuses to
+overwrite them. The scoring and split-guard tests are offline:
 
 ```powershell
 Push-Location .\backend
 $env:PYTHONPATH='.'
 $testRoot = Join-Path (Resolve-Path ..) '.pytest-eigenbrains'
-python -m pytest tests -q --basetemp $testRoot
+python -m pytest tests/test_baseline_v0.py tests/test_pilot.py -q --basetemp $testRoot
 Pop-Location
 ```
 
-Do not execute the live baseline module again: the frozen output directory exists, and the runner intentionally refuses to overwrite it or duplicate calls.
-
-## Evidence artifacts
+## Retained Meta evidence artifacts
 
 | Artifact | Meaning |
 |---|---|
-| `benchmark/artifacts/baseline_v0/raw_single_model_runs.jsonl` | 216 normalized core observations. |
-| `benchmark/artifacts/baseline_v0/frozen_gate_configuration.json` | Gate fitted before held-out evaluation. |
-| `benchmark/artifacts/baseline_v0/offline_replay_dev_tuning.jsonl` | Development/tuning replay observations. |
-| `benchmark/artifacts/baseline_v0/offline_replay_held_out.jsonl` | Final held-out S0–S4 replay observations. |
-| `benchmark/artifacts/baseline_v0/provider_backed_verifier_held_out.jsonl` | Provider-backed selective-policy results. |
-| `benchmark/artifacts/baseline_v0/baseline_v0_summary.json` | Complete machine-readable analysis. |
-| `benchmark/artifacts/baseline_v0/weak_priors.json` | Bounded priors for later updating. |
-| `benchmark/cases/pre_challenge_baseline_v0_manifest.json` | Frozen protocol, authorization, hashes, and execution ledger. |
-| `benchmark/reports/PRECHALLENGE_BASELINE_V0.md` | Evidence-first human-readable report. |
+| `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/raw_single_model_runs.jsonl` | 216 Muse Code agent observations on the paired core cases. |
+| `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/frozen_gate_configuration.json` | Gate fixed before held-out evaluation. |
+| `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/offline_replay_held_out.jsonl` | Held-out replay, not new agent execution. |
+| `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/provider_backed_verifier_held_out.jsonl` | Actual selective verifier calls. |
+| `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/baseline_v0_summary.json` | Machine-readable Meta-agent analysis. |
+| `benchmark/muse_agents_baseline_v1/benchmark/cases/pre_challenge_baseline_v0_manifest.json` | Frozen Muse-agent protocol and observation hashes. |
+| `benchmark/reports/MUSE_AGENTS_BASELINE_V1.md` | Human-readable Muse Code agent report. |
 
-The legacy `pre_challenge`/`PRECHALLENGE` filenames in the final two rows are
-immutable identifiers in the frozen evidence ledger; they are not the current
-name of the study. Product-facing language uses “Architecture Baseline v0.”
+The nested `baseline_v0` and `pre_challenge` names are immutable protocol
+identifiers inherited by the rerun; the observations in this bundle are Meta
+Muse observations, not the removed historical provider results.
 
 ## Limitations
 
