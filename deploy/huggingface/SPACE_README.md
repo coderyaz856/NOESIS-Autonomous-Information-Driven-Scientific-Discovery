@@ -6,6 +6,9 @@ colorTo: blue
 sdk: docker
 app_port: 7860
 pinned: false
+license: other
+license_name: polyform-noncommercial-1.0.0
+license_link: https://polyformproject.org/licenses/noncommercial/1.0.0
 ---
 
 # Noesis Scientific Lab Bridge

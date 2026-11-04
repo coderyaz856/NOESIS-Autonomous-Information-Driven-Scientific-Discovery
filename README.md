@@ -4,7 +4,8 @@
 
 # Noesis
 
-[![Docker Space backend](https://img.shields.io/badge/Docker-Space%20backend-2496ED?logo=docker&logoColor=white)](deploy/huggingface/README.md)
+[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE.md)
+[![Lab backend: Hugging Face Docker Space](https://img.shields.io/badge/lab%20backend-Hugging%20Face%20Docker%20Space-FFD21E?logo=huggingface&logoColor=black)](deploy/huggingface/README.md)
 
 > **Predicting the unpredictable. Accelerating breakthroughs through autonomous, agent-driven discovery loops.**
 
@@ -738,3 +739,10 @@ It learns how to **ask better questions, design better experiments, interpret ev
 ---
 
 **Built by Team EigenBrains · Meta Global AI Developer Hackathon, Indie track**
+
+## License
+
+Noesis is released under the [PolyForm Noncommercial License 1.0.0](LICENSE.md):
+free to use, study, modify and share for research, teaching, personal and other
+noncommercial purposes. Commercial use is not permitted without a separate license
+from the authors.
