@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ApiError } from '../api/client';
 import { LAB_URL_KEY, labApi } from '../api/lab';
-import type { LabActivity, LabSource, LabState, LedgerEvent } from '../api/lab-types';
+import type { LabActivity, LabCapabilities, LabRun, LabSession, LabSource, LabState, LedgerEvent } from '../api/lab-types';
 import { subscribeSSE } from '../api/sse';
 
 export type LabStatus = 'checking' | 'connected' | 'offline';
@@ -20,6 +20,13 @@ export interface LabContextValue {
   ledger: LedgerEvent[];
   streaming: boolean;
   refresh: () => void;
+  /** Lab address configured on the server, if any. */
+  serverLabUrl: string | null;
+  capabilities: LabCapabilities | null;
+  session: LabSession | null;
+  setSession: (s: LabSession) => void;
+  run: LabRun | null;
+  refreshRun: () => void;
 }
 
 const LabContext = createContext<LabContextValue | null>(null);
@@ -39,10 +46,22 @@ export function LabProvider({ children }: { children: ReactNode }) {
   const [streaming, setStreaming] = useState(false);
   const [tick, setTick] = useState(0);
   const refetchTimer = useRef<number | null>(null);
+  const [serverLabUrl, setServerLabUrl] = useState<string | null>(null);
+  const [capabilities, setCapabilities] = useState<LabCapabilities | null>(null);
+  const [session, setSession] = useState<LabSession | null>(null);
+  const [run, setRun] = useState<LabRun | null>(null);
+  const [runTick, setRunTick] = useState(0);
 
   useEffect(() => {
-    setBaseUrlState(window.localStorage.getItem(LAB_URL_KEY) ?? (import.meta.env['VITE_LAB_URL'] as string | undefined) ?? '');
-    setReady(true);
+    labApi.session().then(setSession).catch(() => setSession(null));
+    labApi.config().then((c) => c.lab_url, () => null).then((serverUrl) => {
+      setServerLabUrl(serverUrl);
+      const saved = window.localStorage.getItem(LAB_URL_KEY);
+      // A saved address only counts if the server still relays to it.
+      const usable = saved && serverUrl ? saved : null;
+      setBaseUrlState(usable ?? serverUrl ?? saved ?? (import.meta.env['VITE_LAB_URL'] as string | undefined) ?? '');
+      setReady(true);
+    });
   }, []);
 
   const setBaseUrl = useCallback((url: string) => {
@@ -59,10 +78,18 @@ export function LabProvider({ children }: { children: ReactNode }) {
     setStatus('checking');
     labApi.sources(baseUrl).then((res) => {
       if (cancelled) return;
+      if ((res as { offline?: boolean })?.offline) {
+        setStatus('offline');
+        setSources([]);
+        setSourceId(null);
+        setError(null);
+        return;
+      }
       const list = Array.isArray(res?.sources) ? res.sources : [];
       setSources(list);
       setStatus('connected');
       setError(null);
+      labApi.capabilities(baseUrl).then((c) => setCapabilities((c as { unsupported?: boolean }).unsupported ? null : c)).catch(() => setCapabilities(null));
       setSourceId((current) => current && list.some((s) => s.id === current)
         ? current
         : (list.find((s) => s.kind === 'live') ?? list[list.length - 1])?.id ?? null);
@@ -93,9 +120,10 @@ export function LabProvider({ children }: { children: ReactNode }) {
     load(sourceId);
     setStreaming(true);
     const unsubscribe = subscribeSSE(labApi.streamUrl(baseUrl, sourceId), {
-      events: ['ledger', 'agent', 'heartbeat'],
+      events: ['ledger', 'agent', 'run', 'heartbeat'],
       onEvent: (name, data) => {
         if (name === 'agent') setActivity((current) => [...current, data as LabActivity]);
+        if (name === 'run') setRunTick((n) => n + 1);
         if (name === 'ledger') {
           setLedger((current) => [...current.slice(-199), data as LedgerEvent]);
           if (refetchTimer.current) window.clearTimeout(refetchTimer.current);
@@ -111,6 +139,19 @@ export function LabProvider({ children }: { children: ReactNode }) {
     };
   }, [baseUrl, load, sourceId, status]);
 
+  // Muse Code run record (status, spend, approvals) for the selected source.
+  useEffect(() => {
+    setRun(null);
+    if (!sourceId || status !== 'connected') return;
+    let cancelled = false;
+    const fetchRun = () => labApi.run(baseUrl, sourceId).then((r) => {
+      if (!cancelled) setRun((r as { unsupported?: boolean }).unsupported || !r?.runtime ? null : r);
+    }).catch(() => undefined);
+    fetchRun();
+    const id = window.setInterval(fetchRun, 5000);
+    return () => { cancelled = true; window.clearInterval(id); };
+  }, [baseUrl, sourceId, status, runTick]);
+
   const value = useMemo<LabContextValue>(() => ({
     baseUrl,
     setBaseUrl,
@@ -125,7 +166,9 @@ export function LabProvider({ children }: { children: ReactNode }) {
     ledger,
     streaming,
     refresh: () => setTick((n) => n + 1),
-  }), [activity, baseUrl, error, ledger, setBaseUrl, sourceId, sources, state, status, streaming]);
+    serverLabUrl, capabilities, session, setSession, run,
+    refreshRun: () => setRunTick((n) => n + 1),
+  }), [activity, baseUrl, capabilities, error, ledger, run, serverLabUrl, session, setBaseUrl, sourceId, sources, state, status, streaming]);
 
   return <LabContext.Provider value={value}>{children}</LabContext.Provider>;
 }

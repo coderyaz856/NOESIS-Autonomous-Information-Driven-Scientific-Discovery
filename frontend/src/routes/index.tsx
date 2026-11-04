@@ -1,20 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import App from "../noesis/App";
+import { Workspace } from "@/workspace/Workspace";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Noesis — Agentic Scientific Discovery" },
-      { name: "description", content: "An inspectable Omnigent-orchestrated loop from scientific question to evidence, experiment, result, and updated decision." },
-      { property: "og:title", content: "Noesis — Agentic Scientific Discovery" },
-      { property: "og:description", content: "An inspectable Omnigent-orchestrated scientific discovery loop." },
+      { title: "Noesis — Ask a question, get the evidence" },
+      { name: "description", content: "Enter a falsifiable research question, watch AI agents design and run experiments, and read an evidence-backed report." },
+      { property: "og:title", content: "Noesis — Ask a question, get the evidence" },
+      { property: "og:description", content: "Watch agents run experiments on your research question and read a clear, evidence-backed report." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Index,
+  component: Workspace,
 });
-
-function Index() {
-  return <App />;
-}

@@ -1,0 +1,37 @@
+[
+ {
+  "capability": "frontend code",
+  "source": "frontend/",
+  "outcome": "migrate",
+  "status": "done",
+  "next_action": null
+ },
+ {
+  "capability": "database/records",
+  "source": "none",
+  "outcome": "n/a",
+  "status": "verified-absent",
+  "next_action": null
+ },
+ {
+  "capability": "auth",
+  "source": "none",
+  "outcome": "n/a",
+  "status": "verified-absent",
+  "next_action": null
+ },
+ {
+  "capability": "lab feed relay",
+  "source": "src/routes/lab-proxy.$.ts",
+  "outcome": "preserve",
+  "status": "done",
+  "next_action": "set NOESIS_LAB_ORIGINS + NOESIS_BRIDGE_TOKEN; host lab with --enable-runs --require-auth"
+ },
+ {
+  "capability": "Python backend + discolab + SDKs",
+  "source": "backend/, discolab/, sdk/",
+  "outcome": "external",
+  "status": "pending",
+  "next_action": "Python cannot run in Lovable; host separately and connect via lab URL"
+ }
+]

@@ -1,7 +1,6 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import "./noesis/index.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,6 +46,23 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-failure: var(--failure);
+  --color-failure-soft: var(--failure-soft);
+  --color-uncertain: var(--uncertain);
+  --color-uncertain-soft: var(--uncertain-soft);
+  --color-running: var(--running);
+  --color-running-soft: var(--running-soft);
+  --color-recorded: var(--recorded);
+  --color-recorded-soft: var(--recorded-soft);
+  --font-display: "Geist", system-ui, sans-serif;
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-neon-pink: var(--neon-pink);
+  --color-neon-cyan: var(--neon-cyan);
+  --shadow-panel: var(--shadow-panel);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -63,26 +79,45 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --radius: 0.75rem;
+  --background: oklch(0.16 0.015 240);
+  --foreground: oklch(0.95 0.008 220);
+  --card: oklch(0.2 0.018 240);
+  --card-foreground: oklch(0.95 0.008 220);
+  --popover: oklch(0.22 0.02 240);
+  --popover-foreground: oklch(0.95 0.008 220);
+  --primary: oklch(0.82 0.13 195);
+  --primary-foreground: oklch(0.18 0.03 230);
+  --secondary: oklch(0.26 0.02 240);
+  --secondary-foreground: oklch(0.92 0.01 220);
+  --muted: oklch(0.24 0.018 240);
+  --muted-foreground: oklch(0.74 0.02 230);
+  --accent: oklch(0.28 0.03 220);
+  --accent-foreground: oklch(0.95 0.008 220);
+  --destructive: oklch(0.72 0.16 25);
+  --destructive-foreground: oklch(0.16 0.02 25);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.82 0.13 195);
+  --surface-sunken: oklch(0.13 0.013 240);
+  --success: oklch(0.8 0.13 160);
+  --success-soft: oklch(0.8 0.13 160 / 14%);
+  --failure: oklch(0.74 0.15 25);
+  --failure-soft: oklch(0.74 0.15 25 / 14%);
+  --uncertain: oklch(0.84 0.13 80);
+  --uncertain-soft: oklch(0.84 0.13 80 / 14%);
+  --running: oklch(0.82 0.13 195);
+  --running-soft: oklch(0.82 0.13 195 / 14%);
+  --recorded: oklch(0.78 0.1 300);
+  --recorded-soft: oklch(0.78 0.1 300 / 14%);
+  --gradient-glow: radial-gradient(60rem 30rem at 15% -10%, oklch(0.82 0.13 195 / 10%), transparent 60%), radial-gradient(50rem 30rem at 100% 0%, oklch(0.78 0.1 300 / 8%), transparent 60%);
+  --shadow-panel: 0 20px 50px -24px oklch(0 0 0 / 60%);
+  --neon-pink: oklch(0.72 0.25 350);
+  --neon-cyan: oklch(0.86 0.15 200);
+  --meta-gradient: linear-gradient(90deg, oklch(0.42 0.18 260), oklch(0.72 0.15 210));
+  --meta-foreground: oklch(0.98 0.01 220);
+  --glass: oklch(0.22 0.02 240 / 55%);
+  --glow-border: oklch(1 0 0 / 10%);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -141,40 +176,107 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    background-image: var(--gradient-glow);
+    background-attachment: fixed;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 
-.research-entry {
-  display: grid;
-  gap: 8px;
-  padding: 18px;
-  border: 1px solid var(--line-strong);
-  border-left: 3px solid var(--cyan);
-  border-radius: var(--radius-sm);
-  background: var(--mat-panel);
+@keyframes step-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@utility animate-step-in {
+  animation: step-in 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@utility animate-pulse-dot {
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
 }
 
-.research-entry strong,
-.research-entry p,
-.research-entry cite {
-  overflow-wrap: anywhere;
+
+
+/* ------------------------------------------------------------ print / PDF */
+.print-root { display: none; }
+
+@page { size: A4; margin: 14mm 12mm; }
+
+@media print {
+  body > *:not(.print-root) { display: none !important; }
+  html, body { background: #fff !important; }
+  .print-root {
+    display: block;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.2 0.01 260);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2 0.01 260);
+    --muted: oklch(0.94 0.005 260);
+    --muted-foreground: oklch(0.42 0.01 260);
+    --border: oklch(0.85 0.005 260);
+    --primary: oklch(0.45 0.13 230);
+    --surface-sunken: oklch(0.97 0.004 260);
+    --success: oklch(0.45 0.13 150);
+    --success-soft: oklch(0.94 0.04 150);
+    --failure: oklch(0.5 0.17 25);
+    --failure-soft: oklch(0.95 0.03 25);
+    --uncertain: oklch(0.55 0.13 70);
+    --uncertain-soft: oklch(0.95 0.05 80);
+    --running: oklch(0.45 0.13 230);
+    --running-soft: oklch(0.95 0.03 230);
+    --recorded: oklch(0.45 0.1 300);
+    --recorded-soft: oklch(0.95 0.03 300);
+    --neon-pink: oklch(0.55 0.22 350);
+    --neon-cyan: oklch(0.5 0.12 220);
+    background: var(--background);
+    color: var(--foreground);
+    font-size: 11pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-root * { box-shadow: none !important; }
+  .print-root .avoid-break, .print-root figure, .print-root tr { break-inside: avoid; }
+  .print-root .page-break-before { break-before: page; }
+  .print-root h3, .print-root h4 { break-after: avoid; }
+  /* Repeated on every page via fixed positioning. */
+  .print-stamp {
+    position: fixed; bottom: 0; left: 0; right: 0; text-align: center;
+    font: 600 8pt/1 var(--font-mono, monospace); letter-spacing: 0.2em;
+    color: var(--recorded); border-top: 1px solid var(--border); padding-top: 4px;
+  }
 }
 
-.research-entry p,
-.research-entry cite {
-  margin: 0;
-  color: var(--ink-soft);
-  line-height: 1.65;
+/* ------------------------------------------------------------ polish */
+@utility glass {
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glow-border);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 5%);
 }
-
-.research-entry cite {
-  padding-top: 10px;
-  border-top: 1px solid var(--line-strong);
-  font-size: 0.82rem;
-  font-style: normal;
+@utility meta-pill {
+  background-image: var(--meta-gradient);
+  color: var(--meta-foreground);
+  box-shadow: 0 0 10px -2px oklch(0.72 0.15 210 / 60%);
 }
-
-.research-entry.decision { border-left-color: var(--good); }
-
-.object-inspector .disclosure[open] > summary { margin-bottom: 12px; }
-.object-inspector .quiet { line-height: 1.65; overflow-wrap: anywhere; }
+@keyframes trace-flow {
+  0% { background-position: 0 -120px; }
+  100% { background-position: 0 100%; }
+}
+@utility trace-flow {
+  background-image: linear-gradient(to bottom, transparent, var(--primary), transparent);
+  background-size: 1px 120px;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 4px var(--primary));
+  animation: trace-flow 2.4s ease-in-out infinite;
+}
+@media print { .trace-flow { display: none; } }

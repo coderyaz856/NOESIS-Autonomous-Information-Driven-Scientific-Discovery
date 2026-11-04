@@ -1,3 +1,8 @@
+## Noesis app architecture
+- The UI is one workspace in `src/workspace/` (ask → run timeline → report); keep it one page, not a tour, so the question stays visible throughout.
+- Display rules (verdict downgrade when a CI crosses zero, LIVE vs RECORDED labels) live in `src/workspace/model.ts` with tests; change them there only.
+- Lab data comes only through the `/lab-proxy` relay to the discolab feed; the app never computes or invents metrics.
+
 <!-- LOVABLE:BEGIN -->
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
@@ -8,7 +13,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
-
-- Keep Noesis as a frontend-only TanStack Start shell over the repository's unchanged same-origin `/api` and `/health` contracts, because the Databricks Omnigent backend integration remains externally owned.
-- Read discovery-lab data only through the read-only feed (`discolab/bridge.py`: `/lab/sources|state|activity|experiment|stream`) via the `/lab-proxy/$` relay route, because the feed sends no CORS headers and its contract is owned by the backend team; mirror its shapes in `src/noesis/api/lab-types.ts`.
-- Show live/recorded lab data when the feed is connected and a source is picked, and labelled SAMPLE fixtures otherwise, so evidence labels stay honest.
+- The `/lab-proxy` relay only forwards to origins in `NOESIS_LAB_ORIGINS` and adds the bridge token server-side (`src/noesis/api/lab-proxy-policy.ts`, ported from the upstream repo); never accept arbitrary browser-supplied lab targets or ship tokens to the client.
+- Production write mode comes from server settings (`NOESIS_PUBLIC_TRIAL=1` trial, `NOESIS_LAB_WRITE_TOKEN` operator, else read-only); preview (dev build) is always open so the team can test.
