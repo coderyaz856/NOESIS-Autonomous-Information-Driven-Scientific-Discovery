@@ -1,5 +1,11 @@
 # EigenBrains documentation
 
+> **Meta indie-track build:** run it with [`hackathon/DEMO.md`](hackathon/DEMO.md).
+> Agents run on Meta Muse Code. Open-research mode proposes studies but
+> executes none. The held-out benchmark did not demonstrate an escalation
+> quality gain
+> ([`../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md`](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)).
+
 This directory is the authoritative guide to operating, extending, and
 auditing EigenBrains. The project has two connected research systems:
 
@@ -15,25 +21,20 @@ calculations.
 
 | If you want to... | Read |
 |---|---|
+| Run the Meta indie-track build (agents, escalation, benchmark) | [Hackathon demo guide](hackathon/DEMO.md) |
 | Understand the whole repository | [System architecture](SYSTEM_ARCHITECTURE.md) |
 | Run the application locally | [Getting started](GETTING_STARTED.md) |
-| Reproduce a result | [Reproducibility handbook](REPRODUCIBILITY.md) |
-| See the sealed held-out result (negative, landscape-dependent) | [Sealed entropy early-warning result](SEALED_ENTROPY_EARLY_WARNING_RESULT.md) |
-| Design or review an experiment | [Scientific rigor standard](SCIENTIFIC_RIGOR.md) |
+| Reproduce a result | [Verification and reproduction](VERIFICATION.md) |
+| Design or review an experiment | The pre-registration `discolab/prereg.yaml` and the [discovery lab guide](../discolab/README.md) |
 | Operate the API, UI, lab, or agents | [Operations runbook](OPERATIONS_RUNBOOK.md) |
 | Extend or verify the interface | [Frontend guide](FRONTEND_GUIDE.md) |
 | Add code or documentation safely | [Contributing guide](CONTRIBUTING.md) |
 | Diagnose an installation or runtime issue | [Troubleshooting](TROUBLESHOOTING.md) |
 | Decode project terminology | [Glossary](GLOSSARY.md) |
-| Preregister a new experiment | [Experiment protocol template](templates/EXPERIMENT_PROTOCOL_TEMPLATE.md) |
-| Write an empirical report | [Result report template](templates/RESULT_REPORT_TEMPLATE.md) |
 | Use the HTTP API | [API contracts](API_CONTRACTS.md) |
-| Use the Python, Rust, or Julia SDK | [Research SDK](RESEARCH_SDK.md) and [SDK contracts](SDK_CONTRACTS.md) |
-| Audit model/architecture benchmarks | [Benchmark methodology](BENCHMARK_METHODOLOGY.md) |
-| Understand the quantitative optimizer | [Financial math and meta-agent](FINANCIAL_MATH_AND_META_AGENT.md) |
-| Understand agent research behavior | [Scientific research playbook](SCIENTIFIC_RESEARCH_PLAYBOOK.md) |
+| Audit model/architecture benchmarks | [Benchmark methodology](BENCHMARK_METHODOLOGY.md) and the [Muse agents baseline report](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md) |
+| Read the recorded acceleration study | [Selective-escalation study report](../discolab/results/escalation/README.md) |
 | Run or extend tests | [Testing guide](TESTING.md) |
-| Verify the complete offline evidence chain | [Verification and reproduction](VERIFICATION.md) |
 | Prepare the evidence-first product demo | [Demo integration runbook](DEMO_RUNBOOK.md) |
 
 ## Sources of truth
@@ -44,18 +45,14 @@ authoritative:
 | Concern | Source of truth |
 |---|---|
 | Backend HTTP shapes | Pydantic models in `backend/app/api/routes/` |
-| Frontend API mirror | `frontend/src/api/types.ts` |
-| SDK wire protocol | `sdk/protocol/v1/schema.json` |
+| Frontend API mirror | `frontend/src/noesis/api/types.ts` and `frontend/src/noesis/api/lab-types.ts` |
 | Discovery hypotheses and decision rules | `discolab/prereg.yaml` |
 | Acceleration study protocol | `discolab/escalation_protocol.yaml` |
 | Recorded acceleration evidence | `discolab/results/escalation/summary.json` and its [report](../discolab/results/escalation/README.md) |
-| Sealed entropy study protocol | `research_prototypes/entropy_early_warning/protocol.yaml` |
-| Recorded sealed entropy evidence | `research_prototypes/entropy_early_warning/evidence/study-summary.json`, its verified bundle, and the [result report](SEALED_ENTROPY_EARLY_WARNING_RESULT.md) |
-| Agent permissions | `discolab/omnigent/lab_pi/**/config.yaml` and MCP allow-lists |
+| Agent permissions | Muse Code roles in `discolab/muse_agents/` with the MCP allow-lists in `discolab/discolab/muse.py`; the Omnigent bundle in `discolab/omnigent/lab_pi/**/config.yaml` |
 | Model benchmark cases and limits | `benchmark/cases/` and `benchmark/configs/` |
-| Recorded model observations | `benchmark/artifacts/` |
-| Recorded discovery events | `discolab/results/*/ledger.jsonl` |
-| Scientific run artifacts | `discolab/results/*/runs/` when included in a recorded bundle |
+| Recorded model observations | `benchmark/artifacts/` and `benchmark/muse_agents_baseline_v1/` |
+| Recorded discovery events | `ledger.jsonl` in each lab directory (`discolab/lab_home/<run>/`, not committed) |
 
 If prose and an executable contract disagree, stop and reconcile them before
 running a new experiment. Never silently reinterpret an old result using a new

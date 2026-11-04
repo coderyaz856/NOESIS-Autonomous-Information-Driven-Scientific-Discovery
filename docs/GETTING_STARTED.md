@@ -1,5 +1,14 @@
 # Getting started
 
+> **Meta indie-track run path:** see [`hackathon/DEMO.md`](hackathon/DEMO.md).
+> It starts the lab bridge with `--enable-runs` and the web app; agents run on
+> Muse Code with a `MODEL_API_KEY_FILE` kept outside the repository.
+> - Out-of-domain questions run in open-research mode, which proposes studies
+>   but executes none.
+> - The held-out benchmark did not show an escalation quality gain.
+> - The Omnigent steps below are the earlier orchestration, kept for its
+>   recorded runs.
+
 This guide takes a clean checkout to a verified local installation. The API/UI,
 the discovery laboratory, and the language SDKs can be used independently.
 Install only the components you need.
