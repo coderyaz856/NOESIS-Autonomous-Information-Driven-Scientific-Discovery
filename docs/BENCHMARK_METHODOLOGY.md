@@ -174,4 +174,3 @@ name of the study. Product-facing language uses “Architecture Baseline v0.”
 - Provider availability is a property of the measured window, not a permanent provider rating.
 - The selected GPT-OSS/Qwen pair was intentionally studied; the full covariance results indicate DeepSeek was more complementary, but no additional architecture experiment was authorized.
 - Equal observed quality is not proof of equivalence.
-
