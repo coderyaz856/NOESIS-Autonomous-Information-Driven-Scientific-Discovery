@@ -82,3 +82,32 @@ def test_every_question_starts_a_run_in_the_right_mode(src, monkeypatch, in_scop
         assert st["question"] == q and st["hypotheses"] == []
     else:
         assert st["question"] != q and st["hypotheses"]  # the pre-registered study
+
+
+def _symlink_or_skip(link, target):
+    try:
+        link.symlink_to(target, target_is_directory=True)
+    except (OSError, NotImplementedError):
+        pytest.skip("symlinks are not available here")
+
+
+def test_resolve_source_follows_a_linked_lab_home(tmp_path, monkeypatch):
+    # The container links lab_home to persistent storage outside the package (/data).
+    root, storage = tmp_path / "app", tmp_path / "data" / "lab_home"
+    lab.init_lab(storage / "r1")
+    root.mkdir()
+    _symlink_or_skip(root / "lab_home", storage)
+    monkeypatch.setattr(bridge, "ROOT", root)
+    assert bridge.resolve_source("lab_home/r1") == (storage / "r1").resolve()
+
+
+def test_resolve_source_refuses_a_run_linked_outside_its_base(tmp_path, monkeypatch):
+    elsewhere = tmp_path / "elsewhere"
+    lab.init_lab(elsewhere)
+    (tmp_path / "lab_home").mkdir()
+    _symlink_or_skip(tmp_path / "lab_home" / "escape", elsewhere)
+    monkeypatch.setattr(bridge, "ROOT", tmp_path)
+    with pytest.raises(ValueError, match="no ledger"):
+        bridge.resolve_source("lab_home/escape")
+    with pytest.raises(ValueError, match="source must be"):
+        bridge.resolve_source("lab_home/../escape")
