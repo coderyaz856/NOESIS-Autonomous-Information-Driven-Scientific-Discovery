@@ -1,0 +1,5 @@
+[{"capability":"frontend code","source":"frontend/","outcome":"migrate","status":"done","next_action":null},
+{"capability":"database/records","source":"none","outcome":"n/a","status":"verified-absent","next_action":null},
+{"capability":"auth","source":"none","outcome":"n/a","status":"verified-absent","next_action":null},
+{"capability":"lab feed relay","source":"src/routes/lab-proxy.$.ts","outcome":"preserve","status":"done","next_action":"user points app at a running discolab feed URL"},
+{"capability":"Python backend + discolab + SDKs","source":"backend/, discolab/, sdk/","outcome":"external","status":"pending","next_action":"Python cannot run in Lovable; host separately and connect via lab URL"}]
