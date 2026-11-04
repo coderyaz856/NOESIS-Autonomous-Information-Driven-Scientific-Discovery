@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUTF8=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     HOME=/home/user \
-    PATH=/home/user/.local/bin:/home/user/venv/bin:/usr/local/bin:/usr/bin:/bin
+    PATH=/home/user/.local/bin:/home/user/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl git passwd tini \
