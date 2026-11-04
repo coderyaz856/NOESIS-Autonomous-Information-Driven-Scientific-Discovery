@@ -1,0 +1,12 @@
+{
+  "calls_per_model": {
+    "muse-spark-1.1": 1,
+    "muse-spark-1.2": 73,
+    "muse-spark-1.3": 79,
+    "muse-wonder-1.0": 79
+  },
+  "inference_calls": 232,
+  "phase": "frozen_complete",
+  "provider_requests": 232,
+  "reserved_spend_usd": 1.078128000000004
+}

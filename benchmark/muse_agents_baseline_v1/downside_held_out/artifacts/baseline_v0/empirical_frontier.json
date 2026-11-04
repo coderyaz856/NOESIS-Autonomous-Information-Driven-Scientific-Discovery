@@ -1,0 +1,11 @@
+{
+  "dominated_ids": [
+    "S0",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "frontier_ids": [
+    "S1"
+  ]
+}

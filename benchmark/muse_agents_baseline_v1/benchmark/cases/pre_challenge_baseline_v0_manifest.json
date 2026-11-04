@@ -1,0 +1,264 @@
+{
+  "budget_proposal": {
+    "hard_ceiling_usd": 12.0,
+    "phases": {
+      "compact_provider_backed_verifier_confirmation": {
+        "dollar_ceiling": 0.139008,
+        "inference_calls": 24
+      },
+      "core_72_case_single_model_baseline": {
+        "dollar_ceiling": 1.004544,
+        "inference_calls": 216
+      },
+      "provider_diagnosis": {
+        "dollar_ceiling": 0.00408,
+        "inference_calls": 4
+      }
+    },
+    "pricing_source": "benchmark/configs/pricing_meta_v1.json",
+    "version": "muse-baseline-v1-budget",
+    "worst_case_total_usd": 1.1476320000000002
+  },
+  "corpus": {
+    "case_count": 72,
+    "sha256": "eefd0858298ef94a56a3475e4479aa43cfb98fbfd23104f7f5e8fcee39891a7b",
+    "version": "pre-challenge-architecture-baseline-v0"
+  },
+  "execution_authorization": {
+    "approved_at": "2026-11-03T21:30:53.553796+00:00",
+    "approved_by": "project owner (session instruction: rerun the pre-hackathon benchmark on Muse models only)",
+    "approved_phases": [
+      "provider_diagnosis",
+      "core_72_case_single_model_baseline",
+      "s0_to_s4_offline_replay",
+      "compact_provider_backed_verifier_confirmation"
+    ],
+    "deviations_from_v0": [
+      "solver/verifier slots are Muse Code agents, not single chat completions",
+      "temperature and the 256-token output cap are not settable through Muse Code; harness defaults apply",
+      "each agent call carries ~15.5k harness input tokens (measured), so the controller's 1024/256-token projection understates cost; an actual-spend guard (cached-aware) enforces the $12.00 ceiling",
+      "limits: $12.00 / 250 calls"
+    ],
+    "harness": "Muse Code agents in every slot",
+    "max_benchmark_spend_usd": 12.0,
+    "max_concurrency": 1,
+    "max_provider_requests": 251,
+    "max_total_inference_calls": 250
+  },
+  "immutable_after_execution_starts": true,
+  "models": {
+    "conditional": [],
+    "core": [
+      {
+        "model": "muse-wonder-1.0",
+        "provider": "muse_agent"
+      },
+      {
+        "model": "muse-spark-1.3",
+        "provider": "muse_agent"
+      },
+      {
+        "model": "muse-spark-1.2",
+        "provider": "muse_agent"
+      }
+    ]
+  },
+  "observations": {
+    "completed_at": "2026-11-03T21:42:17.214836+00:00",
+    "execution": {
+      "actual_estimated_spend_usd": 8.02017575,
+      "calls_per_model": {
+        "muse-spark-1.1": 1,
+        "muse-spark-1.2": 73,
+        "muse-spark-1.3": 79,
+        "muse-wonder-1.0": 79
+      },
+      "inference_calls": 232,
+      "limits": {
+        "max_benchmark_spend_usd": 12.0,
+        "max_calls_per_model": null,
+        "max_concurrency": 1,
+        "max_provider_requests": 251,
+        "max_total_calls": 250
+      },
+      "provider_requests": 232,
+      "reserved_spend_usd": 1.078128000000004,
+      "stopped_after_authorized_phases": true
+    },
+    "note": "Frozen after the approved phases; no automatic continuation is permitted.",
+    "raw_observation_hashes": [
+      {
+        "path": "benchmark/artifacts/baseline_v0/provider_diagnosis.jsonl",
+        "sha256": "ce35d8cdece9018c4a3c1dedb9b424cfd992ed2bee00c67ab705364b1d8c8270"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/raw_single_model_runs.jsonl",
+        "sha256": "6bb5070ea61e6ca6410a0a7b3cafac84fa079923891bd3ace8a9c3a4e6531c99"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/offline_replay_dev_tuning.jsonl",
+        "sha256": "4cf45e842049491358fd661fe336726c04dffb572f45a0f82eb3d3a4102f0cb2"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/offline_replay_held_out.jsonl",
+        "sha256": "526e494f1343ae2fa7ad61862b6ba6715615c4abffe0add751761fc6f2ba7bb8"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/provider_backed_verifier_held_out.jsonl",
+        "sha256": "4447f8cd2c84221497fd1f2e3db75310d07a182869cae96e43c66688c3e10e84"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/frozen_gate_configuration.json",
+        "sha256": "fd396c22d8fd4235e748fb5e41c622b89d6ffd2c8a7b893d5d9e0f11eaa6768d"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/baseline_v0_summary.json",
+        "sha256": "8ca7b2bcafd6c3e9c03d8790ea4c3b60cab860d54c0185b0a96b282fd29fd086"
+      },
+      {
+        "path": "benchmark/artifacts/baseline_v0/weak_priors.json",
+        "sha256": "06a4f1a6d3f83c6e82ac023a4c14ebc3193bdd8c9072ac9ceffaa2db53f9dcec"
+      }
+    ],
+    "status": "FROZEN_COMPLETE"
+  },
+  "policies": {
+    "definitions": [
+      {
+        "escalation_mode": "never",
+        "escalation_signals": [],
+        "first_model": "muse_agent/muse-wonder-1.0",
+        "id": "S0",
+        "name": "Wonder 1.0 only",
+        "reconciliation_rule": "first_answer",
+        "replayable_from_paired_single_model_runs": true,
+        "second_model": null
+      },
+      {
+        "escalation_mode": "never",
+        "escalation_signals": [],
+        "first_model": "muse_agent/muse-spark-1.3",
+        "id": "S1",
+        "name": "Spark 1.3 only",
+        "reconciliation_rule": "first_answer",
+        "replayable_from_paired_single_model_runs": true,
+        "second_model": null
+      },
+      {
+        "escalation_mode": "always",
+        "escalation_signals": [],
+        "first_model": "muse_agent/muse-spark-1.3",
+        "id": "S2",
+        "name": "Always Wonder 1.0 + Spark 1.3",
+        "reconciliation_rule": "canonical agreement wins; otherwise choose the sole schema/constraint-valid answer; if both remain valid and disagree, high-risk cases return INSUFFICIENT_EVIDENCE and lower-risk cases use the task-family owner frozen on development/tuning data",
+        "replayable_from_paired_single_model_runs": true,
+        "second_model": "muse_agent/muse-wonder-1.0"
+      },
+      {
+        "escalation_mode": "conditional",
+        "escalation_signals": [
+          "schema_or_constraint_failure",
+          "explicit_abstention",
+          "task_risk_level",
+          "historical_task_family_error_ucb",
+          "task_family"
+        ],
+        "first_model": "muse_agent/muse-spark-1.3",
+        "id": "S3",
+        "name": "Spark 1.3 then selective Wonder 1.0",
+        "reconciliation_rule": "canonical agreement wins; otherwise choose the sole schema/constraint-valid answer; if both remain valid and disagree, high-risk cases return INSUFFICIENT_EVIDENCE and lower-risk cases use the task-family owner frozen on development/tuning data",
+        "replayable_from_paired_single_model_runs": true,
+        "second_model": "muse_agent/muse-wonder-1.0"
+      },
+      {
+        "escalation_mode": "conditional",
+        "escalation_signals": [
+          "schema_or_constraint_failure",
+          "explicit_abstention",
+          "task_risk_level",
+          "historical_task_family_error_ucb",
+          "task_family"
+        ],
+        "first_model": "muse_agent/muse-wonder-1.0",
+        "id": "S4",
+        "name": "Wonder 1.0 then selective Spark 1.3",
+        "reconciliation_rule": "canonical agreement wins; otherwise choose the sole schema/constraint-valid answer; if both remain valid and disagree, high-risk cases return INSUFFICIENT_EVIDENCE and lower-risk cases use the task-family owner frozen on development/tuning data",
+        "replayable_from_paired_single_model_runs": true,
+        "second_model": "muse_agent/muse-spark-1.3"
+      }
+    ],
+    "final_evaluation_split": "held_out",
+    "gate": {
+      "escalate_high_risk": true,
+      "fit_splits": [
+        "dev",
+        "tuning"
+      ],
+      "historical_error_ucb_threshold": 0.5,
+      "task_owner_tie_break": "qwen"
+    },
+    "sha256": "c5146a41159fb3ca362ad827a1253a593718232a8cdddcf56f8ae8252b0163cf",
+    "threshold_fit_splits": [
+      "dev",
+      "tuning"
+    ],
+    "version": "S0-S4-v0"
+  },
+  "prompts": {
+    "solver": {
+      "max_output_tokens": 256,
+      "sha256": "eb30269eb8907161f93a7011fea87497d451a5e3a6707b51e893ed10fed5c807",
+      "system": "Answer the objective benchmark item. Return only the requested answer, with no explanation or markdown.",
+      "temperature": 0
+    },
+    "verifier": {
+      "max_output_tokens": 256,
+      "sha256": "b27395c1d3fd421bf637690ada1e8d34863804df91dee130311998c6d4bf85ae",
+      "system": "Independently verify the proposed answer against the task. Return only the corrected answer in the task's requested format; do not explain or mention the proposal.",
+      "temperature": 0
+    }
+  },
+  "protocol_sha256": "80cd7c7ec3fe2dc7b2461407f2683acc09dfe4992d4b0a61723c1202b9efcccc",
+  "scoring": {
+    "secondary_metric": "primary_v0",
+    "sha256": "af7433d246b042ed875295139698cf79ab7d802234b076bae9548999fc78c54d",
+    "specification": {
+      "base": "primary_v0_casefolded_exact_match",
+      "critique_aliases": {
+        "causal_inference": [
+          "causal inference",
+          "causal_inference",
+          "correlation does not imply causation",
+          "false cause"
+        ],
+        "overgeneralization": [
+          "hasty generalization",
+          "overgeneralization"
+        ]
+      },
+      "json": "parsed structural exact equality; malformed JSON fails",
+      "normalizations": [
+        "strip_outer_whitespace",
+        "unicode_casefold",
+        "strip_trailing_sentence_punctuation",
+        "planning_comma_whitespace"
+      ],
+      "scope": "Only the equivalences documented before Baseline v0 execution.",
+      "version": "SCORING_V1"
+    },
+    "version": "SCORING_V1"
+  },
+  "statistics": {
+    "bootstrap_resamples": 2000,
+    "confidence_level": 0.95,
+    "covariance_shrinkage_intensity": 0.25,
+    "failure_threshold": 0.5,
+    "maximum_prior_strength": 5.0,
+    "minimum_tail_observations": 5,
+    "prior_strength": 4.0,
+    "seed": 0,
+    "severe_failure_threshold": 0.2
+  },
+  "status": "FROZEN_COMPLETE",
+  "version": "pre-challenge-baseline-v0-protocol (Muse Code agents in every slot)"
+}
