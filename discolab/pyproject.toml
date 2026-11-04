@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-# Distribution name on PyPI; the import name stays `discolab` (the Rust and Julia
+# Distribution name (wheel attached to the GitHub Release); the import name stays `discolab` (the Rust and Julia
 # SDKs start `python -m discolab.rpc`).
 name = "noesis-discovery"
 version = "0.1.0"

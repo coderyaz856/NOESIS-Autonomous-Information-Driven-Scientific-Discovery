@@ -1,7 +1,8 @@
 # Noesis Discovery — Julia SDK
 
 ```julia
-# Python sidecar first: pip install noesis-discovery  (import name: discolab)
+# Python sidecar first (import name: discolab):
+#   pip install https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/releases/download/sdk-v0.1.0/noesis_discovery-0.1.0-py3-none-any.whl
 using Pkg
 Pkg.add(url="https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery", subdir="sdk/julia", rev="sdk-v0.1.0")
 using NoesisDiscovery

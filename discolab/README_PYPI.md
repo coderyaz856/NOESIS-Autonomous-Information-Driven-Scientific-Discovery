@@ -5,7 +5,8 @@ an agent-run scientific discovery lab. It is also the sidecar that the Rust
 (`noesis-discovery` on crates.io) and Julia (`NoesisDiscovery`) SDKs start.
 
 ```bash
-pip install noesis-discovery     # import name: discolab
+pip install https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/releases/download/sdk-v0.1.0/noesis_discovery-0.1.0-py3-none-any.whl
+# import name: discolab
 ```
 
 ## What it gives you

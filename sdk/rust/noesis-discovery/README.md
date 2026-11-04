@@ -1,7 +1,8 @@
 # Noesis Discovery — Rust SDK
 
 ```bash
-pip install noesis-discovery      # the Python sidecar (import name: discolab)
+# the Python sidecar (import name: discolab), from the GitHub Release:
+pip install https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/releases/download/sdk-v0.1.0/noesis_discovery-0.1.0-py3-none-any.whl
 cargo add noesis-discovery        # this crate (Rust path: noesis_discovery)
 ```
 
