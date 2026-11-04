@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 name = "noesis-discovery"
 version = "0.1.0"
 description = "Noesis discovery lab SDK: hash-chained evidence runs, reproducible experiments and the discolab research lab"
-readme = "README_PYPI.md"
+readme = "README_PACKAGE.md"
 license = "PolyForm-Noncommercial-1.0.0"
 license-files = ["LICENSE.md"]
 authors = [{ name = "Noesis contributors" }]
