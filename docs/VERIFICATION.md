@@ -21,13 +21,11 @@ This does not change the user- or machine-level execution policy.
 
 ## What the default command verifies
 
-1. The published selective-model policy values are derived again from
-   `benchmark/artifacts/baseline_v0/baseline_v0_summary.json`:
-   - held-out observed quality `0.750` for Qwen-only, always-both, and selective
-     Qwen-to-GPT-OSS routing;
-   - `16.0%` estimated cost reduction and `35.2%` latency reduction versus
-     always-both;
-   - provider-backed S3 confirmation with zero rescues and zero damages.
+1. The retained Meta-only selective-model evidence is recorded in
+   `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/baseline_v0_summary.json`
+   and explained in `benchmark/reports/MUSE_AGENTS_BASELINE_V1.md`.
+   The report distinguishes offline replay estimates from provider-backed
+   verifier calls and does not claim a statistically resolved quality gain.
 2. The research-acceleration claims are derived again from
    `discolab/results/escalation/summary.json`:
    - five replicates and 35 hypothesis-replicates;

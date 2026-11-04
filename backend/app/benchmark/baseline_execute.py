@@ -609,7 +609,7 @@ def _report_markdown(summary: dict[str, Any]) -> str:
         "",
         "## Failure diversification",
         "",
-        "| Pair | Error correlation (95% bootstrap) | Failure Jaccard | P(right succeeds | left fails) |",
+        "| Pair | Error correlation (95% bootstrap) | Failure Jaccard | P(right succeeds \\| left fails) |",
         "|---|---:|---:|---:|",
     ])
     for row in summary["covariance"]["bootstrap_intervals"]:

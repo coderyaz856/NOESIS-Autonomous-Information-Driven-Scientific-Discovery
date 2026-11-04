@@ -9,12 +9,16 @@ instrumentation, optimizer, registry, and API contracts.
   Architecture Baseline v0 corpus with 48 dev, 12 tuning, and
   12 held-out cases; it never generates model outputs.
 - `configs/` contains explicit non-secret limits and statistical choices.
-- `key_status.json` is a secret-free inventory of the completed provider
-  discovery step. It records statuses and sanitized metadata, never credential
-  values.
-- `artifacts/` and `reports/` contain the intentionally committed evidence and
-  human-readable reports for frozen studies. New exploratory outputs remain
-  local unless an explicit evidence-publication decision includes them.
+- `muse_agents_baseline_v1/` and `muse_baseline_v1/` preserve the Meta-only
+  observations, frozen manifests, and derived analysis. The corresponding
+  human-readable reports are in `reports/MUSE_*.md`.
+- The historical non-Meta `artifacts/pilot_v0/` and
+  `artifacts/baseline_v0/` bundles and their reports are intentionally absent
+  from this checkout. The shared cases, scoring code, and protocol files remain
+  so the Muse reruns can be audited; their legacy slot names are protocol
+  identifiers, not claims that those providers are used in the Meta app.
+- New exploratory outputs remain local unless an explicit evidence-publication
+  decision includes them.
 - `cache/` stores immutable local run records and is ignored by Git.
 
 The default runner executes only the `dev` split. Tuning and held-out runs
@@ -26,11 +30,11 @@ exact-match result as `primary_v0`, while accepting only the critique aliases
 and comma-spacing normalization documented before Baseline-v0 execution.
 
 The compact S0-S4 study is intentionally narrower than an exhaustive A0-A6
-search. S3 is Qwen-first selective GPT-OSS escalation. Its gate may use only
-runtime-observable signals frozen on development/tuning data. Paired
-single-model observations support a zero-call offline replay; separately
-budgeted verifier calls are required before verifier value is described as
-provider-backed architecture evidence.
+search. In the retained Muse Code rerun, S3 is Spark-first selective Wonder
+escalation. Its gate may use only runtime-observable signals frozen on
+development/tuning data. Paired single-model observations support a zero-call
+offline replay; separately budgeted verifier calls are required before
+verifier value is described as provider-backed architecture evidence.
 
 The Baseline v0 exporter is deliberately offline. Once real observations are
 recorded, run `python -m app.benchmark.baseline_cli` from `backend/` to build

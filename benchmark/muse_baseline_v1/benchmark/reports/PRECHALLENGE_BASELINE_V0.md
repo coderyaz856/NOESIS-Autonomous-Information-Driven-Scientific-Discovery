@@ -56,7 +56,7 @@ These rows are actual verifier calls on top of cached first-pass held-out observ
 
 ## Failure diversification
 
-| Pair | Error correlation (95% bootstrap) | Failure Jaccard | P(right succeeds | left fails) |
+| Pair | Error correlation (95% bootstrap) | Failure Jaccard | P(right succeeds \| left fails) |
 |---|---:|---:|---:|
 | meta/muse-spark-1.2@A0 ↔ meta/muse-spark-1.3@A0 | 0.732 [0.471, 0.919] | 0.615 | 0.333 [0.077, 0.625] |
 | meta/muse-spark-1.2@A0 ↔ meta/muse-wonder-1.0@A0 | 0.845 [0.643, 1.000] | 0.750 | 0.250 [0.000, 0.530] |
