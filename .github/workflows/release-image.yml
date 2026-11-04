@@ -1,0 +1,111 @@
+# Build, smoke-test and publish the Noesis lab backend image to GHCR.
+# Runs only for a deliberate release: a pushed tag `lab-vX.Y.Z`, or a manual run on
+# `main` or such a tag. It never runs on ordinary commits or pull requests.
+# No secret is used at build time; the image needs META_API_KEY and
+# NOESIS_BRIDGE_TOKEN only at runtime, supplied by whoever runs it.
+name: release-image
+
+on:
+  push:
+    tags: ["lab-v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Image version to publish (X.Y.Z), e.g. 0.1.0"
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: release-image-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/coderyaz856/noesis-lab
+
+jobs:
+  build-test-publish:
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/lab-v')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      digest: ${{ steps.push.outputs.digest }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Resolve version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_NAME: ${{ github.ref_name }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "push" ]; then v="${REF_NAME#lab-v}"; else v="$INPUT_VERSION"; fi
+          if ! printf '%s' "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::version must be X.Y.Z, got '$v'"; exit 1
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+
+      - name: Build (linux/amd64, no secrets)
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build --pull --build-arg "NOESIS_VERSION=$VERSION" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            -t "noesis-lab:candidate" .
+          size=$(docker image inspect -f '{{.Size}}' noesis-lab:candidate)
+          echo "Image size: $((size / 1024 / 1024)) MiB (uncompressed)" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Smoke test the built image
+        run: bash deploy/docker/smoke-test.sh noesis-lab:candidate | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Push to GHCR
+        id: push
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          if docker manifest inspect "$IMAGE:$VERSION" >/dev/null 2>&1; then
+            echo "::error::$IMAGE:$VERSION already exists; publish a new version instead of overwriting it"
+            docker logout ghcr.io; exit 1
+          fi
+          short="${GITHUB_SHA::7}"
+          docker tag noesis-lab:candidate "$IMAGE:$VERSION"
+          docker tag noesis-lab:candidate "$IMAGE:sha-$short"
+          docker push "$IMAGE:$VERSION"
+          docker push "$IMAGE:sha-$short"
+          digest=$(docker image inspect -f '{{index .RepoDigests 0}}' "$IMAGE:$VERSION")
+          digest="${digest#*@}"
+          docker logout ghcr.io
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Published"
+            echo "- \`$IMAGE:$VERSION\`"
+            echo "- \`$IMAGE@$digest\`"
+            echo "- revision \`$GITHUB_SHA\`, platform linux/amd64"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  verify-anonymous-pull:
+    # A clean runner with no registry login: proves judges can pull the published digest.
+    # Fails until the GHCR package is public (package settings -> change visibility).
+    needs: build-test-publish
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Anonymous pull and smoke test
+        env:
+          REF: ${{ env.IMAGE }}@${{ needs.build-test-publish.outputs.digest }}
+        run: |
+          docker logout ghcr.io >/dev/null 2>&1 || true
+          docker pull "$REF"
+          bash deploy/docker/smoke-test.sh "$REF" | tee -a "$GITHUB_STEP_SUMMARY"
