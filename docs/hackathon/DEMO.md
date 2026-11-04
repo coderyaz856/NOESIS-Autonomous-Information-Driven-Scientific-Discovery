@@ -214,10 +214,20 @@ cd frontend;  npx vitest run; npx tsc --noEmit -p .
       HttpOnly, SameSite=Strict, Secure session cookie (8 h, `Path=/lab-proxy`).
       Writes then need that cookie and must come from the app's own origin
       (`NOESIS_PUBLIC_ORIGIN` names it behind a reverse proxy).
+  - Development and production come from the build (`vite dev` vs
+    `vite build`), not from `NODE_ENV`. Cloudflare Workers set no `NODE_ENV`,
+    and a deployed build must never fall back to open writes.
+  - Settings are read from Cloudflare variables and secrets, or from
+    `process.env` on Node.
   - The token is never placed in frontend code or browser storage. Rotating
     it ends every session. Scripts may send it in the `x-noesis-lab-token`
     header instead.
+  - Sessions are stateless (signed expiry, no server-side store). "Lock runs"
+    clears the browser's cookie, but a copied cookie value stays valid until
+    it expires (8 h) or the token is rotated.
   - There is no sign-in rate limiting, so use a long random token.
+  - Smoke-tested on the built Cloudflare Worker running locally (`wrangler
+    dev`), not yet on a real deployment.
 - **The MCP tool server fails closed.** If `DISCOLAB_TOOLS` is missing, empty
   or names an unknown tool, it serves no tools and exits.
 - **Muse Code is required on the machine running the lab.** The browser only talks
