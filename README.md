@@ -6,6 +6,12 @@
 
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE.md)
 [![Lab backend: Hugging Face Docker Space](https://img.shields.io/badge/lab%20backend-Hugging%20Face%20Docker%20Space-FFD21E?logo=huggingface&logoColor=black)](deploy/huggingface/README.md)
+[![Docker image: ghcr.io/saadqacif/noesis-lab 0.1.1](https://img.shields.io/badge/docker-ghcr.io%2Fsaadqacif%2Fnoesis--lab%3A0.1.1-2496ED?logo=docker&logoColor=white)](https://github.com/SaadQacif/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/pkgs/container/noesis-lab)
+
+> **Lab backend image for judges:** `docker pull ghcr.io/saadqacif/noesis-lab:0.1.1`
+> (immutable: `@sha256:47014a2516caec0522da525bf25981be3062397121fcdc84b01ce3275a5759ca`, linux/amd64).
+> It runs the authenticated lab backend only: no web frontend, and no Meta credits (bring your own key,
+> or use the read-only recorded run). Run commands: [`deploy/docker/README.md`](deploy/docker/README.md).
 
 > **Predicting the unpredictable. Accelerating breakthroughs through autonomous, agent-driven discovery loops.**
 
