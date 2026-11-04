@@ -36,7 +36,7 @@ jobs:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: discolab/pyproject.toml
-      - run: pip install -e "discolab[dev]"
+      - run: pip install -e "discolab[dev]" pytest-github-actions-annotate-failures
       - name: pytest
         working-directory: discolab
         run: python -m pytest -q --basetemp "$RUNNER_TEMP/pytest-discolab"

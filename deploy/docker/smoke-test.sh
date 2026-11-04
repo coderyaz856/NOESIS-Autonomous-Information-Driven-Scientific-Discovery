@@ -11,7 +11,7 @@ FAKE_KEY="smoke-test-not-a-real-key-$(openssl rand -hex 16)"
 if [ -n "${GITHUB_ACTIONS:-}" ]; then echo "::add-mask::$TOKEN"; echo "::add-mask::$FAKE_KEY"; fi
 fails=0
 pass() { echo "PASS  $*"; }
-fail() { echo "FAIL  $*"; fails=$((fails + 1)); }
+fail() { echo "FAIL  $*"; [ -n "${GITHUB_ACTIONS:-}" ] && echo "::error title=smoke test::$*"; fails=$((fails + 1)); }
 cleanup() { docker rm -f noesis-smoke >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 
