@@ -157,7 +157,8 @@ Use a committed source for the main presentation and keep live mode optional:
 6. Open the acceleration card and show the 1.54x/28-of-35 evidence.
 7. Show the sealed held-out test: development +0.139 AUROC, held-out −0.006
    [−0.011, −0.0003], verdict `no_meaningful_gain`, Griewank +0.058 vs Levy
-   −0.046 ([report](SEALED_ENTROPY_EARLY_WARNING_RESULT.md)). Say plainly that
+   −0.046 (the sealed study's report and evidence bundle are not on this
+   branch; skip this step unless you present from a checkout that has them). Say plainly that
    `accepted_as_evidence` means the negative result is valid evidence, not that
    the hypothesis was accepted, and keep it separate from the 1.54x claim.
 8. Open provenance briefly to prove that every number has a run and artifact.

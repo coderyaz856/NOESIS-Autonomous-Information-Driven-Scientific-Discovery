@@ -333,10 +333,8 @@ browser could never legitimately hold. Hosted writes now work as follows:
   docs say so.
 - No token is placed in frontend code or browser storage.
 
-**Docs.** On `agentic-setup`, `docs/README.md` and two other docs were
-trimmed to link only to documents present there. The merge into `main`
-restores the links to `main`'s research docs (rigor, reproducibility, sealed
-study, SDK) alongside the new Meta entries.
+**Docs.** `docs/README.md` and two other docs now link only to documents on
+this branch.
 
 ## 4f. Clean install and hosted sign-in smoke test (2026-11-04)
 
