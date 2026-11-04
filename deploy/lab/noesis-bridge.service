@@ -1,0 +1,40 @@
+# Noesis lab bridge (Python + Muse Code) on a Linux host.
+# Installed by deploy/lab/setup.sh to /etc/systemd/system/noesis-bridge.service.
+#
+# - --require-auth: refuses to start without the bridge token, so every request is authenticated.
+# - Listens on loopback only; HTTPS is terminated by Caddy (deploy/lab/Caddyfile) in front of it.
+# - The Meta key and the bridge token are files readable only by the noesis user. Their values
+#   never appear in this unit, the environment of agent processes (bridge token), or logs.
+
+[Unit]
+Description=Noesis lab bridge (discolab + Muse Code)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=noesis
+Group=noesis
+WorkingDirectory=/opt/noesis/discolab
+Environment=PYTHONUTF8=1
+Environment=HOME=/var/lib/noesis/home
+Environment=MODEL_API_KEY_FILE=/etc/noesis/meta_api_key
+Environment=NOESIS_BRIDGE_TOKEN_FILE=/etc/noesis/bridge_token
+# Muse Code, as installed for the noesis user by the official Linux installer.
+Environment=PATH=/var/lib/noesis/home/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/opt/noesis/venv/bin/python -m discolab.bridge --enable-runs --require-auth --host 127.0.0.1 --port 8765
+Restart=on-failure
+RestartSec=5
+
+# Hardening: the service can write only its persistent state.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/noesis
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

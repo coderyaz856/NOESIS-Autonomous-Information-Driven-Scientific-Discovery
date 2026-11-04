@@ -1,0 +1,32 @@
+# HTTPS in front of the Noesis lab bridge. Replace lab.example.org with the host's DNS name;
+# Caddy obtains and renews the certificate automatically (ports 80 and 443 must reach it).
+# The bridge itself listens on 127.0.0.1:8765 and authenticates every request with its token.
+
+lab.example.org {
+	# Only the bridge's API is published.
+	@lab path /lab/*
+	handle @lab {
+		reverse_proxy 127.0.0.1:8765 {
+			# Server-sent events (live agent activity) must not be buffered.
+			flush_interval -1
+		}
+	}
+	handle {
+		respond "Not found" 404
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+	log {
+		# Request lines only; headers (including X-Noesis-Bridge-Token) are not logged.
+		output stdout
+		format filter {
+			wrap json
+			fields {
+				request>headers delete
+			}
+		}
+	}
+}
