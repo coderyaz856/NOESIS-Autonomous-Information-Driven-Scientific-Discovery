@@ -157,7 +157,7 @@ gates are refused):
 ## Tests
 
 ```powershell
-cd discolab;  .venv\Scripts\python -m pytest -q        # see SESSION_LOG.md for the latest count
+cd discolab;  .venv\Scripts\python -m pytest -q
 cd frontend;  npx vitest run; npx tsc --noEmit -p .
 ```
 
