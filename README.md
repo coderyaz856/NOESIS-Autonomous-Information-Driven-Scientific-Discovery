@@ -4,6 +4,8 @@
 
 # Noesis
 
+[![Docker Space backend](https://img.shields.io/badge/Docker-Space%20backend-2496ED?logo=docker&logoColor=white)](deploy/huggingface/README.md)
+
 > **Predicting the unpredictable. Accelerating breakthroughs through autonomous, agent-driven discovery loops.**
 
 **Meta Global AI Developer Hackathon — Indie track build by Team EigenBrains.**
