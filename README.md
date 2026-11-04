@@ -4,6 +4,7 @@
 
 # Noesis
 
+[![Tests](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/actions/workflows/tests.yml?query=branch%3Amain)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE.md)
 [![Lab backend: Hugging Face Docker Space](https://img.shields.io/badge/lab%20backend-Hugging%20Face%20Docker%20Space-FFD21E?logo=huggingface&logoColor=black)](deploy/huggingface/README.md)
 [![Docker image: ghcr.io/saadqacif/noesis-lab 0.1.1](https://img.shields.io/badge/docker-ghcr.io%2Fsaadqacif%2Fnoesis--lab%3A0.1.1-2496ED?logo=docker&logoColor=white)](https://github.com/SaadQacif/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/pkgs/container/noesis-lab)
