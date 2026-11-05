@@ -16,9 +16,9 @@
 
 ![A short walkthrough of the Noesis interface](docs/gif_30s_demo.gif)
 
-[Run the demo](docs/hackathon/DEMO.md) · [Read the measured results](#three-results-worth-inspecting) · [Use the three-language SDK](#research-sdk) · [Browse all documentation](docs/README.md)
+[Try the live app](https://noesis-agent.lovable.app/) · [Watch the demo](https://www.youtube.com/watch?v=x3rVdGG7zP4) · [Read the measured results](#three-results-worth-inspecting) · [Use the three-language SDK](#research-sdk) · [Browse all documentation](docs/README.md) · [Run it locally (optional)](docs/hackathon/DEMO.md)
 
-**Start here for judging:** watch the walkthrough; start the [read-only local demo](#try-it-locally) without a key; inspect a [recorded run](discolab/results/recorded-open-question/run.json) and the [sealed scientific result](docs/SEALED_ENTROPY_EARLY_WARNING_RESULT.md). The [cross-language interoperability proof](#research-sdk) is an optional offline check; a live Muse run incurs API charges.
+**Start here:** try the [live app](https://noesis-agent.lovable.app/) and ask a research question; watch the [3-minute demo video](https://www.youtube.com/watch?v=x3rVdGG7zP4); inspect a [recorded run](discolab/results/recorded-open-question/run.json) and the [sealed scientific result](docs/SEALED_ENTROPY_EARLY_WARNING_RESULT.md). Optional: run the [read-only local demo](#try-it-locally) without a key, or the offline [cross-language interoperability proof](#research-sdk). A live Muse run incurs API charges.
 
 ## What happens when you ask a question
 
