@@ -80,6 +80,14 @@ EigenBrains constrained utility (quality − risk − cost − latency), re-targ
 choosing model architectures to choosing experiments: decision theory inspired by
 portfolio allocation, not literal finance.
 
+The research portfolio uses a deterministic, redundancy-aware greedy selector:
+it adds the feasible experiment with the largest positive marginal joint
+information after cost and held-out penalties, subject to the compute budget
+and a three-experiment cap. Its selection quality is an empirical question.
+The frozen `prereg.yaml` records a historical `(1 - 1/e)` guarantee claim;
+the corrected mathematical conditions and interpretation are in
+[Financial mathematics and the meta-agent](../docs/FINANCIAL_MATH_AND_META_AGENT.md#research-portfolio-selector-and-theory-correction).
+
 ## Science core
 
 - **Landscapes**: Rastrigin, Ackley (development); Griewank, Levy, Styblinski–Tang

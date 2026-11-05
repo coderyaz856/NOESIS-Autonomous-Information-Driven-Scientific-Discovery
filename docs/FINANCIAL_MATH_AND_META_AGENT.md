@@ -240,6 +240,38 @@ Because the prior is weak, a modest amount of task-specific evidence can overtur
 
 ## 11. Transfer from model portfolios to experiment portfolios
 
+### Research-portfolio selector and theory correction
+
+For a candidate set of experiments `S`, the implemented planner evaluates
+
+$$
+V(S)=\sum_h I(H_h;O_{S,h})
+-\sum_{e\in S}\bigl(c_e+r_e\bigr),
+$$
+
+where `O_{S,h}` are the possible verdicts from experiments testing hypothesis
+`h`, `c_e` is the wall-time penalty in bits, and `r_e` is the held-out-use
+penalty in bits. The joint information calculation uses the registered verdict
+likelihoods and conditional independence given each hypothesis. With a
+consistent prior per hypothesis, its marginal information is
+`I(H_h; O_e | O_{S,h})`; conditional independence makes that marginal diminish
+as the selected set grows. Summing across hypotheses and subtracting modular
+penalties preserves submodularity. A penalty can exceed an experiment's
+marginal information, making `V` non-monotone.
+
+The implementation chooses the feasible experiment with the largest absolute
+positive marginal `V`, stopping at the registered minimum gain, the
+three-experiment cap, or the remaining compute budget. The familiar
+`1 - 1/e` greedy bound applies to a normalized, monotone submodular objective
+under a cardinality constraint. The implemented penalized objective and
+compute-budget constraint call for empirical evaluation of this selector;
+we assert no approximation ratio for it.
+
+The frozen [`prereg.yaml`](../discolab/prereg.yaml) contains an earlier
+`(1 - 1/e)` claim in its portfolio selection field. This paragraph is the
+theory correction for that historical line. The registered protocol and the
+recorded experimental observations retain their original bytes and meanings.
+
 The same policy applies when the scarce asset is simulation compute rather
 than a model call. Let `N_1 < N_2 < N_3` be nested sample sizes and let `G_k`
 mean that the preregistered verdict remains inconclusive at look `k`. Expected

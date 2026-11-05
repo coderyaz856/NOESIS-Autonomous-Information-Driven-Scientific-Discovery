@@ -250,9 +250,10 @@ def research_portfolio(rows: list[dict], remaining_budget: float, prereg: dict) 
 
     Value of a set = sum over hypotheses of the joint information of the
     experiments testing it, minus their cost and held-out penalties. Joint
-    information is submodular here, so greedy marginal-gain selection has the
-    standard (1 - 1/e) guarantee. Hard constraints apply: only feasible rows,
-    within the remaining compute budget.
+    information has diminishing returns under the conditional-independence
+    model. The selector chooses the highest positive marginal utility among
+    feasible rows within the compute budget and cardinality cap. This is a
+    deterministic heuristic; its performance is assessed empirically.
     """
     pol = prereg["planner_policy"]["portfolio"]
     alpha = prereg["decision_rules"]["alpha"]
