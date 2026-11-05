@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { LabActivity, LabState } from '@/noesis/api/lab-types';
-import { AGENT_ROLE_LABEL, activityToTrace, traceGraph, agentDisplayName, type AgentRole, type FlowSegment, type TraceEntry } from './model';
+import { AGENT_ROLE_LABEL, NO_ARGS_LABEL, activityToTrace, traceGraph, agentDisplayName, isNoArgPayload, type AgentRole, type FlowSegment, type TraceEntry } from './model';
 import { JsonView } from './JsonView';
 
 /** IDE-style traceability console: Meta Model traces + auto-scrolling log. */
@@ -175,7 +175,14 @@ function TraceBlock({ e }: { e: TraceEntry }) {
       <div className="mt-1 space-y-1.5 font-mono text-[11px]">
         <p className="text-muted-foreground">// system prompt: not exposed by the lab feed</p>
         {e.reasoning && <div><p className="text-json-number">reasoning</p><pre className="whitespace-pre-wrap break-words">{e.reasoning}</pre></div>}
-        {e.payload !== null && <div><p className="text-json-number">tool_call</p><JsonView value={{ name: e.summary.replace('()', ''), args: e.payload, ...e.result }} /></div>}
+        {e.payload !== null && (
+          <div>
+            <p className="text-json-number">tool_call</p>
+            {isNoArgPayload(e.payload)
+              ? <p className="text-muted-foreground">{NO_ARGS_LABEL}</p>
+              : <JsonView value={{ name: e.summary.replace('()', ''), args: e.payload, ...e.result }} />}
+          </div>
+        )}
         {e.gate && <div><p className="text-json-number">gate</p><JsonView value={e.gate} /></div>}
         <p className="text-muted-foreground">agent: {e.agent}</p>
       </div>

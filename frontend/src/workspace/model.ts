@@ -157,6 +157,14 @@ export function formatBudgetPercent(share: number): string {
   return `${Math.round(percent)}%`;
 }
 
+/** Per-visitor rate limits are enforced by the bridge. A cap that high
+ * (1000 runs/hour or more) reads as no limit rather than a number. */
+export function perVisitorLimitText(runsPerHour: number): string {
+  return runsPerHour >= 1000
+    ? 'no per-visitor limit on runs'
+    : `${runsPerHour} run${runsPerHour === 1 ? '' : 's'} per hour per visitor`;
+}
+
 /** How a run's research mode is presented. Open mode never executed anything,
  * so it must never look like an experimental result. */
 export function researchModeNote(mode: 'lab' | 'open' | null | undefined): { title: string; meaning: string } | null {
@@ -220,6 +228,16 @@ export interface TraceEntry {
 
 function parseArgs(s: string): unknown {
   try { return JSON.parse(s); } catch { return s; }
+}
+
+/** Friendly label shown instead of a bare `{}` when a tool call needs no parameters. */
+export const NO_ARGS_LABEL = 'No parameters required — this call takes no arguments.';
+
+/** True when a tool payload carries no information at all (null, '', or an empty object). */
+export function isNoArgPayload(payload: unknown): boolean {
+  if (payload === null || payload === undefined) return true;
+  if (typeof payload === 'string') return ['', '{}', 'null'].includes(payload.trim());
+  return typeof payload === 'object' && !Array.isArray(payload) && Object.keys(payload).length === 0;
 }
 
 /** Activity → trace entries, verbatim fields only (no invented prompts or reasoning). */
@@ -411,4 +429,98 @@ const AGENT_NAMES: Record<string, string> = {
 /** Readable name for a lab agent id; unknown ids are shown as-is. */
 export function agentDisplayName(agent: string): string {
   return AGENT_NAMES[agent.toLowerCase()] ?? agent;
+}
+
+/* ------------------------------------------------ judge's narrative */
+/** Header honesty badge. Open mode never executed anything. */
+export function honestyBadge(mode: 'lab' | 'open' | null | undefined): { label: string; executed: boolean } | null {
+  if (mode === 'lab') return { label: 'Executable lab study', executed: true };
+  if (mode === 'open') return { label: 'Research protocol — not executed', executed: false };
+  return null;
+}
+
+export interface RoutingRow { agent: string; model: string | null; tier: 'Spark' | 'Wonder' | null; calls: number | null; cost: number | null; seconds: number | null; effort: string | null }
+
+/** Tier tag only when the lab's model name says so. */
+export function modelTier(model: string | null | undefined): 'Spark' | 'Wonder' | null {
+  if (!model) return null;
+  if (/wonder/i.test(model)) return 'Wonder';
+  if (/spark/i.test(model)) return 'Spark';
+  return null;
+}
+
+/** Which model each agent ran on, from the run record's per-agent usage and role config only. */
+export function routingRows(run: { per_agent?: { agent: string; model: string | null; calls: number; cost_usd: number; seconds: number }[]; config?: { roles?: Record<string, { model: string; effort: string }> } | null } | null | undefined): RoutingRow[] {
+  if (!run) return [];
+  const rows = new Map<string, RoutingRow>();
+  for (const [agent, r] of Object.entries(run.config?.roles ?? {})) {
+    rows.set(agent, { agent, model: r.model, tier: modelTier(r.model), calls: null, cost: null, seconds: null, effort: r.effort });
+  }
+  for (const a of run.per_agent ?? []) {
+    const prev = rows.get(a.agent);
+    const model = a.model ?? prev?.model ?? null;
+    rows.set(a.agent, { agent: a.agent, model, tier: modelTier(model), calls: a.calls, cost: a.cost_usd, seconds: a.seconds, effort: prev?.effort ?? null });
+  }
+  return [...rows.values()];
+}
+
+export interface CandidateCard { id: string; title: string; eig: number; seconds: number; utility: number; feasible: boolean; hypotheses: string[]; selected: boolean }
+
+/** Top competing experiments of the latest scoring round, by lab-reported utility. */
+export function topCandidates(rounds: { round: number; selected: string | null; argmax: string | null; rows: { id: string; title: string; eig_bits: number; utility: number; feasible: boolean; est_wall_seconds: number; hypotheses: string[] }[] }[], n = 3): CandidateCard[] {
+  const r = rounds[rounds.length - 1];
+  if (!r) return [];
+  const chosen = r.selected ?? r.argmax;
+  const sorted = [...r.rows].sort((a, b) => b.utility - a.utility);
+  const top = sorted.slice(0, n);
+  const sel = sorted.find((x) => x.id === chosen);
+  if (sel && !top.includes(sel)) top[top.length - 1] = sel;
+  return top.map((x) => ({ id: x.id, title: x.title, eig: x.eig_bits, seconds: x.est_wall_seconds, utility: x.utility, feasible: x.feasible, hypotheses: x.hypotheses, selected: x.id === chosen }));
+}
+
+/** Consequence-first sentence. Only claims "best for the compute" when the lab says it followed the argmax. */
+export function selectionConsequence(round: { followed_argmax: boolean | null; justification: string | null } | null | undefined): string | null {
+  if (!round) return null;
+  if (round.followed_argmax === true) return 'This experiment was selected because it teaches us more for the available compute.';
+  if (round.justification) return `The planner chose differently from the top score: ${round.justification}`;
+  if (round.followed_argmax === false) return 'The planner did not pick the top-scoring experiment and recorded no reason.';
+  return null;
+}
+
+const HELD = /held|confirm|sealed|out.?of.?sample|test/i;
+
+export interface NegativeResult { hypothesis: string; measure: string; dev: { experiment: string; estimate: number }; heldout: { experiment: string; estimate: number | null; verdict: Verdict } }
+
+/** A positive development signal for a hypothesis that did not hold on a held-out / confirmation experiment. */
+export function negativeResults(experiments: Record<string, LabExperiment>): NegativeResult[] {
+  const exps = Object.values(experiments);
+  const out: NegativeResult[] = [];
+  const hyps = new Set(exps.flatMap((e) => Object.keys(e.verdicts ?? {})));
+  for (const h of hyps) {
+    const dev = exps.find((e) => !HELD.test(e.stage ?? '') && (e.verdicts?.[h]?.effect.estimate ?? 0) > 0);
+    const held = exps.find((e) => HELD.test(e.stage ?? '') && e.verdicts?.[h] && displayVerdict(e.verdicts[h]!.verdict, e.verdicts[h]!.effect) !== 'supported');
+    if (dev && held) {
+      const hv = held.verdicts![h]!;
+      out.push({ hypothesis: h, measure: dev.verdicts![h]!.measure, dev: { experiment: dev.id, estimate: dev.verdicts![h]!.effect.estimate! }, heldout: { experiment: held.id, estimate: hv.effect.estimate, verdict: displayVerdict(hv.verdict, hv.effect) } });
+    }
+  }
+  return out;
+}
+
+export interface MapNode { name: string; role: AgentRole; lead: boolean; steps: number; x: number; y: number }
+
+/** Node map layout from activity only: lead agent centred, others on a ring in order of first appearance. */
+export function nodeMapState(activity: LabActivity[]): { nodes: MapNode[]; links: AgentLink[]; latest: { agent: string; text: string } | null } {
+  const g = traceGraph(activity);
+  if (!g.agents.length) return { nodes: [], links: [], latest: null };
+  const lead = g.agents.find((a) => a.name.toLowerCase() === 'pi')?.name ?? g.agents[0]!.name;
+  const others = g.agents.filter((a) => a.name !== lead);
+  const nodes: MapNode[] = [{ ...g.agents.find((a) => a.name === lead)!, lead: true, x: 0, y: 0 }];
+  others.forEach((a, i) => {
+    const ang = -Math.PI / 2 + (2 * Math.PI * i) / others.length;
+    nodes.push({ ...a, lead: false, x: Math.cos(ang), y: Math.sin(ang) });
+  });
+  const trace = activityToTrace(activity);
+  const last = trace[trace.length - 1];
+  return { nodes, links: g.links, latest: last ? { agent: last.agent, text: last.summary } : null };
 }

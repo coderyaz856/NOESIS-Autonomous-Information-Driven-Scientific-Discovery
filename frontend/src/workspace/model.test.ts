@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activityToSteps, displayVerdict, experimentStatus, sourceLabel, verdictStatus } from './model';
+import { activityToSteps, displayVerdict, experimentStatus, isNoArgPayload, sourceLabel, verdictStatus } from './model';
 
 describe('verdict rules', () => {
   it('a confidence interval crossing zero is shown as inconclusive, even if the lab said supported', () => {
@@ -39,7 +39,23 @@ describe('activity mapping', () => {
   });
 });
 
-import { agentRole, computeSaved, findingHeadline, formatBudgetPercent, tallyVerdicts } from './model';
+describe('empty tool-call payloads', () => {
+  it('an empty object, empty string or null is a no-argument call', () => {
+    expect(isNoArgPayload({})).toBe(true);
+    expect(isNoArgPayload('')).toBe(true);
+    expect(isNoArgPayload('{}')).toBe(true);
+    expect(isNoArgPayload('null')).toBe(true);
+    expect(isNoArgPayload(null)).toBe(true);
+  });
+  it('real parameters are never treated as empty', () => {
+    expect(isNoArgPayload({ hypothesis: 'H1' })).toBe(false);
+    expect(isNoArgPayload('[1,2]')).toBe(false);
+    expect(isNoArgPayload('{"n": 5}')).toBe(false);
+    expect(isNoArgPayload(0)).toBe(false);
+  });
+});
+
+import { agentRole, computeSaved, findingHeadline, formatBudgetPercent, perVisitorLimitText, tallyVerdicts } from './model';
 
 describe('agent roles', () => {
   it('maps planner, runner, analysis and defaults to insight', () => {
@@ -91,7 +107,18 @@ describe('compute budget percentage precision', () => {
     expect(formatBudgetPercent(1 - Number.EPSILON)).not.toBe('100%');
     expect(formatBudgetPercent(1 - Number.EPSILON)).not.toBe('100.0%');
     expect(formatBudgetPercent(1)).toBe('100%');
-    expect(formatBudgetPercent(0)).toBe('0%');
+     expect(formatBudgetPercent(0)).toBe('0%');
+  });
+});
+
+describe('per-visitor limit text', () => {
+  it('reads an effectively unlimited cap as no limit', () => {
+    expect(perVisitorLimitText(1000)).toBe('no per-visitor limit on runs');
+    expect(perVisitorLimitText(5000)).toBe('no per-visitor limit on runs');
+  });
+  it('states real limits plainly', () => {
+    expect(perVisitorLimitText(5)).toBe('5 runs per hour per visitor');
+    expect(perVisitorLimitText(1)).toBe('1 run per hour per visitor');
   });
 });
 
@@ -181,5 +208,51 @@ describe('traceGraph', () => {
     ] as never);
     expect(g.links).toEqual([{ from: 'lead', to: 'planner', count: 2, titles: ['design E1'] }]);
     expect(g.segments.map((s) => [s.agent, s.received, s.failed])).toEqual([['lead', null, false], ['planner', 'design E1', true], ['lead', null, false]]);
+  });
+});
+
+import { honestyBadge, modelTier, routingRows, topCandidates, selectionConsequence, negativeResults, nodeMapState } from './model';
+
+describe('judge narrative helpers', () => {
+  it('honesty badge follows mode', () => {
+    expect(honestyBadge('lab')?.label).toBe('Executable lab study');
+    expect(honestyBadge('open')?.label).toBe('Research protocol — not executed');
+    expect(honestyBadge(null)).toBeNull();
+  });
+  it('tiers only from model names', () => {
+    expect(modelTier('meta-wonder-70b')).toBe('Wonder');
+    expect(modelTier('spark-8b')).toBe('Spark');
+    expect(modelTier('gpt')).toBeNull();
+    const rows = routingRows({ per_agent: [{ agent: 'pi', model: 'spark', calls: 3, cost_usd: 0.1, seconds: 4 }], config: { roles: { critic: { model: 'wonder', effort: 'high' } } } });
+    expect(rows.map((r) => [r.agent, r.tier])).toEqual([['critic', 'Wonder'], ['pi', 'Spark']]);
+  });
+  it('top candidates keep the selected one', () => {
+    const row = (id: string, utility: number) => ({ id, title: id, eig_bits: 1, utility, feasible: true, est_wall_seconds: 1, hypotheses: [] });
+    const c = topCandidates([{ round: 1, selected: 'E', argmax: 'A', rows: [row('A', 5), row('B', 4), row('C', 3), row('D', 2), row('E', 1)] }]);
+    expect(c.map((x) => x.id)).toEqual(['A', 'B', 'E']);
+    expect(c.find((x) => x.selected)?.id).toBe('E');
+  });
+  it('consequence only claims best-for-compute when argmax followed', () => {
+    expect(selectionConsequence({ followed_argmax: true, justification: null })).toMatch(/teaches us more/);
+    expect(selectionConsequence({ followed_argmax: false, justification: 'cheaper' })).toMatch(/cheaper/);
+  });
+  it('detects dev-positive, held-out-failed results with lab numbers', () => {
+    const v = (est: number, ci: [number, number], verdict: string) => ({ verdict, measure: 'dAUROC', effect: { estimate: est, ci95: ci }, standardised_effect: null, n_units: 10 });
+    const r = negativeResults({
+      E1: { id: 'E1', stage: 'development', verdicts: { H1: v(0.139, [0.05, 0.2], 'supported') } },
+      E4: { id: 'E4', stage: 'confirmation', verdicts: { H1: v(-0.006, [-0.05, 0.04], 'supported') } },
+    });
+    expect(r).toHaveLength(1);
+    expect(r[0]!.dev.estimate).toBe(0.139);
+    expect(r[0]!.heldout.estimate).toBe(-0.006);
+    expect(r[0]!.heldout.verdict).toBe('inconclusive');
+    expect(negativeResults({ E1: { id: 'E1', stage: 'development', verdicts: { H1: v(0.1, [0.05, 0.2], 'supported') } } })).toHaveLength(0);
+  });
+  it('node map centres the lead and only shows reported agents', () => {
+    const m = nodeMapState([{ t: 1, kind: 'handoff', from: 'pi', to: 'designer', title: 'x', state: 'running' }, { t: 2, kind: 'say', agent: 'designer', text: 'hi' }]);
+    expect(m.nodes.map((n) => n.name)).toEqual(['pi', 'designer']);
+    expect(m.nodes[0]!.lead).toBe(true);
+    expect(m.links).toHaveLength(1);
+    expect(nodeMapState([]).nodes).toHaveLength(0);
   });
 });

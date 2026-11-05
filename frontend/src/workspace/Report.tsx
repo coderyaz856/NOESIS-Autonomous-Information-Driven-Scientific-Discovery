@@ -5,6 +5,8 @@ import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { LabActivity, LabExperiment, LabState } from '@/noesis/api/lab-types';
 import { AgentGraph } from './TraceConsole';
+import { NegativeResult } from './NegativeResult';
+import { EvidenceContract } from './EvidenceContract';
 import { CurveChart, FrontierChart } from './charts';
 import { EXPLAINERS } from './explainers';
 import { agentDisplayName, computeSaved, displayVerdict, traceGraph, experimentStatus, findingHeadline, fmtCI, formatBudgetPercent, tallyVerdicts, verdictStatus, type SourceLabel } from './model';
@@ -168,6 +170,7 @@ function ReportBody({ state, experiments, label, runId, print = false, activity 
       </header>
 
       <SummaryBox state={state} experiments={experiments} print={print} />
+      <NegativeResult experiments={experiments} />
 
       <section className="space-y-3">
         <SectionTitle n={1}>Question &amp; hypotheses</SectionTitle>
@@ -332,6 +335,8 @@ function ReportBody({ state, experiments, label, runId, print = false, activity 
         <MetaFooter />
       </section>
 
+      <EvidenceContract runId={runId} print={print} />
+
       {print && activity && activity.length > 0 && <AgentTraceSection activity={activity} />}
 
       {print ? (
@@ -350,7 +355,8 @@ function ReportBody({ state, experiments, label, runId, print = false, activity 
         </section>
       ) : (
       <section className="space-y-2">
-        <h3 className="text-sm font-medium text-muted-foreground">Technical detail</h3>
+        <h3 className="text-sm font-medium text-muted-foreground">Verify this result</h3>
+        <p className="text-xs text-muted-foreground">Raw scoring tables, sources, specifications and the pre-registration fingerprint behind every number above.</p>
         <Expandable title="Planner scoring tables">
           {state.rounds.map((r) => (
             <div key={r.round} className="mb-3 overflow-x-auto">

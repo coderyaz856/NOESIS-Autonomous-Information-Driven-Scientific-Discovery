@@ -303,3 +303,6 @@
 @utility edge-pulse { animation: edge-pulse 1.2s ease-out 1; @media (prefers-reduced-motion: reduce) { animation: none; opacity: 0; } }
 
 @keyframes tg-dash { to { stroke-dashoffset: -18; } }
+
+@keyframes nm-draw { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+.nm-draw { stroke-dasharray: 400; animation: nm-draw 900ms ease-out both; }
