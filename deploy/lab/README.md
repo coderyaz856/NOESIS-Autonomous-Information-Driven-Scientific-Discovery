@@ -25,8 +25,8 @@ browser ──HTTPS──▶ web app (/lab-proxy, server route)
   token, and answers every request without the exact token with `401`, before doing any work.
 - The bridge listens on loopback; only Caddy faces the network, and it serves only `/lab/*`.
 - A production build of the web app refuses to relay (`503 bridge_token_missing`) when
-  `NOESIS_BRIDGE_TOKEN` is not set, and refuses writes entirely (read-only) when
-  `NOESIS_LAB_WRITE_TOKEN` is not set.
+  `NOESIS_BRIDGE_TOKEN` is not set. Without an operator token it is read-only
+  unless the separately configured public-trial mode is enabled.
 - Without a token the bridge is for local development only: it must stay on 127.0.0.1, and
   it refuses to bind elsewhere.
 

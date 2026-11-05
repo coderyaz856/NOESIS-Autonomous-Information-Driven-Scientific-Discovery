@@ -1,31 +1,62 @@
-# Proposed lab endpoint: start a run
+# Lab endpoint: start a run
 
-The website can start a new discovery run when the lab supports this endpoint. Until then, it falls back to the bundled recorded demonstration and labels it as a recording.
+`POST /lab/runs` on the lab bridge (`discolab/discolab/bridge.py`) starts a new
+Muse Code run. The browser never calls the bridge directly: it posts to the
+app's same-origin `/lab-proxy/runs?target=<allowed-lab-origin>`, which adds
+the bridge token (see the
+[frontend guide](FRONTEND_GUIDE.md)).
+
+The endpoint exists only when the bridge is started with `--enable-runs`. When a
+bridge token is configured, every request needs the `X-Noesis-Bridge-Token`
+header (otherwise `401`, before any work is done).
 
 ## Request
 
-`POST /lab/runs`
-
 ```json
-{ "question": "Does population entropy warn of stagnation earlier than fitness history?" }
+{ "question": "Does population entropy warn of stagnation earlier than fitness history?",
+  "rounds": 1, "ceiling_usd": 2.0 }
 ```
 
-- `question` is a string of 10–1000 characters. The website relay rejects anything else and caps the body at 4 KB.
-- The lab decides whether the question fits a pre-registration. It must not invent hypotheses outside it unless they are labelled agent-generated, as the claims policy requires.
+- `question`: 8–600 characters after whitespace is collapsed. Required.
+  The current browser form requires at least 10 trimmed characters before
+  enabling **Investigate**; the bridge's 8-character rule is authoritative
+  for direct API callers.
+- `rounds` (optional, default 1) and `ceiling_usd` (optional, default 2.0) are
+  clamped to 1–2 rounds and $0.25–$5.00. `ceiling_usd` is a soft guard on the
+  estimated spend, not a billing cap.
+- With the bounded public trial enabled (`NOESIS_TRIAL_TOTAL_USD`, see
+  `discolab/discolab/trial.py`), every run gets 1 round and the trial's per-run
+  guard instead, and the trial's spend and rate limits apply.
+
+Every question is accepted. A scope check decides the mode: questions about the
+pre-registered genetic-algorithm/entropy study run in **lab** mode (seeded
+experiments), all others in **open-research** mode, which proposes studies but
+executes none.
 
 ## Responses
 
-| Status | Body | Website behaviour |
+| Status | Body | Meaning |
 |---|---|---|
-| 201 / 200 | `{ "source": "lab_home/<run-name>" }` | Opens the run as LIVE and follows `/lab/stream?source=…` |
-| 400 | `{ "error": { "code", "message", "details" } }` | Shows "The lab did not accept this question" with the message |
-| 404 / 405 / 501 | any | Treated as "lab can't start runs yet"; opens the recording, clearly labelled |
-| unreachable | relay replies `{ "offline": true }` | Opens the recording, clearly labelled |
-| other errors | any | Shows "Could not reach the lab", with Try again and Open recording |
+| `201` | `{ "source": "lab_home/<run>", "run_id", "scope", "mode", "rounds", "ceiling_usd" }` | Run started in the background; follow it with `/lab/run`, `/lab/activity` and `/lab/stream?source=…` |
+| `400` | `{ "error": { "code": "bad_question" or "bad_request", "message" } }` | Question length or request body invalid |
+| `401` | `{ "error": { "code": "unauthorized", … } }` | Missing or wrong bridge token |
+| `403` | `{ "error": { "code": "runs_disabled", … } }` | Bridge started without `--enable-runs` |
+| `403` | `{ "error": { "code": "budget_exhausted", … } }` | Public trial only: its total budget is spent |
+| `409` | `{ "error": { "code": "run_in_progress", "message", "source" } }` | One live run at a time; `source` names the active run |
+| `429` | `{ "error": { "code": "rate_limited", … } }` | Public trial only: a rate limit was reached |
+| `502` | `{ "error": { "code": "scope_check_failed", … } }` | The scope check could not run |
+| `503` | `{ "error": { "code": "budget_store_not_durable" or "budget_store_unreadable", … } }` | Public trial only: its spend record is not on durable storage, or is unreadable |
 
-`source` must be a value that `/lab/sources` also lists, with `kind: "live"`, so `/lab/state`, `/lab/activity`, `/lab/experiment` and `/lab/stream` work unchanged.
+The returned `source` is also listed by `/lab/sources` as a live lab, so
+`/lab/state`, `/lab/activity`, `/lab/experiment` and `/lab/stream` work on it
+unchanged.
 
-## Notes for `discolab/discolab/bridge.py`
+## Related endpoint
 
-- Add `do_POST` that handles only `/lab/runs`. Validate the length, create `lab_home/<slug>/`, start the Omnigent run in the background, and return immediately.
-- Rate-limit or require a shared token if the lab is exposed publicly. The website relay doesn't authenticate callers.
+`POST /lab/approvals` with `{ "source", "id": "E#", "decision": "approve" | "decline" }`
+answers a pending human-approval request for a confirmatory experiment
+(`404` if there is none, `409` if it was already decided). It also requires
+`--enable-runs`. The browser sends it through `/lab-proxy/approvals`; the
+same server-side write policy and origin allow-list apply. Approval authorizes
+the frozen experiment and is recorded before execution; an unanswered
+request is declined when its wait expires.

@@ -1,4 +1,4 @@
-# discolab — an agent-run lab for evolutionary-search stagnation
+# discolab — the Noesis scientific lab
 
 > **Meta indie-track build: start here.** Agents run on Meta's Muse Code
 > (`discolab/muse.py`, `muse_agents/`), started by
@@ -7,15 +7,15 @@
 > - Any question is accepted. Out-of-domain questions run in **open-research
 >   mode**, which proposes studies but executes none.
 > - The held-out benchmark did not show an escalation quality gain.
-> - The Omnigent sections below describe the earlier orchestration, kept for
->   its recorded runs. They are not the Meta run path.
+> - The Omnigent bundle is an optional orchestration path. The Muse bridge is
+>   the question-to-report path used by the Meta application.
 
 **Question (pre-registered in [`prereg.yaml`](prereg.yaml)).** Do the dynamics of
 population entropy give early warning of evolutionary-search stagnation beyond
 what the fitness history already shows — and can that signal drive a mutation
 intervention that recovers faster when the landscape changes?
 
-The lab is a closed discovery loop. Omnigent agents decide; deterministic tools
+The lab is a closed discovery loop. Muse Code agents decide; deterministic tools
 compute; an append-only ledger records every transition:
 
 ```
@@ -24,28 +24,44 @@ Question → Evidence → Hypothesis → ≥2 competing experiments → scored s
         → recorded decision → next round's candidates (re-scored on the new beliefs)
 ```
 
-## Architecture
+## Primary architecture
 
 ```
-scripts/run_session.py ── HTTP/SSE ──▶ Omnigent server ──▶ host/runner (this machine)
-                                              │
-                         discolab-pi  (supervisor, claude-sdk)
-            sys_session_send │      │       │  sys_read_inbox
-             ┌───────────────┘      │       └────────────────┐
-        literature             designer                    critic
-            │                       │                         │
-            └──────── stdio MCP: python -m discolab.mcp_server ┘   (per-agent tool allow-lists)
-                                    │
-     lab.py ─ ledger.jsonl ─ planner.py ─ experiments.py ─ ga.py / controllers.py / landscapes.py
-                                    │
-                    lab_home/<lab>/runs/E#/  (traces.npz, outcomes.jsonl, manifest.json, summary.json)
+browser workspace → server-side /lab-proxy → authenticated bridge.py
+                                                │
+                                       scope.py: lab or open mode
+                                                │
+                                    Muse Code PI → specialists
+                                                │
+                              per-role stdio MCP allow-lists
+                                                │
+      lab.py → ledger.jsonl → planner.py → experiments.py [lab mode]
+                                                │
+                      lab_home/<run>/runs/E#/ artifacts
 ```
 
 Agents never produce numbers. Seeds, costs, simulations, statistics, verdicts and
 posterior updates all come from `discolab` code; agents contribute choices and
 attributed text (rationales, interpretations, decisions).
 
-## Agents (Omnigent bundle: [`omnigent/lab_pi`](omnigent/lab_pi))
+Lab mode may execute the registered GA/entropy experiments. Open-research
+mode accepts other questions but only retrieves evidence and proposes studies;
+it does not run an experiment. The [system architecture](../docs/SYSTEM_ARCHITECTURE.md)
+specifies the scope gate, bridge endpoints, trust boundary and run artifacts.
+
+## Agent roles and permissions
+
+The Muse PI delegates to literature, designer and critic specialists. A
+frozen escalation gate can invoke the read-only Wonder verifier. Each role
+receives only its allow-listed MCP tools. The PI may select and run a
+development experiment; confirmatory held-out execution requires an explicit
+human approval. The open-research tool set has no experiment-execution tool.
+See [`muse_agents/`](muse_agents/) and
+[the demo guide](../docs/hackathon/DEMO.md) for the exact role prompts,
+configuration and approval behavior.
+
+The following table describes the optional
+[Omnigent bundle](omnigent/lab_pi), which uses the same scientific core:
 
 | Agent | Scientific decision it owns | Inputs | Outputs | Tools (allow-list) |
 |---|---|---|---|---|
@@ -58,7 +74,7 @@ Least privilege is structural: the literature agent cannot run experiments, the
 designer cannot select or run them, the critic cannot change specs, and only the
 PI can spend compute.
 
-## Policies (Omnigent guardrails)
+## Optional Omnigent guardrails
 
 | Policy | Where | Effect |
 |---|---|---|
@@ -84,7 +100,7 @@ The research portfolio uses a deterministic, redundancy-aware greedy selector:
 it adds the feasible experiment with the largest positive marginal joint
 information after cost and held-out penalties, subject to the compute budget
 and a three-experiment cap. Its selection quality is an empirical question.
-The frozen `prereg.yaml` records a historical `(1 - 1/e)` guarantee claim;
+The frozen `prereg.yaml` records a `(1 - 1/e)` guarantee claim;
 the corrected mathematical conditions and interpretation are in
 [Financial mathematics and the meta-agent](../docs/FINANCIAL_MATH_AND_META_AGENT.md#research-portfolio-selector-and-theory-correction).
 
@@ -103,7 +119,26 @@ the corrected mathematical conditions and interpretation are in
 - **Phase 2 (control)**: restricted mean recovery time after shifts, Wilson
   recovery rates, rescue/damage vs B0 with exact McNemar, CVaR90, Holm correction.
 
-## Run it
+## Run the primary Muse lab
+
+From the repository root, start a read-only bridge to inspect committed runs
+without a model key:
+
+```powershell
+Set-Location .\discolab
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m discolab.bridge --port 8765
+```
+
+Start the browser app separately from `frontend/` as shown in the
+[root README](../README.md#try-it-locally). A live run needs Muse Code, an
+explicit Meta credential outside the repository, `--enable-runs`, and a
+spend decision. Follow the [operating procedure](../docs/hackathon/DEMO.md)
+before enabling paid calls. The bridge defaults to read-only.
+
+## Optional Omnigent reproduction
 
 ```bash
 cd discolab
@@ -119,6 +154,13 @@ bash scripts/stop_lab.sh main
 Requires `ANTHROPIC_API_KEY` in the environment (never written to disk by the lab).
 On Linux/macOS use `.venv/bin/python`. Windows notes are in `scripts/start_lab.sh`.
 
-## Results
+## Evidence and interpretation
 
-_Filled from the ledger and artifacts after each recorded run; see below._
+The [escalation study](results/escalation/README.md) reports simulation-compute
+savings and agreement with its reference, with uncertainty. The
+[sealed entropy study](../docs/SEALED_ENTROPY_EARLY_WARNING_RESULT.md) records
+the negative held-out early-warning result. The
+[Muse-agent baseline](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)
+separates provider-backed calls from offline replay. These are distinct
+estimands; do not combine their denominators or present an unexecuted open-mode
+protocol as an experimental finding.

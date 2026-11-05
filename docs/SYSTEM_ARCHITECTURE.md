@@ -138,13 +138,13 @@ The bridge and the browser app are deployed separately.
 - `deploy/docker/`: the published image and `smoke-test.sh`.
 - `deploy/lab/`: Linux host with Caddy and a systemd unit.
 
-## Optional and earlier paths
+## Optional components
 
 - **FastAPI control plane (optional).** `backend/` exposes `/api` routes for
   capability policy, fallback, Pareto selection and SSE, plus the benchmark
   analysis code. It is not needed to run the lab. See [Codebase](CODEBASE.md)
   and [API contracts](API_CONTRACTS.md).
-- **Omnigent lab (earlier runtime).** `discolab/omnigent/lab_pi/` and
+- **Omnigent lab (optional runtime).** `discolab/omnigent/lab_pi/` and
   `discolab/scripts/start_lab.sh` run the same MCP tools under Omnigent. The
   Muse runtime reuses its prompts and tool allow-lists.
 
@@ -155,8 +155,10 @@ The bridge and the browser app are deployed separately.
    the lab only through allow-listed tools.
 3. **The numerical core is the measurement authority.** Seeded tools produce
    scientific quantities; the ledger guards every transition.
-4. **The browser is not an evidence store** and never holds the Meta key, the
-   bridge token or the operator token.
+4. **The browser is not an evidence store** and never receives the Meta key or
+   bridge token. In operator mode, the user types an operator token into a
+   transient sign-in form; the app exchanges it for an HttpOnly session cookie
+   and clears the form state after a successful exchange.
 5. **Content hashes are tamper-evident, not signatures.**
 
 Never repair raw evidence in place. If a protocol or parser is wrong, keep the

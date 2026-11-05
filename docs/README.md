@@ -23,7 +23,7 @@ calculations.
 |---|---|
 | See what Noesis does and try it (authoritative entry point) | The [project README](../README.md), then the [demo guide](hackathon/DEMO.md) |
 | Understand the whole repository | [System architecture](SYSTEM_ARCHITECTURE.md) and [codebase map](CODEBASE.md) |
-| Run the application locally | [Getting started](GETTING_STARTED.md) |
+| Run the application locally | [Getting started](GETTING_STARTED.md) and the [Muse demo guide](hackathon/DEMO.md) |
 | Verify or reproduce a result without Meta credits | [Verification and reproduction](VERIFICATION.md) |
 | Design or review an experiment | The pre-registration `discolab/prereg.yaml` and the [discovery lab guide](../discolab/README.md) |
 | Operate the API, UI, lab, or agents | [Operations runbook](OPERATIONS_RUNBOOK.md) |
@@ -35,7 +35,7 @@ calculations.
 | Audit model/architecture benchmarks | [Benchmark methodology](BENCHMARK_METHODOLOGY.md) and the [Muse agents baseline report](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md) |
 | Read the recorded acceleration study | [Selective-escalation study report](../discolab/results/escalation/README.md) |
 | Run or extend tests | [Testing guide](TESTING.md) |
-| Prepare the evidence-first product demo | [Demo integration runbook](DEMO_RUNBOOK.md) |
+| Present the evidence-first product demo | [Demo runbook](DEMO_RUNBOOK.md) |
 
 ## Sources of truth
 
@@ -44,8 +44,9 @@ authoritative:
 
 | Concern | Source of truth |
 |---|---|
-| Backend HTTP shapes | Pydantic models in `backend/app/api/routes/` |
-| Frontend API mirror | `frontend/src/noesis/api/types.ts` and `frontend/src/noesis/api/lab-types.ts` |
+| Primary lab HTTP/SSE shapes | `discolab/discolab/bridge.py`, `discolab/discolab/views.py`, and the [lab-run contract](LAB_RUNS_ENDPOINT.md) |
+| Optional FastAPI control-plane shapes | Pydantic models in `backend/app/api/routes/` |
+| Frontend response types and relay policy | `frontend/src/noesis/api/lab-types.ts`, `frontend/src/routes/lab-proxy.$.ts`, and `frontend/src/noesis/api/lab-proxy-policy.ts` |
 | Discovery hypotheses and decision rules | `discolab/prereg.yaml` |
 | Acceleration study protocol | `discolab/escalation_protocol.yaml` |
 | Recorded acceleration evidence | `discolab/results/escalation/summary.json` and its [report](../discolab/results/escalation/README.md) |

@@ -103,13 +103,14 @@ cd frontend
 npx vite dev --port 5173
 ```
 
-Open http://localhost:5173. Click the question box and use the supported sample
-question (or write your own about entropy and GA stagnation), then press Enter.
-The app switches to **Discovery** and follows the run live. A one-round run takes
-about 3–4 minutes and costs about $0.30 (measured run: $0.29, 195 s). That run
-predates the escalation gate. With the gate on, each critique is also verified
-by Wonder, which adds roughly $0.06–0.15 and some seconds per round. This
-estimate is not yet measured in a live run.
+Open http://localhost:5173. Use an example question or write one of your own,
+then click **Investigate** (or press Ctrl/Cmd+Enter in the question box).
+The question remains visible in the same workspace while the agent map,
+activity and decision console update; completion opens the report. A recorded
+one-round lab run took 195 s and an estimated $0.29 before the escalation
+gate; a later gate-enabled lab run took 237 s and an estimated $0.46.
+These are examples, not timing or price guarantees. The soft spend guard
+does not cap an already-running provider call.
 
 Without `--enable-runs` the bridge is read-only: you can browse recorded runs,
 and the question box explains that launching is disabled.
@@ -137,7 +138,7 @@ cd discolab
 
 ## Rerun the benchmark (paid)
 
-Both commands run the unchanged pre-challenge Baseline v0 pipeline (S0–S4,
+Both commands run the frozen Baseline v0 pipeline (S0–S4,
 covariance and complementarity, bounds, Pareto, economics):
 
 ```powershell
@@ -196,7 +197,7 @@ cd frontend;  npx vitest run; npx tsc --noEmit -p .
     shows one of: not escalated, confirmed, corrected (with the verifier's
     correction) or rejected.
   - In the live run above, the analysis was recorded first and corrected
-    afterwards. That run predates this explicit tracking.
+    afterwards. That run does not include this explicit tracking field.
 - **Evidence.** `record_evidence` verifies the source (re-fetched by id, title
   matched, not retracted). The claim is an agent's summary and is not checked
   against the paper.

@@ -25,7 +25,9 @@ python -m pytest tests -q --basetemp $testRoot
 
 # Frontend
 cd ..\frontend
-npm run typecheck
+npm ci
+npx tsc --noEmit -p .
+npm test
 npm run build
 
 # Discovery lab and Python SDK
@@ -62,10 +64,9 @@ The explicit `--basetemp` keeps pytest temporary files inside the workspace and 
 | `test_trace.py` | Execution trace construction and sanitization. |
 | `test_capabilities.py` | Capability implication, leases, scope, expiry, denials, and mandatory requirements. |
 | `test_fallback.py` | Ordered fallback eligibility and rejection reasons. |
-| `test_pareto.py` | Multi-objective dominance and optimizer behavior. |
+| `test_experiment_systems.py` | Multi-objective decisions, confidence bounds, covariance, priors, routing, racing, stress, and experimental controls. |
 | `test_eval.py` | Caller-supplied evaluation and artifact persistence. |
 | `test_benchmark_lab.py` | Corpus, runner, aggregation, calibration, tail risk, ablations, artifacts, and publishing. |
-| `test_experiment_systems.py` | Confidence bounds, covariance, priors, routing, racing, stress, and experimental controls. |
 | `test_pilot.py` | Paired case selection, cost projections, hard limits, and pilot-report sensitivity. |
 | `test_baseline_v0.py` | Frozen scoring, split discipline, selective replay, reliability decomposition, and baseline artifact integrity. |
 
@@ -110,9 +111,21 @@ A route change is complete only when the following agree:
 
 ## Frontend verification
 
-The frontend currently uses static type checking and a production Vite build rather than a browser unit-test framework. `npm run typecheck` protects the backend/client type mirror; `npm run build` protects module resolution, asset imports, and production bundling.
+The frontend has three layers of checks, all run in CI:
 
-Visual regression inputs live under `frontend/qa-screenshots/`, and `frontend/scripts/capture-story.mjs` captures the principal chapters and Team surface. These are QA artifacts, not numerical benchmark evidence.
+- `npm test` runs the vitest suites (`frontend/vitest.config.ts`):
+  `frontend/src/workspace/model.test.ts` (verdict, experiment-status and
+  source-label rules, e.g. an interval crossing zero is never shown as
+  supported), `frontend/src/test/lab-proxy-policy.test.ts` (allowed lab
+  origins, write modes, operator sessions, and that only the server's bridge
+  token is relayed), and `frontend/src/test/app-routing.test.tsx` (the root
+  route resolves);
+- `npx tsc --noEmit -p .` type-checks the app, including the lab bridge
+  response types in `frontend/src/noesis/api/lab-types.ts`;
+- `npm run build` protects module resolution, asset imports, and production
+  bundling.
+
+There is no screenshot or visual-regression script in the repository.
 
 ## Discovery-lab test map
 
@@ -121,6 +134,7 @@ Visual regression inputs live under `frontend/qa-screenshots/`, and `frontend/sc
 | `test_ga.py` | Determinism, common random numbers, elitism, controller visibility, invalid actions. |
 | `test_controllers_features.py` | Mutation bounds, intervention behavior, labels, feature causality, model serialization. |
 | `test_landscapes.py` | Known optima, seeded shifts, domain safety, recovery calibration. |
+| `test_telemetry.py` | Entropy and diversity telemetry invariants. |
 | `test_predict.py` | Logistic fitting, informative/null feature behavior, AUROC inference. |
 | `test_metrics.py` | Censoring-aware recovery outcomes and rescue/damage counts. |
 | `test_stats.py` | AUROC, Wilson, clustered bootstrap, multiplicity, McNemar, effect sizes, CVaR. |
@@ -131,10 +145,13 @@ Visual regression inputs live under `frontend/qa-screenshots/`, and `frontend/sc
 | `test_portfolio.py` | Failure dependence and complementarity. |
 | `test_sdk.py` | Python/RPC contract, schema parity, and cross-language numerical fixtures. |
 | `test_evidence_sdk.py` | Generic evidence runs, deterministic reproduction, budget and tamper failures. |
+| `test_evidence_lifecycle.py` | Checkpoint/resume, lineage, listing, and bundle integrity. |
+| `test_muse_runtime.py`, `test_mcp_bundle.py` | Muse role execution and tool isolation. |
+| `test_open_mode.py`, `test_agent_escalation.py` | Open-research restrictions and frozen verifier gate. |
+| `test_bridge_runs.py`, `test_bridge_auth.py`, `test_trial.py` | Run admission, bridge authentication, and bounded public-trial behavior. |
 
-Additional evidence-lifecycle modules may be present on active branches. Their
-test names are the executable specification for checkpoint, decision, listing,
-bundle, and protocol behavior.
+Test names and counts may change; the files in `backend/tests/`,
+`discolab/tests/`, and `frontend/src/test/` are the executable specification.
 
 ## Test taxonomy
 

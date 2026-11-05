@@ -8,10 +8,10 @@ held-out evaluation; those require the experiment-specific approval and limits.
 
 | Component | Default address/process | Persistent output |
 |---|---|---|
-| FastAPI backend | `127.0.0.1:8000` | optional logs, metrics, eval artifacts |
-| Vite frontend | `localhost:5173` | production build under `frontend/dist/` |
-| Omnigent server | `127.0.0.1:6810` by example | lab-local SQLite and artifacts |
-| Omnigent host | background process attached to server | host/server logs |
+| Muse lab bridge | `127.0.0.1:8765` locally; authenticated HTTPS Space when hosted | run ledger and activity under `discolab/lab_home/`, or `NOESIS_DATA_DIR` when hosted |
+| TanStack Start browser app | `localhost:5173` locally; [public app](https://noesis-agent.lovable.app/) when hosted | server-side `/lab-proxy`; no scientific results stored in the browser |
+| FastAPI control plane (optional) | `127.0.0.1:8000` | optional logs, metrics, eval artifacts |
+| Omnigent runtime (optional) | `127.0.0.1:6810` by example | lab-local SQLite and artifacts |
 | SDK JSONL bridge | child process over stdin/stdout | research-run directory |
 
 ## Safe startup order
@@ -19,17 +19,44 @@ held-out evaluation; those require the experiment-specific approval and limits.
 1. Confirm the intended Git branch, commit, and worktree status.
 2. Activate the correct Python environment.
 3. Set only required environment variables.
-4. Run the offline component checks in [VERIFICATION.md](VERIFICATION.md)
-   (at least the `discolab` and backend test suites).
-5. Start the backend and verify `/health`.
-6. Start the frontend and perform a browser smoke test.
-7. Start Omnigent only if an agentic discovery run is needed.
-8. Enable provider credentials only for an explicitly authorized live run.
+4. Run the relevant offline checks in [Verification](VERIFICATION.md).
+5. Start the read-only Muse lab bridge and confirm that recorded sources list.
+6. Start the browser app and inspect one recorded run through `/lab-proxy`.
+7. Enable live run launching and the Meta credential only for an authorized,
+   budgeted run. Keep the bridge on loopback locally; hosted bridges require
+   authentication and persistent state for the public trial.
+
+The FastAPI control plane and Omnigent runtime are separate, optional
+components. Neither is required for the current Muse question-to-report demo.
 
 This order isolates deterministic failures before external cost or provider
 state enters the system.
 
-## Backend operation
+## Muse lab bridge (primary demo path)
+
+From the repository root, a local, read-only inspection needs no model key:
+
+```powershell
+Set-Location .\discolab
+python -m pip install -e ".[dev]"
+python -m discolab.bridge --port 8765
+```
+
+The bridge serves committed `results/<name>` records as well as live
+`lab_home/<name>` runs. In another terminal, start the frontend as below and
+open `http://localhost:5173`. Inspect a recorded source before permitting
+paid calls. To launch a live run, configure `MODEL_API_KEY_FILE` to a file
+outside the repository, then restart the bridge with `--enable-runs`; use
+[the Meta Muse guide](hackathon/DEMO.md) for the complete procedure and
+budget caveats. The bridge accepts one active run at a time; a confirmatory
+experiment pauses for human approval and declines on timeout.
+
+Hosted operation uses an authenticated bridge, the server-side frontend
+relay, and durable storage for public-trial accounting. See the
+[deployment guide](../deploy/huggingface/README.md). Do not expose an
+unauthenticated local bridge on a public interface.
+
+## Optional FastAPI control plane
 
 Start:
 
@@ -72,23 +99,23 @@ unless overridden.
 ```powershell
 Set-Location .\frontend
 npm ci
-npm run typecheck
+npx tsc --noEmit -p .
 npm run build
-npm run dev
+npm run dev -- --port 5173
 ```
 
-Verification:
+The hosted app is published through Lovable at <https://noesis-agent.lovable.app/>;
+the frontend and its server-side `/lab-proxy` are described in the
+[frontend guide](FRONTEND_GUIDE.md).
 
-- browser reaches `http://localhost:5173`;
-- navigation preserves the last home chapter;
-- left sidebar expands on pointer presence and collapses otherwise;
-- dark and light themes remain readable;
-- Team panel opens and closes;
-- live catalogue failures display a controlled state;
+Verification (with the lab bridge running on `http://127.0.0.1:8765`):
+
+- browser reaches `http://localhost:5173` and the question prompt loads;
+- the header shows the lab as connected;
+- a recorded run opens and shows its agent map, activity trace and report;
+- with a live bridge (`--enable-runs`), a new question starts a run and the
+  agent activity streams in;
 - browser console contains no uncaught errors.
-
-The screenshot script under `frontend/scripts/` is for visual QA. Screenshots
-are not benchmark or scientific evidence.
 
 ## SDK bridge operation
 
@@ -106,7 +133,7 @@ The bridge is stateful for an open evidence run. A transport interruption may
 leave a run incomplete. Inspect state before retrying a mutating request; never
 assume a timed-out mutation failed to land.
 
-## Omnigent laboratory operation
+## Omnigent laboratory operation (optional)
 
 ### Start
 

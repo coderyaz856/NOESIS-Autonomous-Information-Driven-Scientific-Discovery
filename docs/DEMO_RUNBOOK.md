@@ -1,182 +1,73 @@
-# Evidence-first demo integration runbook
+# Evidence-first demo runbook
 
-The product demonstration should expose one complete scientific transition
-without changing the existing navigation or seven-chapter story. The frontend
-already has the visual system, workspace shell, progressive charts, inspectors,
-and preserved home position. What remains is to connect those surfaces to the
-read-only laboratory bridge and make provenance visible.
+This is the presentation path for the **implemented** Noesis workspace.
+For installation and operator controls, use the
+[Meta Muse demo guide](hackathon/DEMO.md). The
+[public application](https://noesis-agent.lovable.app/) is the browser entry
+point; the [three-minute video](https://www.youtube.com/watch?v=x3rVdGG7zP4)
+shows a completed journey without requiring a new paid run.
 
-## Demonstration contract
+## Show one question, two honest outcomes
 
-The primary path is:
+1. Enter a falsifiable question in the single workspace. Keep the question
+   visible while the run develops.
+2. Point out the scope result. A GA/entropy question enters **lab mode** and
+   can execute registered, seeded simulations. Other questions enter
+   **open-research mode**: agents retrieve identifiable sources, register
+   competing hypotheses, draft protocols, critique them and recommend a
+   study. No experiment is executed in open mode.
+3. Follow the live `NodeMap` and agent activity. Each handoff, tool call,
+   failure, and verifier intervention has a trace; the detailed trace is
+   available without crowding the primary view.
+4. Open the Decision Console. It shows candidate experiments and the
+   deterministic information-gain/cost calculation when the lab has
+   produced them. The PI's selected action and reason are distinct from
+   the tool-produced score.
+5. If a confirmatory experiment is proposed, show the human
+   Approve/Decline gate. Approval authorizes the frozen test; no answer
+   fails closed. Do not claim that approval changes the result or that
+   every development experiment needs manual approval.
+6. End at the report. Distinguish `LIVE`, `RECORDED`, provider-backed
+   benchmark, and offline replay evidence. Show the actual sample size,
+   interval, verdict, provenance, and next decision. An unexecuted
+   protocol is not a finding.
 
-```text
-question
-  -> verified literature and hypotheses
-  -> competing experiment candidates
-  -> information-gain/cost scoring
-  -> PI selection
-  -> real experiment and progressive curves
-  -> effect estimate, interval, and verdict
-  -> Bayesian posterior update
-  -> changed next decision
-  -> measured selective-escalation economics
-```
+A quiet live run is not a failure of the UI: use the activity status and
+last known state. Never splice a different question's recording into a live
+run without the explicit `RECORDED` label. With no connected lab and no
+installed static recording, the workspace displays an empty state; the
+committed open-research run is inspectable through a local read-only bridge.
 
-The UI must support two explicitly labelled modes:
+## Three measured results to present separately
 
-- `RECORDED`: committed, replayable discovery evidence;
-- `LIVE`: a currently running laboratory source.
+| Question | Result | Evidence and boundary |
+|---|---|---|
+| Does adaptive experiment allocation save simulation work? | Mean fixed/selective compute ratio **1.542** (95% interval **1.280–1.901**); selective and fixed designs agree with a separate reference on **28/35** and **29/35** hypothesis-replicates. | [Development-stage escalation study](../discolab/results/escalation/README.md). About 35% less simulated compute, not a measured wall-clock research speed-up or equal agreement claim. |
+| Did entropy improve held-out early-warning prediction? | Development AUROC contrast **+0.1393**; sealed held-out contrast **−0.00588**, 95% paired cluster-bootstrap interval **[−0.01108, −0.00031]**. | [Sealed study](SEALED_ENTROPY_EARLY_WARNING_RESULT.md). Its registered verdict is `no_meaningful_gain`; the negative result is valid evidence within this scope. |
+| Did the selective Muse verifier improve quality? | On 12 held-out cases, Spark-only, always-both and selective policies each scored **0.833**. Six provider-backed verifier calls yielded zero rescues and zero damage. | [Muse-agent baseline](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md). The 38.0% estimated cost and 24.9% latency reductions versus always-both are **offline replay**; no quality gain was resolved. |
 
-Do not call a recorded stream live. `SAMPLE` interface fixtures must remain
-visually distinct from both.
+These studies measure different things. Do not multiply their savings or
+combine their denominators into one “research acceleration” number.
 
-## Existing data surface
+## Operational checklist before showing the app
 
-Start the read-only bridge from `discolab/`:
+- Open the public URL in a private browser window; verify that the lab
+  connection and write mode are accurately shown.
+- If a public trial is active, check the bridge's remaining estimated budget
+  and rate-limit status before starting a paid run. A soft per-run guard is
+  not a hard provider billing cap.
+- Have the video and the committed run as fallback evidence. State plainly
+  which one is recorded.
+- Keep the [pre-registration](../discolab/prereg.yaml),
+  [benchmark protocol](BENCHMARK_METHODOLOGY.md), and
+  [reproducibility guide](REPRODUCIBILITY.md) ready for judge questions.
+- Do not show credential files, environment values, or private run data.
 
-```powershell
-python -m discolab.bridge --port 8765
-```
+## Acceptance checks
 
-It already exposes:
-
-| Endpoint | Frontend use |
-|---|---|
-| `GET /lab/sources` | recorded/live source picker, event and experiment counts, preregistration hash |
-| `GET /lab/state?source=...` | hypotheses, posterior trajectories, scoring rounds, selections, decisions, analyses |
-| `GET /lab/activity?source=...` | agent handoffs, tool calls, approvals, and messages |
-| `GET /lab/experiment?source=...&id=E#` | experiment result, score, specification, and progressive plot curves |
-| `GET /lab/stream?source=...` | named `ledger`, `agent`, and `heartbeat` SSE events |
-
-The browser should reach this through a Vite proxy such as `/lab`, never a
-hardcoded machine URL. Add TypeScript response mirrors and a dedicated client;
-do not fetch directly inside presentation components.
-
-## Frontend work required
-
-### 1. Evidence source and run header
-
-Add a quiet source selector to the existing toolbar or inspector. The active
-workspace header should always display:
-
-- `RECORDED` or `LIVE` evidence label;
-- source identifier;
-- preregistration hash prefix;
-- event and completed-experiment counts;
-- connection state and last event time.
-
-### 2. Agent activity timeline
-
-Render PI, literature, designer, and critic activity from `/lab/activity` and
-the SSE stream. Use the existing graph as the stable spatial anchor while a
-compact timeline records handoff, tool, approval, and completed states. Agent
-text is interpretation; numerical facts should link to tool/result cards.
-
-### 3. Candidate experiment decision table
-
-For each scoring round, show:
-
-- experiment ID, title, stage, and hypotheses;
-- expected information gain in bits;
-- estimated wall time and utility;
-- feasibility and violations;
-- selected candidate and whether the PI followed the deterministic argmax;
-- selection justification.
-
-The table is more important than another architecture diagram because it proves
-that the system considered alternatives before spending compute.
-
-### 4. Progressive scientific plots
-
-When an experiment is selected, request `/lab/experiment`. Draw the provided
-fitness-error, entropy, and mutation-rate series progressively once per panel
-opening. Mark landscape shifts and use textual summaries for accessibility.
-Do not continuously loop the animation or recompute scientific values in the
-browser.
-
-### 5. Result and belief-update panel
-
-The key result module should include:
-
-- experimental unit, development/held-out stage, sample size, and comparator;
-- primary effect and 95% interval;
-- supported/refuted/inconclusive verdict;
-- posterior before and after;
-- critic limitations;
-- next decision and how it differs from the previous plan.
-
-Sign conventions must be explicit, especially when lower recovery time is
-better.
-
-### 6. Acceleration evidence panel
-
-Add one `BENCHMARK` card derived from the committed summary rather than typed
-constants:
-
-| Metric | Display |
-|---|---:|
-| Mean compute acceleration | `1.54x` |
-| 95% interval | `[1.28, 1.90]` |
-| Mean compute saved | `35.15%` |
-| Selective/full-size agreement | `28/35` / `29/35` |
-| Rescue/damage | `5` / `0` |
-
-Place the limitation adjacent to the numbers: development-stage landscapes;
-near-matched rather than identical agreement. A secondary card may show the
-model-routing replay result: equal observed quality `0.750`, `16.0%` estimated
-cost saving, and `35.2%` latency saving versus always-both.
-
-### 7. Provenance inspector
-
-The existing inspector should expose links or copyable values for:
-
-- experiment/run ID;
-- protocol and preregistration hash;
-- seed block;
-- code fingerprint;
-- artifact type and evidence label;
-- recorded limitations;
-- repository-relative artifact location.
-
-### 8. Complete state handling
-
-Implement explicit loading, empty, disconnected, malformed-evidence, recorded,
-and live states. Losing SSE should retain the last valid snapshot and show a
-reconnect state; it must not silently switch to fixtures.
-
-## Demo sequence
-
-Use a committed source for the main presentation and keep live mode optional:
-
-1. Open the last Home chapter and enter the Trace/Agents workspace.
-2. Select recorded run 2.
-3. Show two or more competing candidates and the PI selection.
-4. Open E1/E4/E7, draw the plot, and show the numerical verdict.
-5. Animate the posterior transition and reveal the changed next decision.
-6. Open the acceleration card and show the 1.54x/28-of-35 evidence.
-7. Show the sealed held-out test: development +0.139 AUROC, held-out −0.006
-   [−0.011, −0.0003], verdict `no_meaningful_gain`, Griewank +0.058 vs Levy
-   −0.046 (the sealed study's report and evidence bundle are not on this
-   branch; skip this step unless you present from a checkout that has them). Say plainly that
-   `accepted_as_evidence` means the negative result is valid evidence, not that
-   the hypothesis was accepted, and keep it separate from the 1.54x claim.
-8. Open provenance briefly to prove that every number has a run and artifact.
-
-A recorded evidence path is the reliable default. A live Omnigent session can
-run beside it, but provider availability must not be allowed to decide whether
-the central demonstration succeeds.
-
-## Acceptance criteria
-
-- No claim-bearing number comes from `src/dev/fixtures.ts`.
-- Every number carries an evidence label and source/run identity.
-- Recorded and live modes are visually and semantically distinct.
-- Candidate alternatives and the selection rationale are visible.
-- At least one result changes a posterior and the next decision on screen.
-- Plot data come from `/lab/experiment`, with no browser-side scientific math.
-- The acceleration card matches `summary.json` exactly.
-- Keyboard navigation, reduced motion, contrast, and textual chart summaries
-  pass the checklist in `FRONTEND_GUIDE.md`.
-- The complete recorded flow succeeds three consecutive times with the network
-  restricted to localhost.
+The question-to-report path must preserve evidence identity and source
+labels. The browser must not produce scientific numbers independently.
+A held-out approval is recorded before execution. Failed or unavailable
+providers remain visible as failures; they are not silently replaced by
+fixtures. The final report must separate observation, inference, and
+recommended next study.

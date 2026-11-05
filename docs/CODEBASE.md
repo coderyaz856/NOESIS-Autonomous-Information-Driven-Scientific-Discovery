@@ -13,6 +13,7 @@ is an optional control plane and is not needed to run the lab.
 |---|---|
 | `discolab/` | Lab bridge, Muse Code runtime, MCP lab tools, planner, simulations, statistics, ledger, evidence runtime, Python SDK |
 | `frontend/` | Browser workspace and its server-side `/lab-proxy` relay (documented with that folder) |
+| root `src/`, `package.json`, `public/` | A separate web-app tree in this checkout; the documented local commands and frontend CI job target `frontend/` |
 | `backend/` | Optional FastAPI policy, optimization and benchmark control plane |
 | `benchmark/` | Frozen Muse-agent benchmark artifacts and reports |
 | `sdk/` | Rust crate, Julia package, protocol v1 fixtures, interoperability demo |
@@ -49,7 +50,7 @@ Other `discolab/` content:
 - `muse_agents/`: `config.yaml` (role models, effort, soft spend guard, approval
   wait), `escalation_gate.json`, lab-mode `pi.md`/`verifier.md`, and open-mode
   prompts in `muse_agents/open/`.
-- `omnigent/lab_pi/`: the earlier Omnigent agent bundle; its specialist prompts
+- `omnigent/lab_pi/`: the optional Omnigent agent bundle; its specialist prompts
   and `tools/mcp/lab.yaml` allow-lists are reused by the Muse runtime.
 - `prereg.yaml`, `escalation_protocol.yaml`, `acceleration_protocol.yaml`: frozen protocols.
 - `results/`: committed records, including `results/escalation/` and
@@ -122,6 +123,10 @@ python -m pytest tests -q
 ```
 
 The browser app is started from `frontend/` (see the root [README](../README.md)).
+The repository also contains a root web-app tree. It is not the tree used by
+the `frontend` CI job, and its workspace files do not include every component
+in `frontend/src/workspace/`. Verify the deployment's source directory and
+commit before treating a hosted page as proof of the tested `frontend/` build.
 The full test map is in [TESTING.md](TESTING.md).
 
 ## Security invariants

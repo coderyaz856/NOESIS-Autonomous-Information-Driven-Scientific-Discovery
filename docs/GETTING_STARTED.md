@@ -6,8 +6,7 @@
 > - Out-of-domain questions run in open-research mode, which proposes studies
 >   but executes none.
 > - The held-out benchmark did not show an escalation quality gain.
-> - The Omnigent steps below are the earlier orchestration, kept for its
->   recorded runs.
+> - The optional Omnigent steps below reproduce that runtime's recorded runs.
 
 This guide takes a clean checkout to a verified local installation. The API/UI,
 the discovery laboratory, and the language SDKs can be used independently.
@@ -15,7 +14,7 @@ Install only the components you need.
 
 All commands below start at the repository root. PowerShell examples are shown
 because the project is verified on Windows; Git Bash is only needed for the
-earlier Omnigent start/stop scripts.
+optional Omnigent start/stop scripts.
 
 ## Fastest offline acceptance check
 
@@ -39,12 +38,15 @@ Required by component:
 |---|---|
 | Frontend | Node.js and npm compatible with the committed lockfile |
 | Live Muse lab | The [Muse Code CLI](https://dev.meta.ai/docs/muse-code) and a Meta Model API key in a file outside the repository (`MODEL_API_KEY_FILE`); see [`hackathon/DEMO.md`](hackathon/DEMO.md) |
-| Earlier Omnigent lab (optional) | Git Bash, Omnigent 0.16.0, an Anthropic credential in the process environment |
+| Omnigent lab (optional) | Git Bash, Omnigent 0.16.0, an Anthropic credential in the process environment |
 | Rust SDK | Stable Rust toolchain with Cargo, rustfmt, and Clippy |
 | Julia SDK | Julia 1.10 or newer; the verified local toolchain may be newer |
 
-The repository never needs credential values in committed files. Provider
-credentials are read from process environment variables only.
+The repository never needs credential values in committed files. The local
+Muse path can read a Meta key from the file named by `MODEL_API_KEY_FILE`;
+keep that file outside the repository. Hosted deployments inject runtime
+secrets into their respective services. Never place a key in a command,
+artifact, screenshot, or committed configuration.
 
 ## Clone and inspect
 
@@ -59,7 +61,18 @@ Record the commit hash in any experimental report. A clean `git status` is the
 preferred starting point for a reproducible run. If the tree is intentionally
 dirty, preserve the diff and record `git.dirty=true` in provenance.
 
-## Backend API
+## Primary Muse workspace
+
+To inspect existing evidence without a model key, start the read-only lab
+bridge from `discolab/` and the frontend from `frontend/`, as shown in the
+[root README](../README.md#try-it-locally). The frontend's same-origin
+`/lab-proxy` talks to the local bridge on port 8765. Select a committed run
+from the source list. Starting a new live run requires the Muse CLI, an
+explicit Meta credential, `--enable-runs`, and a spend decision; see the
+[Meta Muse demo guide](hackathon/DEMO.md). The optional FastAPI service below
+is not on this question-to-report path.
+
+## Optional FastAPI control plane
 
 Create an isolated environment and install development dependencies:
 
@@ -105,15 +118,17 @@ Use `npm ci`, not `npm install`, for a lockfile-exact installation:
 ```powershell
 Set-Location .\frontend
 npm ci
-npm run typecheck
+npx tsc --noEmit -p .
+npm test
 npm run build
-npm run dev
+npm run dev -- --port 5173
 ```
 
-Open `http://localhost:5173`. The Vite development server proxies `/api` and
-`/health` to `http://localhost:8000`; keep the backend running for live
-catalogue and health views. Some cinematic narrative surfaces intentionally use
-clearly marked fixtures.
+Open `http://localhost:5173`. The app reaches the lab bridge through its own
+server-side `/lab-proxy` route; in development it relays to the local bridge at
+`http://127.0.0.1:8765` (start it as shown in the [README](../README.md#try-it-locally)).
+The optional FastAPI backend is not needed for the workspace. The hosted app is
+<https://noesis-agent.lovable.app/>; see the [frontend guide](FRONTEND_GUIDE.md).
 
 ## Scientific laboratory and Python SDK
 
@@ -192,11 +207,11 @@ both native clients, and leaves a complete evidence store under
 byte-identical Python reproduction, five valid runs, an accepted verification
 run, and a verified bundle. It does not contact model providers.
 
-## Earlier Omnigent discovery loop (optional)
+## Omnigent discovery loop (optional)
 
 The live Muse lab is started as described in [`hackathon/DEMO.md`](hackathon/DEMO.md).
-The Omnigent loop below is the earlier orchestration, kept so its recorded runs
-stay reproducible. Only proceed after the deterministic scientific core passes.
+The Omnigent loop below is an optional orchestration path for reproducing its
+recorded runs. Only proceed after the deterministic scientific core passes.
 Its launcher is a Bash script and is best run from Git Bash:
 
 ```bash
@@ -238,7 +253,8 @@ them in commands captured by provenance, or store them in research artifacts.
 - Backend tests pass offline.
 - `/health` returns `status: ok`.
 - Frontend typecheck and production build succeed.
-- The browser loads the seven narrative chapters.
+- The browser loads the single research workspace and shows an honest read-only
+  or disconnected state until a lab source is available.
 - `discolab` tests pass with deterministic seeds.
 - A Python evidence run validates.
 - Any installed Rust or Julia SDK passes its live bridge test.

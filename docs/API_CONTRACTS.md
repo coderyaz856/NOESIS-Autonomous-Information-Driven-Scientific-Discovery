@@ -3,16 +3,21 @@
 > **Scope:** this page documents the optional FastAPI control plane in
 > `backend/`. It is not the lab path the Muse demo uses. The lab bridge
 > (`discolab/discolab/bridge.py`) serves the `/lab/*` endpoints listed in the
-> module's docstring. When a bridge token is configured
+> module's docstring and the [lab-run contract](LAB_RUNS_ENDPOINT.md). When a
+> bridge token is configured
 > (`NOESIS_BRIDGE_TOKEN_FILE` or `NOESIS_BRIDGE_TOKEN`, at least 32 characters;
 > hosted bridges start with `--require-auth`, which refuses to start without
 > one), every request must carry the `X-Noesis-Bridge-Token` header or it is
-> answered `401`; without a token the bridge listens on loopback only; starting runs additionally needs
-> `--enable-runs` (otherwise `403`). The deployed bridge, its token handling
+> answered `401`. Without a token the bridge listens on loopback only;
+> starting runs additionally needs `--enable-runs` (otherwise `403`).
+> The deployed bridge, its token handling
 > and its optional public-trial limits are described in
 > [`deploy/huggingface/README.md`](../deploy/huggingface/README.md).
 
-The backend is a FastAPI application. In local development the direct origin is `http://localhost:8000`; the Vite server proxies the same routes from `http://localhost:5173`.
+The optional backend is a FastAPI application. In local development its
+direct origin is `http://localhost:8000`. The current browser workspace uses
+the **separate** `/lab-proxy` → `/lab/*` path; do not assume the TanStack Start
+server forwards these FastAPI `/api/*` routes.
 
 FastAPI also exposes generated interactive documentation at `/docs` and the OpenAPI schema at `/openapi.json`.
 
@@ -41,7 +46,11 @@ Every handled non-2xx response uses:
 }
 ```
 
-Defined application errors are `404 not_found`, `422 validation_error`, and `502 provider_error`. FastAPI request-shape failures use `422 request_validation_error`; unexpected failures use `500 internal_error`. The frontend mirrors this as `ApiError` in `frontend/src/api/client.ts`.
+Defined application errors are `404 not_found`, `422 validation_error`, and
+`502 provider_error`. FastAPI request-shape failures use
+`422 request_validation_error`; unexpected failures use `500 internal_error`.
+The TypeScript client models errors as `ApiError` in
+`frontend/src/noesis/api/client.ts`.
 
 ## Endpoint summary
 
@@ -248,8 +257,8 @@ The frontend subscribes with `subscribeSSE(path, handlers)` and must explicitly 
 When an endpoint changes:
 
 1. Update its Pydantic request/response model in `backend/app/api/routes/`.
-2. Update the matching TypeScript interface in `frontend/src/api/types.ts`.
-3. Update or add the wrapper in `frontend/src/api/system.ts`.
+2. Update the matching TypeScript interface in `frontend/src/noesis/api/types.ts`.
+3. Update or add the wrapper in `frontend/src/noesis/api/system.ts`.
 4. Add a backend contract test that asserts status and exact response shape.
 5. Run backend tests, frontend type checking, and the production build.
 

@@ -50,7 +50,7 @@ $env:OMP_NUM_THREADS = "1"
 $env:MKL_NUM_THREADS = "1"
 ```
 
-Check for orphaned Python workers from an interrupted earlier run. Do not kill a
+Check for orphaned Python workers from an interrupted run. Do not kill a
 process until its command and ownership are identified.
 
 ## Frontend is blank
@@ -58,7 +58,7 @@ process until its command and ownership are identified.
 ```powershell
 Set-Location .\frontend
 npm ci
-npm run typecheck
+npx tsc --noEmit -p .
 npm run build
 npm run dev
 ```

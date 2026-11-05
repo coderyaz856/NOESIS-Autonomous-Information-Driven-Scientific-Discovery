@@ -76,9 +76,11 @@ Use values from your own secret store; do not paste them into shell history.
 6. Restart the Space and confirm the completed run is still visible. This proves
    `/data` is attached rather than ephemeral.
 
-If any check fails, remove `NOESIS_LAB_WRITE_TOKEN` from the web deployment.
-That immediately returns the public UI to read-only mode while diagnostics are
-performed.
+If an operator-mode check fails, remove `NOESIS_LAB_WRITE_TOKEN` from the web
+deployment. If the public trial is enabled, also disable `NOESIS_PUBLIC_TRIAL`
+on the web server and `NOESIS_TRIAL_TOTAL_USD` on the bridge. Verify the
+resulting read-only behavior; removing the operator token alone does not
+disable trial writes.
 
 ## 3b. Bounded public trial (optional)
 

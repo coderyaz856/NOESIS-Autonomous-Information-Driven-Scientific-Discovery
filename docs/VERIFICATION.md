@@ -1,7 +1,9 @@
 # Verification and reproduction
 
-Every check below runs offline: none of them reads a credential or calls a model
-provider. There is no single verifier script in this repository; the checks are
+The verification checks do not read credentials or call model providers.
+Dependency installation and container builds may download packages, so perform
+those setup steps before an offline run. There is no single verifier script in
+this repository; the checks are
 the component test suites, the CI workflow that runs all of them, and the
 reproduction commands for each recorded result.
 
@@ -20,6 +22,10 @@ push and pull request, with no secrets and no paid calls:
 | Lab image | `docker build`, then [`deploy/docker/smoke-test.sh`](../deploy/docker/smoke-test.sh) |
 
 The README's **Tests** badge links to the latest results on `main`.
+The frontend job runs from `frontend/`. This checkout also contains a
+repository-root web-app tree with its own `package.json` and `src/`; the CI
+job above does not establish parity with that tree. Record which source
+directory the public host builds when reporting a hosted acceptance test.
 
 ## Running the suites locally (PowerShell, from the repository root)
 
@@ -90,7 +96,7 @@ evidence directory.
 This repository carries the study's frozen protocol and machine-readable
 summary under `research_prototypes/entropy_early_warning/`. The sealed evidence
 bundle (`entropy-early-warning-v1.zip`, about 14 MB) and the study driver
-(`run_study.py`) are published in the original research repository,
+(`run_study.py`) are published in the companion evidence repository,
 [`research_prototypes/entropy_early_warning/`](https://github.com/Ismailea4/Agentic-Scientific-Discovery-EigenBrains/tree/main/research_prototypes/entropy_early_warning).
 To verify the bundle with this repository's SDK, download it there and run:
 

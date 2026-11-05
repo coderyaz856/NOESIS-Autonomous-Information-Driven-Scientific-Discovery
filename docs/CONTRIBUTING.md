@@ -25,7 +25,7 @@ is explicit.
 | Policy/fallback | `backend/app/capabilities/`, `fallback/` | audit events and hard-constraint tests |
 | Benchmark method | `backend/app/benchmark/`, `benchmark/` | frozen config, raw/derived distinction, methodology |
 | Scientific method | `discolab/prereg.yaml`, numerical core | protocol version, invariants, result compatibility |
-| Agent permission | Omnigent configs and MCP allow-lists | least-privilege review and end-to-end test |
+| Agent permission | Muse role/tool allow-lists and optional Omnigent configs | least-privilege review and end-to-end test |
 | SDK protocol | Python RPC plus `sdk/protocol/` | Rust/Julia wrappers, live bridge tests, contract docs |
 | Frontend view | `frontend/src/` | typecheck, build, accessibility, visual QA |
 
@@ -38,7 +38,8 @@ authoritative implementation for shared SDK semantics.
 - Keep raw observations immutable.
 - Use explicit units and `None`/`null` for unknown quantities.
 - Pass model calls through shared instrumentation.
-- Keep provider credentials environment-only.
+- Keep provider credentials outside the repository: process environment or a
+  local key file named by `MODEL_API_KEY_FILE`; never log the values.
 - Add deterministic tests for every state transition and failure mode.
 - Seed stochastic tests and resample the correct unit.
 - Avoid hidden retries in experimental code.
@@ -75,7 +76,8 @@ Set-Location ..
 ```powershell
 Set-Location .\frontend
 npm ci
-npm run typecheck
+npx tsc --noEmit -p .
+npm test
 npm run build
 Set-Location ..
 ```
