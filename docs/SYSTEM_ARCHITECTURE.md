@@ -1,174 +1,163 @@
 # System architecture
 
-EigenBrains is an evidence-centered research platform composed of four layers:
+Noesis turns a research question into recorded, inspectable evidence. The main
+path is a browser workspace, a server-side relay, and a Python lab bridge that
+runs Muse Code agents against an append-only ledger:
 
 ```text
-Researcher / operator
-        |
-        +--> Cinematic React control surface
-        |          |
-        |          +--> FastAPI policy, routing, benchmark, and telemetry services
-        |
-        +--> Python / Rust / Julia research SDK
-        |          |
-        |          +--> versioned local JSONL bridge
-        |          +--> evidence runs, schemas, provenance, validation
-        |
-        +--> Omnigent PI supervisor
-                   |
-                   +--> literature / designer / critic specialists
-                   +--> deterministic scientific tools
-                   +--> append-only discovery ledger and run artifacts
+Research question
+  -> browser workspace (frontend/)
+  -> server-side /lab-proxy relay (adds the bridge token; browser never sees it)
+  -> Python lab bridge (discolab/discolab/bridge.py, authenticated /lab/*)
+  -> scope check (discolab/discolab/scope.py): lab mode or open-research mode
+  -> Muse Code PI + specialists (discolab/discolab/muse.py, discolab/muse_agents/)
+  -> allow-listed MCP lab tools (discolab/discolab/mcp_server.py)
+  -> deterministic planner, seeded simulations, statistics  [lab mode only]
+  -> append-only ledger (discolab/discolab/ledger.py) + activity log
+  -> bridge feeds (JSON + SSE) -> workspace trace and report
 ```
 
-The layers are intentionally separable. The UI can demonstrate the product
-narrative without spending provider budget. The API can evaluate policies and
-benchmarks without running the Omnigent lab. The scientific core can execute
-offline without an LLM. The SDK can record experiments outside the original
-dynamic-optimization domain.
+The root [README](../README.md) shows the same flow as a diagram, including the
+frozen Spark -> Wonder escalation gate.
 
-## Repository topology
+## Components
 
 | Path | Role | Authoritative data |
 |---|---|---|
-| `frontend/` | React/Vite desktop-style interface | UI state and explicitly labeled fixtures |
-| `backend/` | FastAPI control plane, policy, providers, optimization, benchmark analysis | API models, normalized call observations, routing calculations |
-| `benchmark/` | Frozen model-evaluation inputs, limits, observations, and reports | paired raw calls and derived architecture evidence |
-| `discolab/` | Deterministic scientific engine and Omnigent discovery loop | preregistration, ledger, numerical artifacts, belief updates |
-| `sdk/` | Rust/Julia clients, protocol, examples | cross-language compatibility contract |
-| `docs/` | Human-readable operating and research standards | interpretation, procedures, limitations |
+| `frontend/` | Browser workspace and the server-side `/lab-proxy` relay | None; it renders what the bridge reports |
+| `discolab/` | Lab bridge, Muse Code runtime, MCP tools, planner, simulations, statistics, ledger, evidence runtime | Preregistration, ledgers, run artifacts |
+| `sdk/` | Rust and Julia clients, protocol v1 fixtures, interoperability demo | Cross-language wire contract |
+| `deploy/` | Hugging Face Space, Docker image and Linux host setups for the bridge | Deployment configuration only |
+| `backend/` | Optional FastAPI policy/optimization and benchmark control plane | Benchmark observations and analysis |
+| `benchmark/` | Frozen Muse-agent benchmark inputs, observations and reports | Retained benchmark evidence |
 
-## Control-plane request flow
+## Browser to bridge
 
-```text
-HTTP request
-  -> request ID and safe timing log
-  -> Pydantic validation
-  -> hard capability/privacy feasibility
-  -> deterministic fallback or multi-objective selection
-  -> provider-neutral agent boundary, when authorized
-  -> normalized model-call observation
-  -> explicit response model / structured error
-```
+The browser app lives in [`frontend/`](../frontend/). It calls the bridge only
+through its own server-side `/lab-proxy` route, which relays to configured lab
+origins and adds the bridge token on the server, so the browser never holds it.
+Frontend details are documented with the `frontend/` folder.
 
-Hard constraints precede utility. A high predicted quality cannot compensate
-for a missing mandatory capability, an explicit denial, an incompatible privacy
-class, an expired lease, or an unavailable provider.
+## Lab bridge
 
-Provider adapters normalize messages, token usage, latency, outcome, and cost.
-Unknown prices remain `null`; they are never converted to zero. Model
-correctness conditional on a successful provider response remains separate from
-provider availability and end-to-end operational correctness.
+`python -m discolab.bridge --port 8765` serves live labs (`lab_home/<name>`) and
+committed records (`results/<name>`). It is **read-only by default**; only
+`--enable-runs` lets it start Muse Code runs and accept approval decisions.
 
-## Benchmark evidence flow
-
-```text
-Frozen corpus + split + prompt + evaluator + limits
-  -> provider calls with immutable case IDs
-  -> raw normalized observations
-  -> paired loss matrix
-  -> reliability and task-family summaries
-  -> covariance / conditional failure / complementarity
-  -> replayed or provider-backed architecture policies
-  -> empirical and robust Pareto frontiers
-  -> weak, explicitly overturnable priors
-```
-
-Pairing is central: every compared model should see the same case. Missing
-provider responses are operational failures, but they must not be silently
-reclassified as reasoning errors. Offline replay must remain labeled separately
-from a provider-backed multi-agent execution.
-
-## Discovery-loop flow
-
-```text
-Frozen preregistration
-  -> literature evidence and competing experiment proposals
-  -> deterministic information-gain-per-cost scoring
-  -> PI selection, with justification and override record
-  -> seeded numerical experiment
-  -> preregistered statistical analysis
-  -> verdict and Bayesian belief update
-  -> stop or selectively escalate sample size while inconclusive
-  -> critic interpretation and threats to validity
-  -> next decision and rescored candidates
-```
-
-The PI owns which experiment to run. Specialist permissions are structurally
-limited:
-
-- literature retrieves and records evidence but cannot spend compute;
-- designer proposes and scores experiments but cannot select or run them;
-- critic interprets completed results but cannot rewrite specifications;
-- only the PI selects, runs, and records the next decision.
-
-Agents never supply measured numbers. Numerical outputs come from deterministic
-tools, and every state transition passes through ledger guards.
-
-The acceleration harness is a deterministic evaluation of the decision policy,
-not another agent. It compares fixed full-size experiments with frozen
-6 -> 12 -> 24-seed escalation against a separate 48-seed reference. Its source
-of truth is `discolab/escalation_protocol.yaml`; recorded ledgers, manifests,
-per-replicate results, and the aggregate summary live under
-`discolab/results/escalation/`.
-
-## Research SDK flow
-
-```text
-ExperimentSpecV2
-  -> seeded RunContext
-  -> cooperative budget accounting
-  -> schema-checked raw artifacts
-  -> derived/analysis artifacts with parent lineage
-  -> unit-bearing metrics
-  -> finalize
-  -> hash and schema validation
-  -> deliberate evidence decision
-```
-
-Python is authoritative. Rust provides a typed client and performance-oriented
-kernels. Julia provides a typed client and mathematical helpers. Both clients
-communicate with a persistent local Python process using protocol version 1.
-The bridge accepts named operations; it is not a general shell or arbitrary
-Python execution service.
-
-## Data ownership and immutability
-
-| Object | Mutation policy |
+| Endpoint | Purpose |
 |---|---|
-| Benchmark case definitions | versioned; freeze before provider execution |
-| Raw provider observations | append-only or immutable cache entry |
-| Discovery ledger | append-only; state is a pure fold over events |
-| Raw scientific artifacts | write once inside a run |
-| Derived reports | regenerable from raw observations and frozen analysis code |
-| UI fixtures | editable, but always marked `SAMPLE` |
+| `GET /lab/sources` | Available labs and records |
+| `GET /lab/state`, `/lab/activity`, `/lab/experiment`, `/lab/run` | Research state, agent activity, one experiment's result and curves, the run record |
+| `GET /lab/stream` | SSE of new ledger events and agent activity |
+| `GET /lab/capabilities` | Whether runs can start here, and the supported domain |
+| `POST /lab/runs` | Scope-check a question, then start a run (`--enable-runs`) |
+| `POST /lab/approvals` | Approve or decline a pending confirmatory run (`--enable-runs`) |
 
-Never repair raw evidence in place. If a protocol, evaluator, or parser is
-wrong, preserve the original result, create a new version, document the reason,
-and rerun or conduct a labeled sensitivity analysis.
+With a bridge token configured (`NOESIS_BRIDGE_TOKEN_FILE` or
+`NOESIS_BRIDGE_TOKEN`), every request must carry `X-Noesis-Bridge-Token` or it
+gets 401. Without a token the bridge listens on loopback only; hosted bridges
+start with `--require-auth`. The bridge reads values from ledgers, activity
+logs and trace artifacts; it summarizes but does not invent values.
+
+`discolab/discolab/trial.py` adds an optional bounded public trial (enabled by
+`NOESIS_TRIAL_TOTAL_USD`): one active run, per-run spend guard and watchdog,
+global and per-visitor rate limits, and a durable total spend limit stored in
+`NOESIS_DATA_DIR`. The bridge enforces it because it is the only process with
+the Meta key.
+
+## Scope gate and the two modes
+
+`discolab/discolab/scope.py` makes one Muse Spark call with a JSON schema that
+maps the question onto the pre-registered hypotheses (`discolab/prereg.yaml`).
+`discolab/discolab/run.py` then creates a fresh lab under `lab_home/<name>`:
+
+- **lab mode** (GA/entropy domain): agents propose, score, select and run seeded
+  experiments; numbers come from the deterministic tools.
+- **open mode** (any other question): agents get a research-only tool set
+  (`OPEN_MODE_TOOLS` in `muse.py`) and the prompts in `discolab/muse_agents/open/`.
+  They can search literature, register hypotheses and propose protocols, but have
+  no run tool. Nothing is executed or simulated.
+
+The classifier only chooses the mode; it never produces results.
+
+## Muse Code agents
+
+Each role (PI, literature, designer, critic, and a verifier) is a headless
+`muse exec --json` process. Its only lab access is a stdio MCP server
+(`python -m discolab.mcp_server`) serving exactly that role's allow-listed tools
+and attributing every ledger event to it (`DISCOLAB_ACTOR`). Harness shell,
+file-write and web tools are disabled. Role models, effort and the soft spend
+guard are in `discolab/muse_agents/config.yaml`; the PI instructions are in
+`discolab/muse_agents/pi.md`.
+
+- The PI delegates through its `delegate` tool, which launches the specialist's
+  own Muse Code process and returns its report.
+- Only the PI selects and runs experiments; specialists cannot spend compute.
+- A frozen gate (`discolab/muse_agents/escalation_gate.json`,
+  `discolab/discolab/agent_escalation.py`) decides whether a Wonder verifier,
+  with read-only tools, checks a specialist report.
+- A confirmatory (held-out) experiment waits for a human decision through
+  `POST /lab/approvals`; no answer within the configured wait means declined.
+
+The Model API key is read from the environment or `MODEL_API_KEY_FILE`, passed
+to Muse Code on stdin; `muse.py` never writes it to disk or logs it. Agent processes do
+not inherit the bridge's `NOESIS_*` server settings.
+
+## Ledger and evidence
+
+- `discolab/discolab/ledger.py`: every scientific transition is one validated
+  JSON line in `ledger.jsonl`; research state is a pure fold over those events.
+  Invalid transitions raise and append nothing.
+- `discolab/discolab/lab.py`: the only code paths that write the ledger.
+- `discolab/discolab/planner.py`: constrained utility
+  `U(E) = EIG(E) - eta*wall_seconds(E) - lambda*heldout_landscapes(E)` after hard
+  constraints, and the Bayesian belief update.
+- `discolab/discolab/evidence.py`: domain-independent evidence runtime with a
+  hash-chained `events.jsonl` per run; `bundle.py` packages runs as
+  content-addressed, tamper-evident bundles.
+
+A run directory holds `run.json`, `activity.jsonl`, `muse/` (raw event streams),
+`ledger.jsonl` and, when an experiment ran, `runs/E#/`.
+
+## Research SDK
+
+`discolab/discolab/sdk.py` is a thin Python facade over the same lab code.
+`python -m discolab.rpc` is a closed JSON-lines method table used by the Rust
+crate (`sdk/rust/noesis-discovery`) and the Julia package `NoesisDiscovery`
+(`sdk/julia`); both start it as a sidecar. The contract is versioned under
+`sdk/protocol/v1/`. See [Research SDK](RESEARCH_SDK.md) and
+[SDK contracts](SDK_CONTRACTS.md).
+
+## Deployment
+
+The bridge and the browser app are deployed separately.
+
+- `Dockerfile` builds the lab backend image (bridge, discolab, Muse Code CLI);
+  `deploy/huggingface/entrypoint.sh` starts it. Secrets are runtime-only.
+- `deploy/huggingface/`: Hugging Face Docker Space guide.
+- `deploy/docker/`: the published image and `smoke-test.sh`.
+- `deploy/lab/`: Linux host with Caddy and a systemd unit.
+
+## Optional and earlier paths
+
+- **FastAPI control plane (optional).** `backend/` exposes `/api` routes for
+  capability policy, fallback, Pareto selection and SSE, plus the benchmark
+  analysis code. It is not needed to run the lab. See [Codebase](CODEBASE.md)
+  and [API contracts](API_CONTRACTS.md).
+- **Omnigent lab (earlier runtime).** `discolab/omnigent/lab_pi/` and
+  `discolab/scripts/start_lab.sh` run the same MCP tools under Omnigent. The
+  Muse runtime reuses its prompts and tool allow-lists.
 
 ## Trust boundaries
 
-1. **External providers are untrusted dependencies.** Responses may fail,
-   drift, truncate, or violate schemas.
-2. **LLM agents are decision aids.** They do not receive authority to fabricate
-   results or bypass policies.
-3. **The numerical core is the measurement authority.** Seeded tools and
-   validators produce scientific quantities.
-4. **The UI is not an evidence store.** It renders API results and fixtures.
-5. **The filesystem is local trust.** Content hashes detect accidental or
-   partial changes under the documented threat model; they are not a substitute
-   for cryptographic signatures or access control.
+1. **Model providers are untrusted dependencies.** Responses may fail or drift.
+2. **Agents are decision aids.** They supply text, not measurements, and act on
+   the lab only through allow-listed tools.
+3. **The numerical core is the measurement authority.** Seeded tools produce
+   scientific quantities; the ledger guards every transition.
+4. **The browser is not an evidence store** and never holds the Meta key, the
+   bridge token or the operator token.
+5. **Content hashes are tamper-evident, not signatures.**
 
-## Extension rules
-
-When adding a component, preserve the boundary it belongs to:
-
-- new providers implement the provider interface and shared instrumentation;
-- new API endpoints use response models and update the frontend type mirror;
-- new capabilities remain hard policy objects, not utility bonuses;
-- new experiment families define a protocol, schemas, seeds, and decision rules
-  before running;
-- new language bindings extend the versioned protocol and parity tests;
-- new UI demonstrations identify whether their values are sample, replay,
-  benchmark, provider-backed, or live.
+Never repair raw evidence in place. If a protocol or parser is wrong, keep the
+original, version the fix, and rerun or run a labeled sensitivity analysis.

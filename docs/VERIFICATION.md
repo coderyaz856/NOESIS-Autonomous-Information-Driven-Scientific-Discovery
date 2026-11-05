@@ -1,130 +1,119 @@
 # Verification and reproduction
 
-The repository provides one offline PowerShell entry point for evidence
-integrity, deterministic reproduction, and implementation tests:
+Every check below runs offline: none of them reads a credential or calls a model
+provider. There is no single verifier script in this repository; the checks are
+the component test suites, the CI workflow that runs all of them, and the
+reproduction commands for each recorded result.
+
+## Continuous integration (all suites, every push)
+
+[`.github/workflows/tests.yml`](../.github/workflows/tests.yml) runs on every
+push and pull request, with no secrets and no paid calls:
+
+| Job | What it runs |
+|---|---|
+| Python lab and SDK (discolab) | `python -m pytest -q` in `discolab/` |
+| Python backend | `python -m pytest tests -q` in `backend/` |
+| Frontend | `npm ci`, `npx tsc --noEmit -p .`, `npm test`, `npm run build` in `frontend/` |
+| Rust SDK | `cargo fmt --check`, `cargo clippy -D warnings`, `cargo test` for `sdk/rust/noesis-discovery` |
+| Julia SDK | `Pkg.test()` for `sdk/julia` |
+| Lab image | `docker build`, then [`deploy/docker/smoke-test.sh`](../deploy/docker/smoke-test.sh) |
+
+The README's **Tests** badge links to the latest results on `main`.
+
+## Running the suites locally (PowerShell, from the repository root)
 
 ```powershell
-.\scripts\verify.ps1
+$env:OPENBLAS_NUM_THREADS = "1"; $env:OMP_NUM_THREADS = "1"; $env:MKL_NUM_THREADS = "1"
+
+# Discovery lab and Python SDK
+Set-Location .\discolab
+python -m pip install -e ".[dev]"
+python -m pytest -q
+Set-Location ..
+
+# Backend control plane
+python -m pip install -r .\backend\requirements-dev.txt
+Set-Location .\backend
+python -m pytest tests -q
+Set-Location ..
+
+# Frontend
+Set-Location .\frontend
+npm ci
+npx tsc --noEmit -p .
+npm test
+npm run build
+Set-Location ..
+
+# Rust and Julia SDKs (each starts `python -m discolab.rpc`, so discolab must be installed)
+cargo fmt --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml -- --check
+cargo clippy --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml --all-targets -- -D warnings
+cargo test --manifest-path .\sdk\rust\noesis-discovery\Cargo.toml
+julia --project=.\sdk\julia -e 'using Pkg; Pkg.instantiate(); Pkg.test()'
 ```
 
-Run it from the repository root. It never reads credential values and never
-contacts a model provider.
-
-If the local PowerShell execution policy blocks unsigned repository scripts,
-run the same verifier for this process only:
+## Python -> Rust -> Julia interoperability proof
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1
+python -m sdk.interop.demo --root .\.interop-demo\check
 ```
 
-This does not change the user- or machine-level execution policy.
+It creates independent Python, Rust and Julia runs in one evidence store,
+checks numerical parity, reproduces the Python source run, and verifies one
+content-addressed bundle. The procedure is frozen in
+[`sdk/interop/PROTOCOL.md`](../sdk/interop/PROTOCOL.md). Pass `--cargo` and
+`--julia` when those tools are not on `PATH`.
 
-## What the default command verifies
+## Selective-escalation result (simulation-compute saving)
 
-1. The retained Meta-only selective-model evidence is recorded in
-   `benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/baseline_v0_summary.json`
-   and explained in `benchmark/reports/MUSE_AGENTS_BASELINE_V1.md`.
-   The report distinguishes offline replay estimates from provider-backed
-   verifier calls and does not claim a statistically resolved quality gain.
-2. The research-acceleration claims are derived again from
-   `discolab/results/escalation/summary.json`:
-   - five replicates and 35 hypothesis-replicates;
-   - mean compute ratio `1.542` with every replicate above one;
-   - `28/35` selective and `29/35` full-size reference agreement;
-   - five rescues and zero damages.
-3. The sealed entropy early-warning evidence is verified from its committed
-   bundle:
-   - the frozen protocol SHA-256 and archive/content identities match;
-   - all nine bundled runs pass manifest and artifact-integrity validation;
-   - the primary held-out AUROC contrast is recomputed from hashed predictions;
-   - the sample counts, confidence interval, SESOI decision rule, and registered
-     `no_meaningful_gain` verdict remain consistent.
-4. A fresh Python SDK evidence run is executed with a root seed and named RNG
-   stream, validated, reproduced under a second run ID, and compared for
-   byte-identical artifacts.
-5. The two runs are exported to a deterministic content-addressed bundle and
-   verified. A deliberately corrupted temporary copy must fail verification.
-6. Backend and discovery-lab Python tests run with workspace-local temporary
-   directories and single-threaded numerical libraries.
-7. Frontend type checking/build, Rust formatting/Clippy/tests, and Julia tests
-   run when the full profile is selected.
-
-The command exits nonzero when any requested step fails and prints a compact
-PASS/FAIL table. Temporary outputs are deleted only from the script-created
-`.verification/<timestamp>/` directory after its resolved path is checked.
-
-## Profiles
-
-Full offline verification:
+The recorded study is [`discolab/results/escalation/`](../discolab/results/escalation/README.md);
+its `summary.json` holds the five replicates, the mean compute ratio `1.542`,
+the `28/35` and `29/35` agreement counts, and the rescue and damage counts.
+The raw traces (about 125 MB) are not committed; the frozen harness regenerates
+them from seeds. To rerun all five replicates into a new directory:
 
 ```powershell
-.\scripts\verify.ps1
+Set-Location .\discolab
+python -m discolab.escalation --out ..\.verification\escalation-rerun
 ```
 
-Python/control-plane verification when Node, Rust, or Julia is unavailable:
+This is CPU-intensive and makes no provider calls. Compare the regenerated
+`summary.json` with `discolab/results/escalation/summary.json`: the frozen
+protocol, the per-replicate compute ratios, the agreement arrays, and the gate
+rate, rescue and damage counts should match. Never point `--out` at
+`discolab/results/escalation/`; the runner refuses to overwrite an existing
+evidence directory.
+
+## Sealed entropy early-warning result
+
+This repository carries the study's frozen protocol and machine-readable
+summary under `research_prototypes/entropy_early_warning/`. The sealed evidence
+bundle (`entropy-early-warning-v1.zip`, about 14 MB) and the study driver
+(`run_study.py`) are published in the original research repository,
+[`research_prototypes/entropy_early_warning/`](https://github.com/Ismailea4/Agentic-Scientific-Discovery-EigenBrains/tree/main/research_prototypes/entropy_early_warning).
+To verify the bundle with this repository's SDK, download it there and run:
 
 ```powershell
-.\scripts\verify.ps1 -CoreOnly
+python -m discolab.sdk_cli verify-bundle <path-to>\entropy-early-warning-v1.zip
 ```
 
-Fast claim-integrity check without test suites or SDK reproduction:
+The [sealed-result report](SEALED_ENTROPY_EARLY_WARNING_RESULT.md) lists the
+protocol hash, the bundle's content identity and the rerun procedure.
 
-```powershell
-.\scripts\verify.ps1 -ClaimsOnly
-```
+## Muse-agent benchmark
 
-Install declared Python and frontend dependencies before verification:
-
-```powershell
-.\scripts\verify.ps1 -Install
-```
-
-Dependency installation is explicit because it can download packages and
-modify local environments. Rust and Julia dependencies remain owned by their
-toolchains.
-
-Run the complete Python -> Rust -> Julia evidence exchange in addition to the
-normal suites:
-
-```powershell
-.\scripts\verify.ps1 -Interop -KeepArtifacts
-```
-
-The interoperability step creates independent Python, Rust, and Julia runs in
-one evidence store, checks numerical parity, reproduces the Python source run,
-accepts the combined verification, and verifies one bundle. `-KeepArtifacts`
-retains it beneath `.verification/<timestamp>/interop/` for inspection.
-
-## Full acceleration reproduction
-
-The committed acceleration bundle excludes approximately 125 MB of raw traces;
-the frozen harness regenerates them from seeds. To rerun all five replicates
-and compare the regenerated summary with the recorded one:
-
-```powershell
-.\scripts\verify.ps1 -CoreOnly -ReproduceAcceleration -KeepArtifacts
-```
-
-This is CPU-intensive but performs no provider calls. Output is written beneath
-`.verification/<timestamp>/acceleration-reproduction/`. With `-KeepArtifacts`
-the directory remains for inspection; without it, the verified temporary tree
-is removed at the end.
-
-The reproduction must match:
-
-- the frozen protocol object;
-- per-replicate compute ratios within numerical tolerance;
-- all strategy/reference agreement arrays;
-- gate rate, rescue, damage, and denominator economics.
-
-Do not point the harness at `discolab/results/escalation/`: the experimental
-runner refuses to overwrite an existing evidence directory.
+The retained Meta-only evidence is
+`benchmark/muse_agents_baseline_v1/benchmark/artifacts/baseline_v0/baseline_v0_summary.json`,
+explained in [`benchmark/reports/MUSE_AGENTS_BASELINE_V1.md`](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md).
+The report separates offline replay estimates from provider-backed verifier
+calls and does not claim a statistically resolved quality gain.
 
 ## Interpreting a successful verification
 
-A passing command establishes that the checked implementation and evidence
-artifacts are internally consistent and reproducible under the current
-environment. It does not establish:
+Passing checks establish that the implementation and the committed evidence are
+internally consistent and reproducible in the current environment. They do not
+establish:
 
 - generalization to unseen scientific domains;
 - statistical equivalence between 28/35 and 29/35 agreement;

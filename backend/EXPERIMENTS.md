@@ -192,8 +192,9 @@ shipped as current reports. For the retained Meta-only S0-S4 study, see
 The repository's governing rules prohibit reading API-key files. Therefore
 this work did not open, transform, validate, overwrite, or delete
 `api_keys.txt`, and it did not create an external `working_keys.env` file.
-`benchmark/key_status.json` truthfully records `NOT_RUN` with zero tested
-credentials.
+That legacy work recorded the key check as `NOT_RUN` with zero tested
+credentials in a `benchmark/key_status.json` file, which is not included in
+this checkout.
 
 The validation framework accepts only an already provider-labeled credential
 from the process environment, authenticates through that provider's probe,
@@ -207,9 +208,9 @@ The 2026-10-03 discovery pass observed environment-backed credentials for
 OpenAI, Anthropic, Gemini, OpenRouter, and Groq. Catalogue authentication
 succeeded for all five. One tiny inference succeeded for Anthropic, Gemini,
 OpenRouter, and Groq; OpenAI returned HTTP 429 and remains excluded from the
-active pilot without being labelled invalid. Safe status metadata is recorded
-in `../benchmark/key_status.json`; it contains no raw, partial, or hashed
-credential identifier.
+active pilot without being labelled invalid. That work's safe status metadata
+(`benchmark/key_status.json`, which contained no raw, partial, or hashed
+credential identifier) is not included in this checkout.
 
 The compact discovery-only shortlist and checked prices are stored in
 `../benchmark/configs/provider_shortlist_v0.json` and `pricing_v0.json`.

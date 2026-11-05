@@ -1,5 +1,17 @@
 # HTTP and streaming API contracts
 
+> **Scope:** this page documents the optional FastAPI control plane in
+> `backend/`. It is not the lab path the Muse demo uses. The lab bridge
+> (`discolab/discolab/bridge.py`) serves the `/lab/*` endpoints listed in the
+> module's docstring. When a bridge token is configured
+> (`NOESIS_BRIDGE_TOKEN_FILE` or `NOESIS_BRIDGE_TOKEN`, at least 32 characters;
+> hosted bridges start with `--require-auth`, which refuses to start without
+> one), every request must carry the `X-Noesis-Bridge-Token` header or it is
+> answered `401`; without a token the bridge listens on loopback only; starting runs additionally needs
+> `--enable-runs` (otherwise `403`). The deployed bridge, its token handling
+> and its optional public-trial limits are described in
+> [`deploy/huggingface/README.md`](../deploy/huggingface/README.md).
+
 The backend is a FastAPI application. In local development the direct origin is `http://localhost:8000`; the Vite server proxies the same routes from `http://localhost:5173`.
 
 FastAPI also exposes generated interactive documentation at `/docs` and the OpenAPI schema at `/openapi.json`.
@@ -11,7 +23,9 @@ FastAPI also exposes generated interactive documentation at `/docs` and the Open
 - Catalogue endpoints return empty arrays until application code registers entries.
 - `quality` is maximized; `cost`, `latency`, and `risk` are minimized.
 - Unknown values are not synthesized. API architecture candidates currently require numeric metrics.
-- There is no authentication layer in this repository.
+- The FastAPI control plane itself has no authentication layer; run it only on
+  a trusted local interface. (The lab bridge is authenticated; see the scope
+  note above.)
 
 ### Error envelope
 

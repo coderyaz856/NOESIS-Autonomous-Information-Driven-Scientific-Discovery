@@ -239,18 +239,14 @@ analysis but is not a new provider-backed execution.
 
 ## Reproducing the published acceleration studies
 
-The fast, offline claim check derives the reported values again from committed
-machine-readable artifacts:
+The reported values are recorded in the committed machine-readable summary
+`discolab/results/escalation/summary.json`. To rerun the five-replicate
+selective sample-escalation study under its frozen protocol into a new
+directory, then compare the regenerated `summary.json` with the recorded one:
 
 ```powershell
-.\scripts\verify.ps1 -ClaimsOnly
-```
-
-To rerun the five-replicate selective sample-escalation study under its frozen
-protocol and compare the regenerated result with the recorded evidence:
-
-```powershell
-.\scripts\verify.ps1 -CoreOnly -ReproduceAcceleration -KeepArtifacts
+Set-Location .\discolab
+python -m discolab.escalation --out ..\.verification\escalation-rerun
 ```
 
 The rerun uses deterministic numerical computation and no model-provider

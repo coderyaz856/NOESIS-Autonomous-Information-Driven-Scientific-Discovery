@@ -13,8 +13,8 @@ mathematical statement about entropy or evolutionary algorithms in general.
 | | |
 |---|---|
 | Protocol | [`research_prototypes/entropy_early_warning/protocol.yaml`](../research_prototypes/entropy_early_warning/protocol.yaml), SHA-256 `ba0e3e0ad771233ba5a7f5575170ed7e1a05a074fd4597c3c98e9d2882f43e2d` |
-| Implementation | [`research_prototypes/entropy_early_warning/`](../research_prototypes/entropy_early_warning/) |
-| Sealed evidence bundle | [`evidence/entropy-early-warning-v1.zip`](../research_prototypes/entropy_early_warning/evidence/entropy-early-warning-v1.zip), content identity `e3fcdbc34f93e31d34873816eed6a6fa45c177ec536fa9b2c6851b7e39ed8908` |
+| Implementation | Protocol and summary in this repository; the study driver (`run_study.py`, `ewstudy.py`) and its Rust and Julia checks are in the [source research repository](https://github.com/Ismailea4/Agentic-Scientific-Discovery-EigenBrains/tree/main/research_prototypes/entropy_early_warning) |
+| Sealed evidence bundle | [`entropy-early-warning-v1.zip`](https://github.com/Ismailea4/Agentic-Scientific-Discovery-EigenBrains/raw/main/research_prototypes/entropy_early_warning/evidence/entropy-early-warning-v1.zip) (in the source research repository), content identity `e3fcdbc34f93e31d34873816eed6a6fa45c177ec536fa9b2c6851b7e39ed8908` |
 | Machine-readable summary | [`evidence/study-summary.json`](../research_prototypes/entropy_early_warning/evidence/study-summary.json) |
 | Evidence label | `BENCHMARK` — sealed held-out confirmation under a frozen protocol |
 | Confirmatory run | `RUN-960036E6972E`, status `accepted_as_evidence` |
@@ -240,15 +240,23 @@ on this machine**. It is not an end-to-end research speed-up.
 From the repository root, with Python ≥ 3.12 and NumPy, SciPy, PyYAML; Rust
 and Julia as in [`sdk/README.md`](../sdk/README.md).
 
-Verify the sealed evidence (no recomputation):
+The sealed bundle and the study driver live in the
+[source research repository](https://github.com/Ismailea4/Agentic-Scientific-Discovery-EigenBrains/tree/main/research_prototypes/entropy_early_warning);
+this repository carries the protocol and the machine-readable summary.
+
+Verify the sealed evidence (no recomputation) with this repository's SDK, after
+downloading the bundle:
 
 ```bash
 cd discolab
-python -m discolab.sdk_cli verify-bundle ../research_prototypes/entropy_early_warning/evidence/entropy-early-warning-v1.zip
+python -m discolab.sdk_cli verify-bundle <path-to>/entropy-early-warning-v1.zip
 ```
 
-Re-run the whole study in a fresh store (development stage by default; held-out
-only with `--confirm`):
+Expected: content identity `e3fcdbc34f93e31d34873816eed6a6fa45c177ec536fa9b2c6851b7e39ed8908`
+and nine valid runs, with `RUN-960036E6972E` as `accepted_as_evidence`.
+
+Re-run the whole study in a fresh store, from a checkout of the source research
+repository (development stage by default; held-out only with `--confirm`):
 
 ```bash
 python research_prototypes/entropy_early_warning/run_study.py --root research_prototypes/entropy_early_warning/output/rerun --confirm
@@ -266,6 +274,7 @@ the original input paths (deviation 4), so a fresh rerun is the portable route.
 ## 12. Bundle identity and provenance
 
 - Bundle: `research_prototypes/entropy_early_warning/evidence/entropy-early-warning-v1.zip`
+  in the source research repository
   - content identity (hash of the canonical file list): `e3fcdbc34f93e31d34873816eed6a6fa45c177ec536fa9b2c6851b7e39ed8908`
   - archive SHA-256: `9a1bf89ca7c1b57ac05b723b47b7be31ffae8fa81a7d36f94b14064d7a92ee48`
 - Runs in the bundle:

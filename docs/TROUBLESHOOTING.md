@@ -4,16 +4,12 @@ Diagnose from the narrowest boundary outward: environment, unit tests, local
 process, protocol, then external provider. Preserve the exact command and
 structured error; do not expose credentials while asking for help.
 
-## PowerShell blocks `scripts/verify.ps1`
+## PowerShell blocks `Activate.ps1`
 
-Run the repository verifier with a process-scoped policy bypass:
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1
-```
-
-This invocation does not weaken the persistent user or machine execution
-policy. Do not change the global policy merely to run the verifier.
+If the execution policy blocks a virtual environment's activation script, call
+the environment's interpreter directly instead of activating it, for example
+`.\.venv\Scripts\python.exe -m pytest -q`. Do not change the global execution
+policy just to run the checks.
 
 ## Python cannot import `app` or `discolab`
 

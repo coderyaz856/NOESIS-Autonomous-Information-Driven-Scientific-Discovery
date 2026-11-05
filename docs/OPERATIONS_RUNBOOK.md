@@ -19,7 +19,8 @@ held-out evaluation; those require the experiment-specific approval and limits.
 1. Confirm the intended Git branch, commit, and worktree status.
 2. Activate the correct Python environment.
 3. Set only required environment variables.
-4. Run `.\scripts\verify.ps1 -CoreOnly` or the full offline verifier.
+4. Run the offline component checks in [VERIFICATION.md](VERIFICATION.md)
+   (at least the `discolab` and backend test suites).
 5. Start the backend and verify `/health`.
 6. Start the frontend and perform a browser smoke test.
 7. Start Omnigent only if an agentic discovery run is needed.

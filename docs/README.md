@@ -1,4 +1,4 @@
-# EigenBrains documentation
+# Noesis documentation
 
 > **Meta indie-track build:** run it with [`hackathon/DEMO.md`](hackathon/DEMO.md).
 > Agents run on Meta Muse Code. Open-research mode proposes studies but
@@ -7,7 +7,7 @@
 > ([`../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md`](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)).
 
 This directory is the authoritative guide to operating, extending, and
-auditing EigenBrains. The project has two connected research systems:
+auditing Noesis (built by team EigenBrains). The project has two connected research systems:
 
 1. an evidence-driven model and agent-architecture control plane; and
 2. an autonomous computational-science laboratory for hypothesis-driven
@@ -21,17 +21,17 @@ calculations.
 
 | If you want to... | Read |
 |---|---|
-| Run the Meta indie-track build (agents, escalation, benchmark) | [Hackathon demo guide](hackathon/DEMO.md) |
-| Understand the whole repository | [System architecture](SYSTEM_ARCHITECTURE.md) |
+| See what Noesis does and try it (authoritative entry point) | The [project README](../README.md), then the [demo guide](hackathon/DEMO.md) |
+| Understand the whole repository | [System architecture](SYSTEM_ARCHITECTURE.md) and [codebase map](CODEBASE.md) |
 | Run the application locally | [Getting started](GETTING_STARTED.md) |
-| Reproduce a result | [Verification and reproduction](VERIFICATION.md) |
+| Verify or reproduce a result without Meta credits | [Verification and reproduction](VERIFICATION.md) |
 | Design or review an experiment | The pre-registration `discolab/prereg.yaml` and the [discovery lab guide](../discolab/README.md) |
 | Operate the API, UI, lab, or agents | [Operations runbook](OPERATIONS_RUNBOOK.md) |
 | Extend or verify the interface | [Frontend guide](FRONTEND_GUIDE.md) |
 | Add code or documentation safely | [Contributing guide](CONTRIBUTING.md) |
 | Diagnose an installation or runtime issue | [Troubleshooting](TROUBLESHOOTING.md) |
 | Decode project terminology | [Glossary](GLOSSARY.md) |
-| Use the HTTP API | [API contracts](API_CONTRACTS.md) |
+| Use the HTTP APIs | Lab bridge `/lab/*`: [System architecture](SYSTEM_ARCHITECTURE.md#lab-bridge); optional FastAPI control plane: [API contracts](API_CONTRACTS.md) |
 | Audit model/architecture benchmarks | [Benchmark methodology](BENCHMARK_METHODOLOGY.md) and the [Muse agents baseline report](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md) |
 | Read the recorded acceleration study | [Selective-escalation study report](../discolab/results/escalation/README.md) |
 | Run or extend tests | [Testing guide](TESTING.md) |
@@ -51,7 +51,7 @@ authoritative:
 | Recorded acceleration evidence | `discolab/results/escalation/summary.json` and its [report](../discolab/results/escalation/README.md) |
 | Agent permissions | Muse Code roles in `discolab/muse_agents/` with the MCP allow-lists in `discolab/discolab/muse.py`; the Omnigent bundle in `discolab/omnigent/lab_pi/**/config.yaml` |
 | Model benchmark cases and limits | `benchmark/cases/` and `benchmark/configs/` |
-| Recorded model observations | `benchmark/artifacts/` and `benchmark/muse_agents_baseline_v1/` |
+| Recorded model observations | `benchmark/muse_agents_baseline_v1/` and `benchmark/muse_baseline_v1/` |
 | Recorded discovery events | `ledger.jsonl` in each lab directory (`discolab/lab_home/<run>/`, not committed) |
 
 If prose and an executable contract disagree, stop and reconcile them before

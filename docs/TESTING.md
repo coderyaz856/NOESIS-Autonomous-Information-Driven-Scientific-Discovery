@@ -7,17 +7,12 @@ are never part of the default unit suite.
 
 ## Repository-level verification
 
-From the repository root, the preferred acceptance command is:
-
-```powershell
-.\scripts\verify.ps1
-```
-
-This composes evidence-claim checks, a deterministic SDK reproduction and
-tamper negative control, both Python suites, the frontend build, and the Rust
-and Julia suites. It makes no provider calls. Use `-CoreOnly` for the Python
-control plane or `-ClaimsOnly` to verify only the committed machine-readable
-claims. The exact contract is documented in [VERIFICATION.md](VERIFICATION.md).
+The [`tests` workflow](../.github/workflows/tests.yml) runs every suite on each
+push and pull request: both Python suites, the frontend checks and build, the
+Rust and Julia SDK suites, and a Docker build with the lab-image smoke test. It
+uses no secrets and makes no provider calls. The same commands for a local run,
+and the reproduction steps for the recorded results, are in
+[VERIFICATION.md](VERIFICATION.md).
 
 ## Standard verification
 

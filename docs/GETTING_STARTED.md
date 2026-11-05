@@ -14,32 +14,16 @@ the discovery laboratory, and the language SDKs can be used independently.
 Install only the components you need.
 
 All commands below start at the repository root. PowerShell examples are shown
-because the project is verified on Windows; Git Bash is required for the
-current Omnigent start/stop scripts.
+because the project is verified on Windows; Git Bash is only needed for the
+earlier Omnigent start/stop scripts.
 
 ## Fastest offline acceptance check
 
-After installing the declared component dependencies, run the repository-level
-verifier from the root:
-
-```powershell
-.\scripts\verify.ps1
-```
-
-If the local execution policy blocks the script, invoke it without changing
-the persistent user or machine policy:
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1
-```
-
-It derives the published routing and acceleration values, verifies the sealed
-entropy study from its committed bundle, performs a fresh deterministic SDK
-run/reproduction/tamper check, and tests the Python, frontend, Rust, and Julia
-components. Use `-CoreOnly`
-when only Python is installed or `-ClaimsOnly` for a fast evidence-integrity
-check. See [Verification and reproduction](VERIFICATION.md) for profiles and
-interpretation limits.
+Every component suite runs on each push in the
+[`tests` workflow](../.github/workflows/tests.yml) (no secrets, no paid calls);
+the README's **Tests** badge links to the latest result. To run the same checks
+locally, use the commands in [Verification and reproduction](VERIFICATION.md),
+which also covers reproducing the recorded results and interpretation limits.
 
 ## Prerequisites
 
@@ -54,7 +38,8 @@ Required by component:
 | Component | Additional requirement |
 |---|---|
 | Frontend | Node.js and npm compatible with the committed lockfile |
-| Omnigent lab | Git Bash, Omnigent 0.16.0, an Anthropic credential in the process environment |
+| Live Muse lab | The [Muse Code CLI](https://dev.meta.ai/docs/muse-code) and a Meta Model API key in a file outside the repository (`MODEL_API_KEY_FILE`); see [`hackathon/DEMO.md`](hackathon/DEMO.md) |
+| Earlier Omnigent lab (optional) | Git Bash, Omnigent 0.16.0, an Anthropic credential in the process environment |
 | Rust SDK | Stable Rust toolchain with Cargo, rustfmt, and Clippy |
 | Julia SDK | Julia 1.10 or newer; the verified local toolchain may be newer |
 
@@ -64,8 +49,8 @@ credentials are read from process environment variables only.
 ## Clone and inspect
 
 ```powershell
-git clone https://github.com/Ismailea4/Agentic-Scientific-Discovery-EigenBrains.git
-Set-Location Agentic-Scientific-Discovery-EigenBrains
+git clone https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery.git
+Set-Location NOESIS-Autonomous-Information-Driven-Scientific-Discovery
 git status --short
 git rev-parse HEAD
 ```
@@ -207,10 +192,12 @@ both native clients, and leaves a complete evidence store under
 byte-identical Python reproduction, five valid runs, an accepted verification
 run, and a verified bundle. It does not contact model providers.
 
-## Omnigent discovery loop
+## Earlier Omnigent discovery loop (optional)
 
-Only proceed after the deterministic scientific core passes. The current
-launcher is a Bash script and is best run from Git Bash:
+The live Muse lab is started as described in [`hackathon/DEMO.md`](hackathon/DEMO.md).
+The Omnigent loop below is the earlier orchestration, kept so its recorded runs
+stay reproducible. Only proceed after the deterministic scientific core passes.
+Its launcher is a Bash script and is best run from Git Bash:
 
 ```bash
 cd discolab
@@ -229,23 +216,25 @@ when nobody approves it. Do not bypass this protection for convenience.
 
 ## Configuration without secrets
 
-Copy `.env.example` only if your local runner loads environment files safely;
-otherwise set names directly in the shell. Supported non-secret settings
-include:
+Set these names directly in the shell (the repository ships no `.env` template).
+Supported non-secret settings for the optional backend include:
 
 - `APP_HOST`, `APP_PORT`, `CORS_ORIGINS`;
 - `LOG_LEVEL`, `LOG_FORMAT`, `LOG_FILE_ENABLED`, `LOG_FILE_PATH`;
 - `METRICS_OUTPUT_DIR`, `EVAL_OUTPUT_DIR`;
 - provider model and base-URL selectors.
 
-Credential variables include `OPENAI_API_KEY`, `GROQ_API_KEY`,
-`ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, and `OPENROUTER_API_KEY`. Never print
-their values, include them in commands captured by provenance, or store them in
-research artifacts.
+The Muse lab reads the Meta key from `MODEL_API_KEY` or `META_API_KEY`, or from
+the file named by `MODEL_API_KEY_FILE` (preferred locally: keep that file
+outside the repository). The optional backend's other provider
+adapters read `OPENAI_API_KEY`, `GROQ_API_KEY`, `ANTHROPIC_API_KEY`,
+`GEMINI_API_KEY`, and `OPENROUTER_API_KEY`. Never print these values, include
+them in commands captured by provenance, or store them in research artifacts.
 
 ## First-run acceptance checklist
 
-- `scripts/verify.ps1` passes for every installed component.
+- The component checks in [Verification and reproduction](VERIFICATION.md)
+  pass for every installed component.
 - Backend tests pass offline.
 - `/health` returns `status: ok`.
 - Frontend typecheck and production build succeed.
