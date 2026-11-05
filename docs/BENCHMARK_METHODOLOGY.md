@@ -1,7 +1,7 @@
 # Benchmark methodology
 
 > This document records the frozen generic protocol that the Meta Muse studies
-> reused. Historical non-Meta result bundles and reports are no longer shipped
+> reused. Non-Meta result bundles and reports are not shipped
 > in this checkout. For the current measured results, read the
 > [Muse Code agent report](../benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)
 > and its [raw evidence bundle](../benchmark/muse_agents_baseline_v1/).
@@ -78,7 +78,7 @@ The system prompt requests only the requested answer with no explanation or Mark
 - a small declared set of equivalent critique labels is accepted;
 - structured extraction uses exact JSON comparison.
 
-The earlier exact-match result is retained as a secondary reproducibility field. No alias was added after provider execution began.
+The unnormalized exact-match result is retained as a secondary reproducibility field. No alias was added after provider execution began.
 
 ## Call accounting
 
@@ -102,7 +102,7 @@ The conservative reserved spend was `$0.17888128`; token-based estimated spend f
 | `S3` | Qwen first; call GPT-OSS only when the frozen gate escalates. |
 | `S4` | GPT-OSS first; call Qwen only when the frozen gate escalates. |
 
-Allowed gate signals are limited to task family, schema or constraint failure, task risk level, historical task-family error upper bound, and explicit abstention. Ground truth is never available to the router.
+Allowed gate signals are limited to task family, schema or constraint failure, task risk level, development-split task-family error upper bound, and explicit abstention. Ground truth is never available to the router.
 
 ## Offline replay versus provider-backed execution
 
@@ -161,8 +161,8 @@ Pop-Location
 | `benchmark/reports/MUSE_AGENTS_BASELINE_V1.md` | Human-readable Muse Code agent report. |
 
 The nested `baseline_v0` and `pre_challenge` names are immutable protocol
-identifiers inherited by the rerun; the observations in this bundle are Meta
-Muse observations, not the removed historical provider results.
+identifiers. The observations in this bundle are Meta Muse observations;
+the non-Meta provider results are excluded from this checkout.
 
 ## Limitations
 

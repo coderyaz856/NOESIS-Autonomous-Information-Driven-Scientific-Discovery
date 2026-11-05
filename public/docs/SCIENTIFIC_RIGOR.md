@@ -39,7 +39,7 @@ Held-out outcomes cannot choose a model, threshold, prompt, verifier rule,
 metric, exclusion, or stopping condition. If held-out data influence a choice,
 the analysis becomes exploratory and a new confirmation set is required.
 
-Worked example: in the [sealed entropy early-warning study](SEALED_ENTROPY_EARLY_WARNING_RESULT.md)
+Worked example: in the [sealed entropy early-warning study](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/blob/main/docs/SEALED_ENTROPY_EARLY_WARNING_RESULT.md)
 the development stage showed +0.139 AUROC from adding entropy; the single
 sealed confirmation on untouched landscapes gave −0.006 [−0.011, −0.0003] and
 the registered verdict `no_meaningful_gain`. Without the phase separation the
@@ -310,7 +310,7 @@ Every empirical report should contain:
 ## 18. Review checklist
 
 - [ ] Hypothesis is falsifiable and comparator-specific.
-- [ ] Protocol predates confirmation outcomes.
+- [ ] Protocol was frozen before confirmation outcomes were viewed.
 - [ ] Experimental unit is correct.
 - [ ] Development/tuning/held-out boundaries are intact.
 - [ ] Seed blocks do not leak.

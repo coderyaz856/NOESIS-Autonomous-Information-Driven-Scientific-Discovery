@@ -237,7 +237,7 @@ Reproduction means rerunning the same protocol and reporting agreement/drift,
 not rewriting the original observation. Cached replay is useful for policy
 analysis but is not a new provider-backed execution.
 
-## Reproducing the published acceleration studies
+## Reproducing the recorded selective-escalation study
 
 The reported values are recorded in the committed machine-readable summary
 `discolab/results/escalation/summary.json`. To rerun the five-replicate

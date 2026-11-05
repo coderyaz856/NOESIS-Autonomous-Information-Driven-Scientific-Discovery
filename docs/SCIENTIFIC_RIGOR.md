@@ -310,7 +310,7 @@ Every empirical report should contain:
 ## 18. Review checklist
 
 - [ ] Hypothesis is falsifiable and comparator-specific.
-- [ ] Protocol predates confirmation outcomes.
+- [ ] Protocol was frozen before confirmation outcomes were viewed.
 - [ ] Experimental unit is correct.
 - [ ] Development/tuning/held-out boundaries are intact.
 - [ ] Seed blocks do not leak.

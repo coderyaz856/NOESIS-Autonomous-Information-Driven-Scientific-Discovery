@@ -117,7 +117,7 @@ Leave-one-landscape-out on 300 development runs, 21,617 at-risk points
 | EW4 entropy only − fitness | −0.1375 [−0.1575, −0.1180] |
 
 On development landscapes this looked like a large, precise discovery,
-consistent with the laboratory's earlier development-stage runs.
+consistent with the laboratory's development-stage runs.
 
 ## 7. Confirmatory result and registered verdict
 
@@ -306,7 +306,7 @@ between runs follows input hashes (`noesis-discovery lineage`).
   methods disagree on the sign).
 - That the 21.9× kernel timing is an end-to-end platform speed-up.
 - That this study produced the separate 1.54× compute-efficiency result (that
-  is the earlier selective-escalation study, `discolab/results/escalation`).
+  is the separate selective-escalation study, `discolab/results/escalation`).
 
 ## 14. The next scientific question (not run)
 
@@ -326,7 +326,7 @@ the gain vanished and split by landscape. The platform kept the universal
 claim from being made, localized the heterogeneity, and preserved the negative
 result as verified, reproducible evidence.
 
-This is separate from, and complementary to, the earlier measured acceleration
+This is separate from, and complementary to, the measured acceleration
 (selective escalation: 1.54× less compute, 95% CI [1.28, 1.90]). One result is
 about reaching research decisions with less compute; this one is about making
 those decisions harder to fool.

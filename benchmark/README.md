@@ -12,10 +12,10 @@ instrumentation, optimizer, registry, and API contracts.
 - `muse_agents_baseline_v1/` and `muse_baseline_v1/` preserve the Meta-only
   observations, frozen manifests, and derived analysis. The corresponding
   human-readable reports are in `reports/MUSE_*.md`.
-- The historical non-Meta `artifacts/pilot_v0/` and
+- The non-Meta `artifacts/pilot_v0/` and
   `artifacts/baseline_v0/` bundles and their reports are intentionally absent
   from this checkout. The shared cases, scoring code, and protocol files remain
-  so the Muse reruns can be audited; their legacy slot names are protocol
+  so the Muse reruns can be audited; their frozen slot names are protocol
   identifiers, not claims that those providers are used in the Meta app.
 - New exploratory outputs remain local unless an explicit evidence-publication
   decision includes them.

@@ -138,9 +138,9 @@ cd F:\hack7\backend
 python -m app.benchmark.baseline_cli --runs ..\benchmark\artifacts\recorded-runs.jsonl --benchmark-root ..\benchmark --benchmark-version generic-prior-v0 --benchmark-date 2026-10-03 --split dev --confidence-level 0.95 --bootstrap-resamples 2000 --seed 0 --lower-percentile 0.1 --severe-failure-threshold 0.2 --failure-threshold 0.5 --prior-strength 2 --maximum-prior-strength 5 --correlation-penalty 1
 ```
 
-When this legacy exporter is run locally, the command creates the following
+When this optional exporter is run locally, the command creates the following
 scrubbed artifacts under `benchmark/artifacts/baseline_v0/`, plus a report under
-`benchmark/reports/`. These historical non-Meta outputs are not included in
+`benchmark/reports/`. These non-Meta outputs are not included in
 the current checkout; the retained Meta evidence is under
 `benchmark/muse_agents_baseline_v1/`:
 
@@ -181,8 +181,8 @@ cd F:\hack7\backend
 python -m app.benchmark.baseline_plan_cli --benchmark-root ..\benchmark --protocol ..\benchmark\configs\prechallenge_baseline_v0.json --pricing ..\benchmark\configs\pricing_v0.json
 ```
 
-The legacy planning command can regenerate its budget report locally. The
-historical Qwen-first selective GPT-OSS study and its demo contract are not
+The optional planning command can regenerate its budget report locally. The
+non-Meta Qwen-first selective GPT-OSS study and its demo contract are not
 shipped as current reports. For the retained Meta-only S0-S4 study, see
 `benchmark/reports/MUSE_AGENTS_BASELINE_V1.md` and its raw bundle under
 `benchmark/muse_agents_baseline_v1/`.
@@ -192,7 +192,7 @@ shipped as current reports. For the retained Meta-only S0-S4 study, see
 The repository's governing rules prohibit reading API-key files. Therefore
 this work did not open, transform, validate, overwrite, or delete
 `api_keys.txt`, and it did not create an external `working_keys.env` file.
-That legacy work recorded the key check as `NOT_RUN` with zero tested
+The key-status record marked the check as `NOT_RUN` with zero tested
 credentials in a `benchmark/key_status.json` file, which is not included in
 this checkout.
 

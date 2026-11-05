@@ -122,15 +122,19 @@ Average quality can hide rare catastrophic failures. With loss `L`, the laborato
 - severe-failure probability at a frozen threshold;
 - downside semivariance;
 - Value at Risk, `VaR_α`;
-- Conditional Value at Risk, `CVaR_α`;
-- worst-decile loss and worst observed score.
+- an empirical CVaR-like upper-tail mean;
+- worst-decile quality and worst observed score.
 
-For loss quantile `VaR_α(L)`, CVaR is:
+For loss quantile `VaR_α(L)`, the implemented upper-tail mean is:
 
 \[
-\operatorname{CVaR}_\alpha(L)
+\widehat{T}_\alpha(L)
 =E[L\mid L\ge \operatorname{VaR}_\alpha(L)].
 \]
+
+All observations tied at the quantile are included, so the empirical tail
+may contain more than `1−α` of the sample. This is the code's CVaR-like
+diagnostic, not a claim that it equals every textbook discrete-CVaR convention.
 
 At small `n`, tail estimates are deliberately labeled unstable. In the 12-case held-out slice, the worst observed outcome dominates the tail statistic, so the result is useful as a warning but not a precise tail estimate.
 
@@ -177,7 +181,7 @@ The meta-agent is a frozen routing and reconciliation policy, not another uncons
 - task family;
 - schema or constraint failure;
 - task risk level;
-- historical task-family error upper confidence bound;
+- development-split task-family error upper confidence bound;
 - explicit abstention.
 
 Architecture Baseline v0 defines:
@@ -190,7 +194,7 @@ Architecture Baseline v0 defines:
 | `S3` | Run Qwen first and selectively escalate to GPT-OSS. |
 | `S4` | Run GPT-OSS first and selectively escalate to Qwen. |
 
-The gate was fitted on development and tuning observations only. It escalates high-risk cases, schema/constraint failures, explicit abstentions, and task families whose Qwen historical error upper bound crosses the frozen `0.5` threshold. Task-family ownership breaks lower-risk disagreements and was also frozen before held-out evaluation.
+The gate was fitted on development and tuning observations only. It escalates high-risk cases, schema/constraint failures, explicit abstentions, and task families whose Qwen development-split error upper bound crosses the frozen `0.5` threshold. Task-family ownership breaks lower-risk disagreements and was also frozen before held-out evaluation.
 
 ## 9. Statistical inference
 
@@ -240,6 +244,38 @@ Because the prior is weak, a modest amount of task-specific evidence can overtur
 
 ## 11. Transfer from model portfolios to experiment portfolios
 
+### Research-portfolio selector and theory correction
+
+For a candidate set of experiments `S`, the implemented planner evaluates
+
+\[
+V(S)=\sum_h I(H_h;O_{S,h})
+-\sum_{e\in S}\bigl(c_e+r_e\bigr),
+\]
+
+where `O_{S,h}` are the possible verdicts from experiments testing hypothesis
+`h`, `c_e` is the wall-time penalty in bits, and `r_e` is the held-out-use
+penalty in bits. The joint information calculation uses the registered verdict
+likelihoods and conditional independence given each hypothesis. With a
+consistent prior per hypothesis, its marginal information is
+`I(H_h; O_e | O_{S,h})`; conditional independence makes that marginal diminish
+as the selected set grows. Summing across hypotheses and subtracting modular
+penalties preserves submodularity. A penalty can exceed an experiment's
+marginal information, making `V` non-monotone.
+
+The implementation chooses the feasible experiment with the largest absolute
+positive marginal `V`, stopping at the registered minimum gain, the
+three-experiment cap, or the remaining compute budget. The familiar
+`1 - 1/e` greedy bound applies to a normalized, monotone submodular objective
+under a cardinality constraint. The implemented penalized objective and
+compute-budget constraint call for empirical evaluation of this selector;
+we assert no approximation ratio for it.
+
+The frozen [`prereg.yaml`](prereg.yaml.txt) contains a
+`(1 - 1/e)` claim in its portfolio selection field. The conditions described
+here clarify that claim. The registered protocol and recorded experimental
+observations retain their original bytes and meanings.
+
 The same policy applies when the scarce asset is simulation compute rather
 than a model call. Let `N_1 < N_2 < N_3` be nested sample sizes and let `G_k`
 mean that the preregistered verdict remains inconclusive at look `k`. Expected
@@ -270,14 +306,14 @@ whether the system buys another model call or another block of experimental
 samples. Both policies expose the gate, rescue, damage, cost, latency/work, and
 agreement needed to audit the decision.
 
-## 12. Historical non-Meta model and architecture results
+## 12. Non-Meta model and architecture results
 
-The results in this section describe the original frozen protocol. Their
+The results in this section describe the frozen generic protocol. Their
 non-Meta raw-result bundle is not shipped in this checkout; do not present
 these numbers as current Meta-agent performance. For the retained Meta-only
 measurements and raw observations, see
-`benchmark/reports/MUSE_AGENTS_BASELINE_V1.md` and
-`benchmark/muse_agents_baseline_v1/` in the repository.
+[Muse-agent report](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/blob/main/benchmark/reports/MUSE_AGENTS_BASELINE_V1.md)
+and its [raw evidence bundle](https://github.com/coderyaz856/NOESIS-Autonomous-Information-Driven-Scientific-Discovery/tree/main/benchmark/muse_agents_baseline_v1/).
 
 ### Single-model operational evidence
 
@@ -293,7 +329,7 @@ The econometric lesson is material: GPT-OSS and Qwen were strong conditional on 
 
 ### Failure dependence
 
-| Pair | Error correlation, 95% bootstrap | Failure Jaccard | `P(right succeeds | left fails)` |
+| Pair | Error correlation, 95% bootstrap | Failure Jaccard | <code>P(right succeeds &#124; left fails)</code> |
 |---|---:|---:|---:|
 | GPT-OSS ↔ Qwen | `0.742 [0.577, 0.886]` | `0.735` | `0.138 [0.031, 0.278]` |
 | GPT-OSS ↔ DeepSeek | `0.489 [0.336, 0.634]` | `0.345` | `0.655 [0.467, 0.824]` |
@@ -322,7 +358,7 @@ The provider-backed confirmation made seven verifier calls for `S3` and seven fo
 - The benchmark does not establish performance on a new domain.
 - The measured GPT-OSS/Qwen gate should not be generalized into a universal architecture rule.
 
-The historical non-Meta result files remain recoverable from repository
+The non-Meta result files remain recoverable from repository
 history but are intentionally absent from the current checkout. The retained
 Meta-agent rerun uses the same frozen benchmark cases and scoring contract;
 its report distinguishes offline replay from provider-backed verification.

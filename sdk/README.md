@@ -1,7 +1,8 @@
 # Noesis Discovery SDK
 
-The SDK exposes the same validated research transitions used by the Omnigent
-agents. It is intentionally not a second implementation of the laboratory.
+The SDK exposes the validated research transitions used by the Muse lab and
+the optional Omnigent runtime. It is intentionally not a second
+implementation of the laboratory.
 
 It also provides a domain-independent evidence runtime for computational
 research: declared contracts, controlled RNG and budgets, hash-chained run

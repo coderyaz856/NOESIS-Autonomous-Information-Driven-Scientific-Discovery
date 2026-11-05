@@ -122,15 +122,19 @@ Average quality can hide rare catastrophic failures. With loss `L`, the laborato
 - severe-failure probability at a frozen threshold;
 - downside semivariance;
 - Value at Risk, `VaR_α`;
-- Conditional Value at Risk, `CVaR_α`;
-- worst-decile loss and worst observed score.
+- an empirical CVaR-like upper-tail mean;
+- worst-decile quality and worst observed score.
 
-For loss quantile `VaR_α(L)`, CVaR is:
+For loss quantile `VaR_α(L)`, the implemented upper-tail mean is:
 
 $$
-\mathrm{CVaR}_\alpha(L)
+\widehat{T}_\alpha(L)
 =E[L\mid L\ge \mathrm{VaR}_\alpha(L)].
 $$
+
+All observations tied at the quantile are included, so the empirical tail
+may contain more than `1−α` of the sample. This is the code's CVaR-like
+diagnostic, not a claim that it equals every textbook discrete-CVaR convention.
 
 At small `n`, tail estimates are deliberately labeled unstable. In the 12-case held-out slice, the worst observed outcome dominates the tail statistic, so the result is useful as a warning but not a precise tail estimate.
 
@@ -177,7 +181,7 @@ The meta-agent is a frozen routing and reconciliation policy, not another uncons
 - task family;
 - schema or constraint failure;
 - task risk level;
-- historical task-family error upper confidence bound;
+- development-split task-family error upper confidence bound;
 - explicit abstention.
 
 Architecture Baseline v0 defines:
@@ -190,7 +194,7 @@ Architecture Baseline v0 defines:
 | `S3` | Run Qwen first and selectively escalate to GPT-OSS. |
 | `S4` | Run GPT-OSS first and selectively escalate to Qwen. |
 
-The gate was fitted on development and tuning observations only. It escalates high-risk cases, schema/constraint failures, explicit abstentions, and task families whose Qwen historical error upper bound crosses the frozen `0.5` threshold. Task-family ownership breaks lower-risk disagreements and was also frozen before held-out evaluation.
+The gate was fitted on development and tuning observations only. It escalates high-risk cases, schema/constraint failures, explicit abstentions, and task families whose Qwen development-split error upper bound crosses the frozen `0.5` threshold. Task-family ownership breaks lower-risk disagreements and was also frozen before held-out evaluation.
 
 ## 9. Statistical inference
 
@@ -267,9 +271,9 @@ under a cardinality constraint. The implemented penalized objective and
 compute-budget constraint call for empirical evaluation of this selector;
 we assert no approximation ratio for it.
 
-The frozen [`prereg.yaml`](../discolab/prereg.yaml) contains an earlier
-`(1 - 1/e)` claim in its portfolio selection field. This paragraph is the
-theory correction for that historical line. The registered protocol and the
+The frozen [`prereg.yaml`](../discolab/prereg.yaml) contains a
+`(1 - 1/e)` claim in its portfolio selection field. The conditions described
+here clarify that claim. The registered protocol and the
 recorded experimental observations retain their original bytes and meanings.
 
 The same policy applies when the scarce asset is simulation compute rather
@@ -302,9 +306,9 @@ whether the system buys another model call or another block of experimental
 samples. Both policies expose the gate, rescue, damage, cost, latency/work, and
 agreement needed to audit the decision.
 
-## 12. Historical non-Meta model and architecture results
+## 12. Non-Meta model and architecture results
 
-The results in this section describe the original frozen protocol. Their
+The results in this section describe the frozen generic protocol. Their
 non-Meta raw-result bundle is not shipped in this checkout; do not present
 these numbers as current Meta-agent performance. For the retained Meta-only
 measurements and raw observations, see
@@ -354,7 +358,7 @@ The provider-backed confirmation made seven verifier calls for `S3` and seven fo
 - The benchmark does not establish performance on a new domain.
 - The measured GPT-OSS/Qwen gate should not be generalized into a universal architecture rule.
 
-The historical non-Meta result files remain recoverable from repository
-history but are intentionally absent from the current checkout. The retained
+The non-Meta result files remain recoverable from repository
+history but are intentionally absent from this checkout. The retained
 Meta-agent rerun uses the same frozen benchmark cases and scoring contract;
 its report distinguishes offline replay from provider-backed verification.
