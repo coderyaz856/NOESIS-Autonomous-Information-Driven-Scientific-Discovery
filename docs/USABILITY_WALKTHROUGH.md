@@ -1,6 +1,12 @@
 # Usability walkthrough — Noesis workspace
 
-Run against the preview with Playwright at 1280×1000 (desktop) and 390×844 (mobile). The recording used here was a **test fixture injected only during the walkthrough**. It is not shipped and its numbers are not results. Screenshots are in `docs/walkthrough/`.
+This is a **fixture-based UI walkthrough**, not a hosted-deployment acceptance
+test. It ran against a preview with
+Playwright at 1280×1000 (desktop) and 390×844 (mobile). Its recording was a
+**test fixture injected only for this walkthrough**; it is not shipped
+and its numbers are not research results. Screenshots are in
+`docs/walkthrough/`. For the current flow use the
+[frontend guide](FRONTEND_GUIDE.md) and [demo runbook](DEMO_RUNBOOK.md).
 
 | # | Task | Expected | Observed | Issue / fix |
 |---|---|---|---|---|
@@ -16,6 +22,10 @@ Run against the preview with Playwright at 1280×1000 (desktop) and 390×844 (mo
 - Desktop and mobile, start and report screens: 0 violations. The missing top-level heading on the run screen was fixed by making the pinned question the page heading.
 - Status always pairs an icon with text. Live timeline updates are announced politely. Tap targets are at least 44px. Animations are disabled when reduced motion is requested.
 
-## Not yet verified
-- A real live run, because no lab with the start-a-run endpoint is reachable from the preview.
-- A real recording, which is waiting on `public/recordings/demo.json`.
+## Not verified by this walkthrough
+
+- A real live run was not reachable from the fixture-based preview. Live-run
+  evidence is documented separately in the
+  [Muse demo guide](hackathon/DEMO.md).
+- A static browser recording is not shipped;
+  its optional location is `frontend/public/recordings/demo.json`.

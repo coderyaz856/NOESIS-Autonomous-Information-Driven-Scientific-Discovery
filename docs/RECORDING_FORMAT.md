@@ -1,31 +1,52 @@
 # Recorded demonstration format
 
-Put a real recorded run at `public/recordings/demo.json`. The website replays it step by step and always labels it **RECORDED DEMONSTRATION**. Without this file, visitors with no lab connected see the empty state. No invented data is ever shown.
+The workspace optionally fetches `/recordings/demo.json` from
+`frontend/public/recordings/demo.json`. **No static recording is shipped in
+this checkout.** If neither a lab nor this file is available, the UI shows an
+explicit empty state. A local read-only bridge can independently serve the
+committed `discolab/results/recorded-open-question/` source; it does not
+require a model key.
+
+A static recording must come from a real run and retain its original
+question. If the visitor typed a different question, the UI labels the
+substitution and the evidence remains `RECORDED`, never `LIVE`.
+
+## JSON contract
+
+The `Recording` type is defined in
+`frontend/src/workspace/useRun.ts`; `LabState`, `LabActivity`, and
+`LabExperiment` are in `frontend/src/noesis/api/lab-types.ts`.
 
 ```json
 {
   "source_id": "results/<run-name>",
-  "recorded_at": "2026-11-01T10:00:00Z",
-  "state": { "...": "exact response of GET /lab/state?source=results/<run-name>" },
-  "activity": [ "...exact `activity` array of GET /lab/activity?source=…" ],
-  "experiments": { "<experiment id>": { "...": "GET /lab/experiment?source=…&id=<id>, for every id in state.completed" } }
+  "recorded_at": "<UTC ISO-8601 timestamp>",
+  "state": { "question": "<original question>", "...": "GET /lab/state response" },
+  "activity": ["the activity array from GET /lab/activity"],
+  "experiments": { "E1": { "...": "GET /lab/experiment response for E1" } }
 }
 ```
 
-## Export with a running lab feed
+`experiments` contains the results of every completed experiment referenced
+by `state.completed`. Open-research runs may have none. Do not fabricate
+missing experiment entries or rewrite the original question.
 
-```bash
-SRC=results/<run-name>; LAB=http://127.0.0.1:8765
-python3 - "$SRC" "$LAB" <<'PY'
-import json, sys, urllib.request, urllib.parse, datetime
-src, lab = sys.argv[1], sys.argv[2]
-get = lambda p, **q: json.load(urllib.request.urlopen(f"{lab}/lab/{p}?" + urllib.parse.urlencode({"source": src, **q})))
-state = get("state")
-out = {"source_id": src, "recorded_at": datetime.datetime.utcnow().isoformat() + "Z",
-       "state": state, "activity": get("activity")["activity"],
-       "experiments": {i: get("experiment", id=i) for i in state["completed"]}}
-json.dump(out, open("demo.json", "w"))
-PY
-```
+## Creating a recording
 
-Then attach `demo.json` in chat so it can be added to the project.
+1. Start the bridge in read-only mode from `discolab/`:
+   `python -m discolab.bridge --port 8765`.
+2. Pick an ID returned by `GET /lab/sources`; retrieve
+   `/lab/state?source=...`, `/lab/activity?source=...`, and each required
+   `/lab/experiment?source=...&id=...` from that same source.
+3. Assemble the JSON contract above and place it at
+   `frontend/public/recordings/demo.json`. Record the export time and source
+   ID. Review it for private prompts, credentials, and personal data before
+   committing or publishing.
+4. Open the app without a connected lab. Verify that the recording label,
+   original question, experiment count, and report all agree with the source.
+   Check that the static file never triggers paid calls.
+
+A hosted bridge with authentication requires its token at the server boundary;
+do not put that token into a static export command, browser file, or Git
+artifact. Prefer exporting from an unauthenticated loopback-only read-only
+bridge over committed public evidence.

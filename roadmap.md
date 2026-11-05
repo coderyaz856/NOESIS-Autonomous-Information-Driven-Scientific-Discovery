@@ -10,17 +10,18 @@
 - [x] Enhanced genie tab transitions and clearer statistical/LaTeX-style notation
 - [x] Research Record: structured critic analysis and clearer updated decisions
 - [x] Discovery story: 10-step connected narrative, handoff pulses, sound + mute
-- [x] Single workspace: ask → live timeline → evidence report; old multi-page tour removed
+- [x] Single workspace: ask → live timeline → evidence report
 - [x] Metric explainers linked to documented formulas; status rules tested
 - [x] Start-a-run relay + spec (docs/LAB_RUNS_ENDPOINT.md); recording format (docs/RECORDING_FORMAT.md)
-- [ ] Bundle real recording at public/recordings/demo.json — blocked: waiting for user's export
-- [ ] Lab implements POST /lab/runs — blocked: Python lab change by the team
+- [ ] Optional static recording at `frontend/public/recordings/demo.json`;
+  the committed bridge-served run remains available without it
+- [x] Lab implements POST /lab/runs through the authenticated bridge
 
-## Report clarity round (Nov 2026)
+## Report clarity
 - [x] Clear finding cards, summary box with compute saved (from lab-reported seconds)
 - [x] Performance curves and planner frontier charts restored
 - [x] Agent role badges on the timeline; honest note when the lab cannot start runs
 - [x] Download PDF (print layout, QR to GitHub, RECORDED stamp on every page)
 - [x] Proper math notation (KaTeX) in explainers, report and PDF
-- [ ] Lab start-a-run endpoint (team, Python side)
-- [ ] Real recording public/recordings/demo.json (user)
+- [x] Lab start-a-run endpoint (`discolab/discolab/bridge.py`)
+- [ ] Optional static recording at `frontend/public/recordings/demo.json`

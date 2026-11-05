@@ -1,197 +1,97 @@
 # Frontend guide
 
-The frontend is a React 18 and Vite control surface designed to explain the
-EigenBrains workflow while remaining explicit about which values are live,
-measured, replayed, or illustrative.
+Noesis is a React 19 / TanStack Start application built with Vite. Its public
+route is one workspace at `/`: ask a question, follow the agents, inspect the
+decision, and read the report without navigating through separate chapters.
+The code of record is `frontend/src/routes/index.tsx`,
+`frontend/src/workspace/`, and `frontend/src/noesis/`.
+The frontend CI job and local commands in this guide run in `frontend/`.
+There is also a separate root `src/` web-app tree; check the host's configured
+source directory before assuming its deployed build matches this tested tree.
 
-## Information architecture
+## Researcher journey
 
-The application exposes five hash-routed views:
+1. **Ask:** `Workspace.tsx` shows the question form, examples, connection
+   status, and runs available from the connected lab. The submit button
+   requires at least 10 trimmed characters.
+2. **Follow:** `useRun.ts` owns idle, starting, running, complete, and failed
+   phases. The running stage keeps the question visible and shows a live
+   `NodeMap`, activity timeline, and `DecisionConsole`. The trace drawer
+   exposes lower-level events without filling the main stage.
+3. **Inspect:** completion opens `Report` and `Insights`. The user can revisit
+   the agent map, decision and trace, or print the report to PDF. Narrow screens
+   expose these surfaces as tabs in the same workspace.
 
-| Route | View | Purpose |
-|---|---|---|
-| `#/home` | Home | Seven-chapter product and research narrative |
-| `#/agents` | Agents | Agent graph, routing, capabilities, and fallbacks |
-| `#/estimation` | Estimation | Quality/cost/latency/risk tradeoffs and frontier |
-| `#/security` | Security | Capability and allowed/denied path explanation |
-| `#/trace` | Trace | Execution and evidence trace |
+`LabContext.tsx` discovers run sources, loads state and activity, follows
+server-sent events, and refreshes the run record. The lab owns measurements and
+state transitions; the browser presents them. `workspace/model.ts` owns
+evidence labels, verdict display rules (including interval-crossing-zero
+downgrades), and shared budget formatting, with tests in `model.test.ts`.
+Open-research hypotheses remain untested; only the registered GA/entropy lab
+mode can show executed experiments.
 
-Legacy hash aliases are mapped in `src/hooks/useHashView.ts`. Add new stable
-routes there rather than scattering hash parsing across components.
+## Data and trust boundary
 
-## Application shell
+```text
+Browser workspace → same-origin /lab-proxy → authenticated Python bridge /lab/*
+                  → Muse agents, ledger and numerical artifacts
+```
 
-`src/App.tsx` owns:
-
-- active view and hash navigation;
-- dark/light/system theme state persisted under `eb-theme`;
-- sidebar, toolbar, inspector, command palette, and Team dialog;
-- home scroll preservation when entering and leaving a workspace;
-- source-aware rightward workspace materialization;
-- backend health state;
-- keyboard commands.
-
-Keyboard shortcuts:
-
-| Shortcut | Action |
+| Path | Purpose |
 |---|---|
-| `Ctrl/Cmd + K` | Toggle command palette |
-| `Ctrl/Cmd + I` | Toggle inspector |
+| `src/routes/index.tsx` | Root route and page metadata. |
+| `src/workspace/Workspace.tsx` | Ask/run/report composition and visible status. |
+| `src/workspace/useRun.ts` | Run phases, start/failure handling, optional replay. |
+| `src/workspace/DecisionConsole.tsx`, `NodeMap.tsx`, `TraceConsole.tsx`, `Report.tsx` | Decisions, agent map, trace and report. |
+| `src/noesis/lab/LabContext.tsx` | Source discovery, snapshots, SSE and run-record refresh. |
+| `src/noesis/api/lab.ts`, `lab-types.ts`, `sse.ts` | Typed lab requests and stream parsing. |
+| `src/routes/lab-proxy.$.ts`, `src/noesis/api/lab-proxy-policy.ts` | Server-side relay, origin allow-list, write policy and bridge authentication. |
 
-The sidebar uses semantic navigation with `aria-current`. Modal and overlay
-components must preserve focus, keyboard dismissal, labels, and reduced-motion
-behavior.
+The browser never receives the Meta key or bridge token. The server-side relay
+accepts only its named paths and upstream origins in `NOESIS_LAB_ORIGINS`,
+and rejects upstream redirects. With no configured origins, development
+permits only the local bridge on port 8765; production permits none.
+`VITE_LAB_URL` is a public destination hint, not a credential.
 
-## Narrative chapters
+Production writes use one of three modes: `NOESIS_PUBLIC_TRIAL=1` for
+bridge-limited visitor runs, an operator token for signed-in operator writes,
+or read-only. The operator token is exchanged at `/lab-proxy/session` for a
+signed, HttpOnly, SameSite=Strict cookie. “Lock” clears it in this browser;
+because sessions are stateless, a copied cookie remains valid until its
+eight-hour expiry or token rotation. Development permits writes to a local
+bridge. See [Lab endpoint](LAB_RUNS_ENDPOINT.md) and
+[System architecture](SYSTEM_ARCHITECTURE.md).
 
-The home story has seven conceptual chapters:
+## Recording and unavailable states
 
-1. Ask
-2. Understand
-3. Assemble
-4. Estimate
-5. Secure
-6. Verify
-7. Deliver
+`useRun.ts` can replay a real static recording from
+`frontend/public/recordings/demo.json` when one is installed. **This file is
+not shipped in the current checkout.** Without a connected lab or a static
+recording, the UI shows an honest empty state. A connected bridge can still
+serve the committed run under `discolab/results/recorded-open-question/`.
+Never replace unavailable evidence with invented fixture results. The format
+and export procedure are in [Recorded demonstration format](RECORDING_FORMAT.md).
 
-The app stores the home scroll position before opening another view and restores
-it on return. This is why returning from a workspace preserves the user's last
-chapter instead of resetting to chapter one.
+## Extending and verifying
 
-On narrow viewports or when `prefers-reduced-motion: reduce` matches,
-`useQuietMotion` replaces the cinematic scroll behavior with a quieter
-presentation. New animation must respect this hook and must not be required to
-understand or operate the interface.
+Keep new lab fields synchronized across the Python bridge, `lab-types.ts`,
+`lab.ts`, and tests. Put derived presentation rules in `model.ts`; leave
+scientific computation in the lab. Make loading, failure, live, recorded,
+open-research, and lab-mode states explicit. Check keyboard focus, labels,
+reduced motion, mobile layout, and textual chart summaries.
 
-## Visual system
-
-The intended balance is:
-
-- restrained neutral UI for structure and long reading;
-- selective translucent glass for command, analysis, inspector, and key-result
-  surfaces;
-- limited cyan, violet, and amber light for hierarchy and active state.
-
-Avoid making every container translucent or luminous. Text contrast and state
-legibility have priority over visual effect. Motion should clarify origin,
-continuity, or progression: unfold from a source, draw a plot progressively, or
-settle a panel. Do not add decorative bouncing or endless loops.
-
-## Data provenance in the UI
-
-`src/dev/fixtures.ts` is development-only. It declares in its file header that
-its figures are hand-written layout examples. The current showcase workspaces
-may import these fixtures only while they visibly retain their `SAMPLE` marker.
-A claim-bearing evidence view must instead consume the typed API/bridge and
-must not import this file.
-
-Every rendered quantity should expose or inherit an evidence label:
-
-- `SAMPLE` for hand-authored fixture data;
-- `REPLAY` for counterfactual policy application;
-- `BENCHMARK` for a frozen measured study;
-- `PROVIDER_BACKED` for an executed architecture step;
-- `LIVE` for current telemetry.
-
-Never remove a sample marker merely to make a demo appear more complete.
-
-## API access
-
-Use the shared client in `src/api/client.ts`. It:
-
-- performs same-origin fetches;
-- parses JSON responses;
-- converts non-2xx responses into `ApiError` with status, code, message, and
-  details;
-- represents network failure with status `0`.
-
-Endpoint wrappers live in `src/api/system.ts`; response and request mirrors live
-in `src/api/types.ts`. When the backend contract changes, update these files and
-the backend contract test in the same change.
-
-The development server proxies `/api` and `/health` to port 8000. Avoid hardcoded
-backend origins in components.
-
-## Adding a workspace
-
-1. Add the view identifier to `AppView` and `ROUTES`.
-2. Add navigation metadata to `NAV`.
-3. Create a workspace-level component under `src/experiences/` or `src/views/`.
-4. Render it in the `stage-main` switch in `App.tsx`.
-5. Add typed API functions rather than calling `fetch` directly.
-6. Define empty, loading, error, sample, and live states.
-7. Add the command-palette entry.
-8. Verify inspector behavior, theme contrast, keyboard access, and reduced
-   motion.
-9. Run typecheck and production build.
-10. Capture fixed-viewport visual QA in dark and light themes.
-
-Do not put provider credentials, scientific computation, policy enforcement, or
-result mutation in a browser component.
-
-## Visual QA
-
-Standard checks:
+From the repository root:
 
 ```powershell
 Set-Location .\frontend
 npm ci
-npm run typecheck
+npx tsc --noEmit -p .
+npm test
 npm run build
-npm run dev
+npm run dev -- --port 5173
 ```
 
-The capture script uses a running Chromium DevTools endpoint. Its positional
-arguments are:
-
-```text
-node scripts/capture-story.mjs <debug-endpoint> <output> <width> <height> <preset> <url> <theme>
-```
-
-Example:
-
-```powershell
-node .\scripts\capture-story.mjs `
-  http://127.0.0.1:9223 `
-  .\qa-screenshots\verification-dark `
-  1440 900 story `
-  http://127.0.0.1:5173/#/home `
-  dark
-```
-
-The script records viewport, active chapter, horizontal overflow, and visible
-title in addition to screenshots. Review at minimum:
-
-- 1440 × 900 desktop;
-- 1024 × 768 small desktop/tablet;
-- 768 × 900 narrow tablet;
-- 390 × 844 mobile;
-- dark and light themes;
-- Team dialog;
-- all seven chapters;
-- every workspace;
-- reduced-motion or quiet mode.
-
-## Accessibility checklist
-
-- [ ] All icon-only buttons have accessible labels.
-- [ ] Current navigation uses `aria-current`.
-- [ ] Toggle state uses `aria-pressed` or `aria-expanded` where appropriate.
-- [ ] Dialogs expose role/name and restore focus on close.
-- [ ] Keyboard users can reach every control.
-- [ ] Focus indication remains visible on glass surfaces.
-- [ ] Status does not rely on color alone.
-- [ ] Text remains readable over blooms and translucent backgrounds.
-- [ ] Reduced motion removes nonessential transitions.
-- [ ] Charts have textual values or summaries.
-- [ ] Loading and error states are announced meaningfully.
-
-## Performance guidance
-
-- Keep animated blur and large backdrop filters limited to high-value surfaces.
-- Prefer transforms and opacity for motion.
-- Do not continuously redraw charts when values are unchanged.
-- Memoize expensive derived view models, not trivial markup.
-- Avoid adding dependencies for behavior already covered by small local hooks.
-- Verify production output with `npm run build`; development responsiveness alone
-  is not evidence of bundle health.
+There is no committed automated screenshot capture script. The screenshots in
+`docs/walkthrough/` document a fixture-based usability walkthrough, not a
+hosted end-to-end test. Use the [demo guide](hackathon/DEMO.md) for a manual
+question-to-report check.
